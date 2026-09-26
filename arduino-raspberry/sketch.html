@@ -1,0 +1,817 @@
+<title>Tu Arduino dice hola</title>
+<style>
+:root{
+  --bg:#EAF0EE; --surface:#F7FAF9; --surface-2:#DFE8E5; --ink:#12302E; --muted:#4F6360; --line:#C5D3CF;
+  --accent:#0C6664; --accent-ink:#FFFFFF; --accent-soft:#D3E7E4;
+  --pcb:#0E6B69; --pcb-deep:#0A5553; --silk:#EAF5F3; --copper:#C9934F; --metal:#BFC7CA; --metal-2:#7D878A; --chip:#1A1E20;
+  --led:#FFB21F; --led-off:#6A5626; --led-glow:rgba(255,178,31,.75); --tx:#FFD34D; --on:#57E08A;
+  --warn:#A8321F; --warn-soft:#F6E1DB; --ok:#1E7A45;
+  --console-bg:#10201F; --console-ink:#CDE6E1; --console-dim:#7FA09B;
+  --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0C1716; --surface:#13211F; --surface-2:#1A2C2A; --ink:#DCEAE7; --muted:#93A9A5; --line:#284340;
+    --accent:#5CC7BF; --accent-ink:#06201E; --accent-soft:#193936;
+    --pcb:#0D5C5A; --pcb-deep:#0A4745; --silk:#D8ECE9; --metal:#9FA9AC; --metal-2:#5F696C; --chip:#0B0E0F;
+    --led-off:#4D3F1C; --warn:#F08A72; --warn-soft:#3A1F19; --ok:#6FD49A;
+    --console-bg:#081110; --console-ink:#CDE6E1; --console-dim:#6E8F8A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0C1716; --surface:#13211F; --surface-2:#1A2C2A; --ink:#DCEAE7; --muted:#93A9A5; --line:#284340;
+  --accent:#5CC7BF; --accent-ink:#06201E; --accent-soft:#193936;
+  --pcb:#0D5C5A; --pcb-deep:#0A4745; --silk:#D8ECE9; --metal:#9FA9AC; --metal-2:#5F696C; --chip:#0B0E0F;
+  --led-off:#4D3F1C; --warn:#F08A72; --warn-soft:#3A1F19; --ok:#6FD49A;
+  --console-bg:#081110; --console-ink:#CDE6E1; --console-dim:#6E8F8A;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:28px 64px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(2.1rem,6vw,3.4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.45rem,3.6vw,1.95rem);font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.12rem;font-weight:700}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sample{display:inline-block;font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--warn-soft);color:var(--warn);vertical-align:middle}
+a{color:var(--accent)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--led);outline-offset:2px;border-radius:4px}
+code,kbd{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+
+/* ---------- header ---------- */
+header.top{display:grid;gap:12px;margin-bottom:22px}
+header.top .lede{max-width:62ch;color:var(--muted);font-size:1.06rem}
+.facts{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--mono);font-size:.82rem;color:var(--muted)}
+.facts b{color:var(--ink);font-weight:600}
+
+/* ---------- demo ---------- */
+.demo{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+@media (max-width:820px){.demo{grid-template-columns:minmax(0,1fr)}}
+.board-box{display:grid;gap:8px}
+.board-box svg{width:100%;height:auto;display:block;max-width:100%}
+.board-note{font-size:.8rem;color:var(--muted)}
+#ledL .body,#ledBig .body{fill:var(--led-off);transition:fill 30ms linear}
+#ledL .glow,#ledBig .glow{opacity:0;transition:opacity 30ms linear}
+#ledL.lit .body,#ledBig.lit .body{fill:var(--led)}
+#ledL.lit .glow,#ledBig.lit .glow{opacity:1}
+#ledTX .body{fill:var(--led-off)}
+#ledTX.lit .body{fill:var(--tx)}
+.controls{display:grid;gap:14px}
+.field{display:grid;gap:6px}
+.field label{font-weight:700}
+.word-row{display:flex;gap:8px;flex-wrap:wrap}
+#word{flex:1 1 160px;min-width:0;font-family:var(--mono);font-size:1.3rem;letter-spacing:.14em;text-transform:uppercase;padding:10px 12px;border-radius:8px;border:2px solid var(--line);background:var(--bg)}
+#word:focus{border-color:var(--accent);outline:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.ghost:hover{border-color:var(--accent)}
+.btn.small{padding:6px 11px;font-size:.86rem}
+.opts{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:.92rem}
+.opts label{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.opts input[type=range]{width:130px;accent-color:var(--accent)}
+.opts input[type=checkbox]{accent-color:var(--accent);width:17px;height:17px}
+.speed-out{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:4px 11px;font-size:.84rem;cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+.tape{display:flex;flex-wrap:wrap;gap:10px 6px;align-items:flex-end;padding:12px;border-radius:10px;background:var(--bg);border:1px dashed var(--line);min-height:84px}
+.tape .word{display:flex;flex-wrap:wrap;gap:8px}
+.tape .sep{font-family:var(--mono);color:var(--muted);font-size:1.3rem;padding:0 4px;align-self:center}
+.letter{display:grid;justify-items:center;gap:6px;padding:6px 7px;border-radius:8px;min-width:40px;transition:background .15s}
+.letter .ch{font-family:var(--display);font-weight:800;font-size:1.45rem;line-height:1}
+.letter .syms{display:flex;gap:4px;align-items:center;height:12px}
+.sym{display:block;height:9px;border-radius:5px;background:var(--muted);opacity:.55}
+.sym.dot{width:9px}
+.sym.dash{width:27px}
+.letter.cur{background:var(--accent-soft)}
+.letter.done .sym{opacity:.9;background:var(--ink)}
+.sym.on{background:var(--led)!important;opacity:1!important;box-shadow:0 0 10px var(--led-glow)}
+.morse-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-family:var(--mono);font-size:.95rem;word-break:break-all}
+.morse-line output{flex:1 1 200px;min-width:0}
+.skipped{font-size:.84rem;color:var(--warn)}
+.status{font-family:var(--mono);font-size:.82rem;color:var(--muted)}
+.status b{color:var(--ink)}
+
+.console{background:var(--console-bg);color:var(--console-ink);border-radius:10px;padding:12px 14px;font-family:var(--mono);font-size:.78rem;line-height:1.55;max-height:250px;overflow:auto}
+.console .hd{display:flex;justify-content:space-between;gap:10px;color:var(--console-dim);margin-bottom:6px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+.console pre{margin:0;white-space:pre-wrap;word-break:break-word;font:inherit}
+.console .cmd{color:#8FD9CF}
+.console .dim{color:var(--console-dim)}
+.console .board{color:var(--led)}
+details.code{border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+details.code summary{cursor:pointer;padding:10px 12px;font-weight:700;font-size:.92rem}
+details.code pre{margin:0;padding:0 12px 12px;overflow-x:auto;font-family:var(--mono);font-size:.76rem;line-height:1.5}
+
+/* ---------- sections ---------- */
+section.block{margin-top:44px;display:grid;gap:16px}
+.sec-head{display:grid;gap:6px}
+.sec-head p{color:var(--muted);max-width:66ch}
+
+/* checklist */
+.check-wrap{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:22px;align-items:start}
+@media (max-width:820px){.check-wrap{grid-template-columns:minmax(0,1fr)}}
+.progress{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);display:grid;gap:10px;padding:16px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+@media (max-width:820px){.progress{position:static;order:-1}}
+.meter{height:12px;border-radius:6px;background:var(--surface-2);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--led));transition:width .3s}
+.big-num{font-family:var(--display);font-size:2.2rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.timer{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--line)}
+.timer .late{color:var(--warn)}
+.progress .sub{font-size:.88rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.phase{display:grid;gap:8px}
+.phase + .phase{margin-top:14px}
+.phase h3{display:flex;gap:10px;align-items:baseline}
+.phase h3 .n{font-family:var(--mono);font-size:.78rem;color:var(--muted);font-weight:600}
+ol.steps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.step{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:start;padding:10px 12px;border-radius:10px;background:var(--surface);border:1px solid var(--line)}
+.step input{appearance:none;-webkit-appearance:none;width:24px;height:24px;margin:2px 0 0;border:2px solid var(--muted);border-radius:6px;cursor:pointer;display:grid;place-content:center;background:var(--bg)}
+.step input::after{content:"";width:12px;height:7px;border-left:3px solid var(--accent-ink);border-bottom:3px solid var(--accent-ink);transform:rotate(-45deg) translate(1px,-1px);opacity:0}
+.step input:checked{background:var(--accent);border-color:var(--accent)}
+.step input:checked::after{opacity:1}
+.step label{cursor:pointer;display:grid;gap:3px}
+.step .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+.who{padding:1px 8px;border-radius:999px;font-weight:600;letter-spacing:.04em}
+.who.tu{background:var(--led);color:#2A1E00}
+.who.cl{background:var(--accent-soft);color:var(--ink)}
+.step.checked label .txt{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1px}
+.step .extra{grid-column:2;font-size:.88rem;color:var(--muted)}
+.step .extra details summary{cursor:pointer;color:var(--accent);font-weight:700}
+.clues{margin-top:8px;overflow-x:auto}
+.clues table{border-collapse:collapse;font-size:.84rem;min-width:420px}
+.clues th,.clues td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.clues th{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.callout{border-left:4px solid var(--warn);background:var(--warn-soft);padding:10px 12px;border-radius:0 8px 8px 0;font-size:.9rem;color:var(--ink)}
+.wordref,.nextref{font-family:var(--mono);font-weight:600;background:var(--surface-2);padding:0 6px;border-radius:4px}
+
+/* gallery */
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+@media (max-width:420px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{display:grid;grid-template-rows:auto auto 1fr auto;gap:10px;padding:16px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.card.picked{border-color:var(--led);box-shadow:0 0 0 2px var(--led) inset}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card .num{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.card h3{font-size:1.28rem}
+.card .what{font-size:.95rem}
+.card-morse{display:flex;flex-wrap:wrap;gap:3px 7px;align-items:center;min-height:10px}
+.card-morse span{display:flex;gap:2px}
+.card-morse i{display:block;height:5px;border-radius:3px;background:var(--pcb);opacity:.75}
+.card-morse i.d{width:5px}.card-morse i.a{width:14px}
+.pips{display:flex;gap:4px;align-items:center}
+.pips i{width:10px;height:10px;border-radius:50%;background:var(--surface-2);border:1.5px solid var(--line)}
+.pips i.f{background:var(--led);border-color:var(--led)}
+.lvl{display:grid;justify-items:end;gap:3px;font-family:var(--mono);font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+dl.parts{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;font-size:.87rem}
+dl.parts dt{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+dl.parts dd{margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:.74rem;font-family:var(--mono);padding:2px 7px;border-radius:4px;background:var(--surface-2);color:var(--muted)}
+.tag.mvp{background:var(--led);color:#2A1E00}
+.card .foot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:10px}
+.card .foot .ses{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.empty{color:var(--muted);font-style:italic}
+
+/* safety */
+.safety{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;list-style:none;margin:0;padding:0}
+.safety li{padding:12px 14px;border-radius:10px;background:var(--surface);border:1px solid var(--line);font-size:.92rem}
+.safety li b{display:block;font-family:var(--display);font-size:1rem;margin-bottom:2px}
+footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:.84rem;color:var(--muted);display:grid;gap:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">Proyecto 1 · Latido · boceto v1</span>
+    <h1>Tu Arduino dice hola</h1>
+    <p class="lede">La primera sesión con tu Arduino: tú enchufas, eliges una palabra y miras. Claude identifica la placa, escribe el programa, lo compila y lo sube. El LED de la placa deletrea tu palabra en morse y la placa te contesta «hola».</p>
+    <div class="facts"><span><b>≈ 19 min</b> la sesión</span><span><b>0</b> líneas de código que teclees</span><span><b>$0</b> de costo</span><span><b>1</b> cable USB, nada más</span></div>
+  </header>
+
+  <!-- ================= DEMO ================= -->
+  <section class="demo" aria-label="Simulador del LED en morse">
+    <div class="board-box">
+      <svg id="board" viewBox="0 0 440 300" role="img" aria-labelledby="boardTitle">
+        <title id="boardTitle">Ilustración de una placa tipo Arduino UNO con el LED «L» que parpadea en morse</title>
+        <defs>
+          <radialGradient id="glowGrad">
+            <stop offset="0" stop-color="#FFD166" stop-opacity=".95"/>
+            <stop offset=".45" stop-color="#FFB21F" stop-opacity=".45"/>
+            <stop offset="1" stop-color="#FFB21F" stop-opacity="0"/>
+          </radialGradient>
+          <clipPath id="lensClip"><circle cx="318" cy="112" r="44"/></clipPath>
+        </defs>
+        <!-- PCB -->
+        <rect x="30" y="16" width="398" height="268" rx="12" fill="var(--pcb)"/>
+        <rect x="36" y="22" width="386" height="256" rx="9" fill="none" stroke="var(--silk)" stroke-opacity=".18" stroke-width="1"/>
+        <g fill="var(--bg)" stroke="var(--copper)" stroke-width="3">
+          <circle cx="160" cy="262" r="6"/><circle cx="410" cy="36" r="6"/><circle cx="410" cy="262" r="6"/>
+        </g>
+        <!-- USB-B socket -->
+        <rect x="4" y="44" width="76" height="60" rx="3" fill="var(--metal)" stroke="var(--metal-2)" stroke-width="1.5"/>
+        <rect x="14" y="56" width="42" height="36" rx="2" fill="var(--metal-2)"/>
+        <rect x="22" y="66" width="26" height="16" rx="1" fill="#E9ECEC"/>
+        <text x="42" y="120" font-family="var(--mono)" font-size="9" fill="var(--silk)" text-anchor="middle" opacity=".85">USB</text>
+        <!-- barrel jack -->
+        <rect x="8" y="196" width="66" height="54" rx="4" fill="#1C2224"/>
+        <circle cx="30" cy="223" r="9" fill="#2E3538"/><circle cx="30" cy="223" r="3" fill="var(--metal)"/>
+        <!-- reset -->
+        <rect x="98" y="26" width="24" height="24" rx="3" fill="var(--metal)"/>
+        <circle cx="110" cy="38" r="7" fill="#C23B2E"/>
+        <text x="110" y="62" font-family="var(--mono)" font-size="8" fill="var(--silk)" text-anchor="middle" opacity=".85">RESET</text>
+        <!-- top header: AREF GND 13 12 ... -->
+        <rect x="176" y="22" width="236" height="16" rx="2" fill="#17191A"/>
+        <g id="topPins" fill="var(--copper)"></g>
+        <text x="202" y="50" font-family="var(--mono)" font-size="8" fill="var(--silk)" text-anchor="middle">13</text>
+        <text x="189" y="50" font-family="var(--mono)" font-size="7" fill="var(--silk)" text-anchor="middle" opacity=".7">G</text>
+        <text x="330" y="52" font-family="var(--mono)" font-size="8.5" fill="var(--silk)" text-anchor="middle" opacity=".85">DIGITAL (PWM ~)</text>
+        <!-- L, TX, RX LEDs -->
+        <g id="ledL">
+          <circle class="glow" cx="202" cy="72" r="20" fill="url(#glowGrad)"/>
+          <rect class="body" x="195" y="68" width="14" height="8" rx="1.5"/>
+        </g>
+        <text x="183" y="75" font-family="var(--mono)" font-size="9" font-weight="600" fill="var(--silk)">L</text>
+        <g id="ledTX"><rect class="body" x="195" y="88" width="14" height="8" rx="1.5"/></g>
+        <text x="172" y="95" font-family="var(--mono)" font-size="8" fill="var(--silk)" opacity=".85">TX</text>
+        <g id="ledRX"><rect x="195" y="104" width="14" height="8" rx="1.5" fill="var(--led-off)"/></g>
+        <text x="172" y="111" font-family="var(--mono)" font-size="8" fill="var(--silk)" opacity=".85">RX</text>
+        <!-- magnifier -->
+        <line x1="210" y1="72" x2="276" y2="100" stroke="var(--silk)" stroke-width="1.2" stroke-dasharray="3 3" opacity=".8"/>
+        <circle cx="318" cy="112" r="44" fill="var(--pcb-deep)"/>
+        <g id="ledBig" clip-path="url(#lensClip)">
+          <circle class="glow" cx="318" cy="104" r="46" fill="url(#glowGrad)"/>
+          <rect class="body" x="298" y="92" width="40" height="23" rx="4"/>
+          <rect x="298" y="92" width="7" height="23" fill="var(--metal)" opacity=".8"/>
+          <rect x="331" y="92" width="7" height="23" fill="var(--metal)" opacity=".8"/>
+        </g>
+        <circle cx="318" cy="112" r="44" fill="none" stroke="var(--silk)" stroke-width="2"/>
+        <text x="318" y="138" font-family="var(--mono)" font-size="8.5" fill="var(--silk)" text-anchor="middle">«L» · pin 13</text>
+        <!-- ON LED -->
+        <rect x="396" y="128" width="14" height="8" rx="1.5" fill="var(--on)"/>
+        <circle cx="403" cy="132" r="10" fill="var(--on)" opacity=".18"/>
+        <text x="403" y="124" font-family="var(--mono)" font-size="8" fill="var(--silk)" text-anchor="middle">ON</text>
+        <!-- crystal + small parts -->
+        <rect x="104" y="140" width="46" height="16" rx="8" fill="var(--metal)"/>
+        <g fill="#2B3134"><rect x="104" y="92" width="10" height="6"/><rect x="120" y="92" width="10" height="6"/><rect x="104" y="170" width="10" height="6"/><rect x="138" y="116" width="6" height="10"/></g>
+        <!-- chip -->
+        <g id="chipPins" fill="var(--metal)"></g>
+        <rect x="188" y="178" width="196" height="44" rx="3" fill="var(--chip)"/>
+        <path d="M188 192 a8 8 0 0 1 0 16" fill="var(--pcb)"/>
+        <text x="290" y="204" font-family="var(--mono)" font-size="9" fill="#8C9699" text-anchor="middle" letter-spacing="1.5">MICROCONTROLADOR</text>
+        <!-- bottom headers -->
+        <rect x="190" y="264" width="104" height="14" rx="2" fill="#17191A"/>
+        <rect x="312" y="264" width="84" height="14" rx="2" fill="#17191A"/>
+        <g id="botPins" fill="var(--copper)"></g>
+        <text x="242" y="258" font-family="var(--mono)" font-size="8" fill="var(--silk)" text-anchor="middle" opacity=".85">POWER</text>
+        <text x="354" y="258" font-family="var(--mono)" font-size="8" fill="var(--silk)" text-anchor="middle" opacity=".85">ANALOG IN</text>
+        <!-- silkscreen identity -->
+        <text x="96" y="244" font-family="var(--mono)" font-size="9" fill="var(--silk)" opacity=".9">MODELO:</text>
+        <text x="96" y="256" font-family="var(--mono)" font-size="9" fill="var(--silk)" opacity=".9">POR IDENTIFICAR</text>
+      </svg>
+      <p class="board-note">Ilustración genérica tipo UNO. Tu placa puede verse distinta: el modelo real se identifica con fotos en el paso 5.</p>
+    </div>
+
+    <div class="controls">
+      <div class="field">
+        <label for="word">Tu palabra</label>
+        <div class="word-row">
+          <input id="word" type="text" maxlength="16" value="HOLA" autocomplete="off" spellcheck="false" aria-describedby="wordHelp">
+          <button class="btn" id="play" type="button">▶ Deletrear</button>
+          <button class="btn ghost" id="stop" type="button">■ Parar</button>
+        </div>
+        <span id="wordHelp" class="status">Hasta 16 letras. Acentos y ñ funcionan.</span>
+        <div class="chips" aria-label="Ideas de palabras">
+          <button class="chip" type="button" data-w="HOLA">HOLA</button>
+          <button class="chip" type="button" data-w="TE QUIERO">TE QUIERO</button>
+          <button class="chip" type="button" data-w="SOS">SOS</button>
+          <button class="chip" type="button" data-w="PI">PI</button>
+          <button class="chip" type="button" data-w="ÑANDÚ">ÑANDÚ</button>
+        </div>
+      </div>
+
+      <div class="tape" id="tape" aria-live="off"></div>
+      <div class="morse-line"><output id="morseText" for="word"></output><button class="btn ghost small" id="copyMorse" type="button">Copiar</button></div>
+      <p class="skipped" id="skipped" hidden></p>
+
+      <div class="opts">
+        <label for="wpm">Velocidad <input id="wpm" type="range" min="4" max="16" step="1" value="7"></label>
+        <span class="speed-out" id="speedOut"></span>
+        <label for="loop"><input id="loop" type="checkbox" checked> Repetir</label>
+        <label for="sound"><input id="sound" type="checkbox"> Sonido</label>
+      </div>
+      <p class="status" id="status">Listo para deletrear.</p>
+
+      <div class="console" role="log" aria-label="Monitor serie simulado">
+        <div class="hd"><span>Terminal de Claude</span><span class="sample">ejemplo simulado</span></div>
+        <pre id="consoleOut"></pre>
+      </div>
+
+      <details class="code">
+        <summary>Ver el programa que Claude escribiría <span class="sample">ejemplo</span></summary>
+        <pre id="sketchCode"></pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- ================= CHECKLIST ================= -->
+  <section class="block" id="sesion" aria-labelledby="sesionTitle">
+    <div class="sec-head">
+      <span class="eyebrow">Checkpoint 1 · la noche que lo enchufas</span>
+      <h2 id="sesionTitle">La primera sesión, paso a paso</h2>
+      <p>Marca cada paso al terminarlo. Los pasos de Claude los hace Claude en la terminal; tú solo confirmas lo que ves. Las marcas se guardan en este navegador.</p>
+    </div>
+    <div class="check-wrap">
+      <div id="phases"></div>
+      <aside class="progress" aria-live="polite">
+        <span class="eyebrow">Avance</span>
+        <div class="big-num" id="progNum">0 / 12</div>
+        <div class="meter"><i id="progBar"></i></div>
+        <p class="sub" id="progSub">0 de 21 min</p>
+        <p class="sub" id="progNext"></p>
+        <div class="timer"><span class="sub" id="timerOut">Cronómetro: sin iniciar</span><button class="btn small" id="timerBtn" type="button">Iniciar cronómetro</button></div>
+        <button class="btn ghost small" id="resetChecks" type="button">Borrar marcas</button>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= GALLERY ================= -->
+  <section class="block" id="proyectos" aria-labelledby="proyTitle">
+    <div class="sec-head">
+      <span class="eyebrow">La escalera · 10 proyectos</span>
+      <h2 id="proyTitle">¿Qué hacemos después?</h2>
+      <p>De un LED que parpadea a un péndulo que mide la gravedad. Las piezas «del kit» vienen en la mayoría de los kits de inicio; lo que no esté en el tuyo cuesta unos pocos dólares. Elige uno como siguiente y aparece en el último paso de la sesión.</p>
+    </div>
+    <div class="filters" role="group" aria-label="Filtrar proyectos" id="filters">
+      <button class="chip" type="button" data-f="all" aria-pressed="true">Todos</button>
+      <button class="chip" type="button" data-f="nowire" aria-pressed="false">Sin cables</button>
+      <button class="chip" type="button" data-f="easy" aria-pressed="false">Fácil</button>
+      <button class="chip" type="button" data-f="mid" aria-pressed="false">Media</button>
+      <button class="chip" type="button" data-f="hard" aria-pressed="false">Difícil</button>
+      <button class="chip" type="button" data-f="mac" aria-pressed="false">Mac mini como cerebro</button>
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="emptyMsg" hidden>Ningún proyecto con ese filtro.</p>
+  </section>
+
+  <!-- ================= SAFETY ================= -->
+  <section class="block" aria-labelledby="segTitle">
+    <div class="sec-head">
+      <span class="eyebrow">Antes de cablear</span>
+      <h2 id="segTitle">Cinco reglas que Claude te repetirá</h2>
+    </div>
+    <ul class="safety">
+      <li><b>Nunca a la pared</b>Nada conectado a los 127 V de la casa. El relé del kit es solo para cargas de bajo voltaje.</li>
+      <li><b>USB desconectado</b>Cada cambio de cable se hace con la placa desenchufada. Un cable por paso.</li>
+      <li><b>Cada LED con resistencia</b>Entre 220 Ω y 1 kΩ. Máximo 20 mA por pin (a 40 mA se daña).</li>
+      <li><b>Foto antes de encender</b>Circuito nuevo: foto a Claude, revisión, y solo entonces el USB.</li>
+      <li><b>Si algo se calienta</b>Huele raro o el Mac avisa de la energía USB: desconecta de inmediato y manda una foto.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Boceto v1 del 2026-09-25, basado en <code>DOSSIER.md</code> (idea «Arduino + Raspberry Pi»). Nada de esto está instalado todavía: la terminal y el programa son ejemplos simulados.</p>
+    <p>Herramienta real prevista: <code>arduino-cli</code> (libre, vía Homebrew). Sin cuentas, sin nube de Arduino.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function store(key, val){
+    try{
+      if(val === undefined){ var s = localStorage.getItem(key); return s ? JSON.parse(s) : null; }
+      localStorage.setItem(key, JSON.stringify(val));
+    }catch(e){ return null; }
+    return null;
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+
+  /* ---------- board pins (decorative) ---------- */
+  (function drawPins(){
+    var g = $("topPins");
+    for(var i=0;i<18;i++){ var r=document.createElementNS(SVGNS,"rect"); r.setAttribute("x",180+i*12.9); r.setAttribute("y",27); r.setAttribute("width",6); r.setAttribute("height",6); g.appendChild(r); }
+    var b = $("botPins");
+    for(var j=0;j<8;j++){ var p=document.createElementNS(SVGNS,"rect"); p.setAttribute("x",195+j*12.4); p.setAttribute("y",268); p.setAttribute("width",6); p.setAttribute("height",6); b.appendChild(p); }
+    for(var k=0;k<6;k++){ var q=document.createElementNS(SVGNS,"rect"); q.setAttribute("x",317+k*13); q.setAttribute("y",268); q.setAttribute("width",6); q.setAttribute("height",6); b.appendChild(q); }
+    var c = $("chipPins");
+    for(var m=0;m<14;m++){
+      var t=document.createElementNS(SVGNS,"rect"); t.setAttribute("x",196+m*13.5); t.setAttribute("y",172); t.setAttribute("width",6); t.setAttribute("height",7); c.appendChild(t);
+      var u=document.createElementNS(SVGNS,"rect"); u.setAttribute("x",196+m*13.5); u.setAttribute("y",221); u.setAttribute("width",6); u.setAttribute("height",7); c.appendChild(u);
+    }
+  })();
+
+  /* ---------- Morse ---------- */
+  var MORSE = {A:".-",B:"-...",C:"-.-.",D:"-..",E:".",F:"..-.",G:"--.",H:"....",I:"..",J:".---",K:"-.-",L:".-..",M:"--",N:"-.","Ñ":"--.--",O:"---",P:".--.",Q:"--.-",R:".-.",S:"...",T:"-",U:"..-",V:"...-",W:".--",X:"-..-",Y:"-.--",Z:"--..",
+    "0":"-----","1":".----","2":"..---","3":"...--","4":"....-","5":".....","6":"-....","7":"--...","8":"---..","9":"----.",
+    ".":".-.-.-",",":"--..--","?":"..--..","!":"-.-.--"};
+
+  function parse(raw){
+    var up = String(raw).normalize("NFC").toUpperCase();
+    var words = [], skipped = [];
+    up.split(/\s+/).forEach(function(w){
+      if(!w) return;
+      var letters = [];
+      Array.from(w).forEach(function(ch){
+        var c = ch === "Ñ" ? "Ñ" : ch.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if(MORSE[c]) letters.push({ch:c, code:MORSE[c]});
+        else if(skipped.indexOf(ch) < 0) skipped.push(ch);
+      });
+      if(letters.length) words.push(letters);
+    });
+    return {words:words, skipped:skipped};
+  }
+  function morseString(words, sep){
+    return words.map(function(w){ return w.map(function(l){ return l.code; }).join(" "); }).join(sep);
+  }
+  function plainWord(words){ return words.map(function(w){ return w.map(function(l){ return l.ch; }).join(""); }).join(" "); }
+
+  var state = {parsed:null, schedule:[], run:0, playing:false};
+
+  function renderTape(){
+    var tape = $("tape"); tape.innerHTML = "";
+    var li = 0;
+    state.parsed.words.forEach(function(w, wi){
+      if(wi > 0){ var s = document.createElement("span"); s.className = "sep"; s.textContent = "/"; tape.appendChild(s); }
+      var wd = document.createElement("div"); wd.className = "word";
+      w.forEach(function(l){
+        var d = document.createElement("div"); d.className = "letter"; d.dataset.li = li++;
+        var syms = Array.from(l.code).map(function(s, si){ return '<i class="sym ' + (s === "." ? "dot" : "dash") + '" data-si="' + si + '"></i>'; }).join("");
+        d.innerHTML = '<span class="ch">' + esc(l.ch) + '</span><span class="syms" aria-label="' + esc(l.code) + '">' + syms + '</span>';
+        wd.appendChild(d);
+      });
+      tape.appendChild(wd);
+    });
+    if(!state.parsed.words.length){ tape.innerHTML = '<span class="status">Escribe una palabra con letras o números.</span>'; }
+  }
+
+  function buildSchedule(){
+    var seq = [], li = 0, words = state.parsed.words;
+    words.forEach(function(w, wi){
+      w.forEach(function(l, lj){
+        var codes = Array.from(l.code);
+        codes.forEach(function(s, si){
+          seq.push({on:true, u:(s === "." ? 1 : 3), li:li, si:si});
+          var gap = 1;
+          if(si === codes.length - 1){ gap = (lj === w.length - 1) ? 7 : 3; }
+          seq.push({on:false, u:gap, li:li, si:si, endLetter: si === codes.length - 1});
+        });
+        li++;
+      });
+    });
+    state.schedule = seq;
+  }
+
+  function unitMs(){ return Math.round(1200 / Number($("wpm").value)); }
+  function updateSpeed(){
+    var total = state.schedule.reduce(function(a, s){ return a + s.u; }, 0);
+    $("speedOut").textContent = $("wpm").value + " palabras/min · punto = " + unitMs() + " ms · tu palabra dura " + (total * unitMs() / 1000).toFixed(1) + " s";
+  }
+
+  /* sound (starts only after a click on the checkbox) */
+  var audio = null;
+  function ensureAudio(){
+    if(audio) return;
+    try{
+      var Ctx = window.AudioContext || window.webkitAudioContext; if(!Ctx) return;
+      var ctx = new Ctx(), osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = "sine"; osc.frequency.value = 640; gain.gain.value = 0;
+      osc.connect(gain); gain.connect(ctx.destination); osc.start();
+      audio = {ctx:ctx, gain:gain};
+    }catch(e){ audio = null; }
+  }
+  function tone(on){
+    if(!audio || !$("sound").checked) return;
+    try{ audio.gain.gain.setTargetAtTime(on ? 0.12 : 0, audio.ctx.currentTime, 0.006); }catch(e){}
+  }
+
+  function setLed(on){
+    $("ledL").classList.toggle("lit", on); $("ledBig").classList.toggle("lit", on); tone(on);
+  }
+  function clearMarks(){
+    Array.prototype.forEach.call(document.querySelectorAll(".letter"), function(el){ el.classList.remove("cur", "done"); });
+    Array.prototype.forEach.call(document.querySelectorAll(".sym.on"), function(el){ el.classList.remove("on"); });
+  }
+  function letterEl(li){ return document.querySelector('.letter[data-li="' + li + '"]'); }
+
+  function stop(msg){
+    state.run++; state.playing = false; setLed(false); clearMarks();
+    $("status").textContent = msg || "Parado.";
+  }
+  function play(){
+    if(!state.schedule.length){ $("status").textContent = "No hay nada que deletrear."; return; }
+    state.run++; var id = state.run; state.playing = true; clearMarks();
+    var word = plainWord(state.parsed.words);
+    $("status").innerHTML = "Deletreando <b>" + esc(word) + "</b>…";
+    var i = 0;
+    function step(){
+      if(id !== state.run) return;
+      if(i >= state.schedule.length){
+        setLed(false);
+        serialHola(word);
+        if($("loop").checked){ clearMarks(); i = 0; setTimeout(step, unitMs() * 7); }
+        else { state.playing = false; $("status").innerHTML = "Listo: el LED dijo <b>" + esc(word) + "</b>."; }
+        return;
+      }
+      var s = state.schedule[i++];
+      var le = letterEl(s.li);
+      if(s.on){
+        if(le){
+          if(s.si === 0){ var prev = document.querySelector(".letter.cur"); if(prev){ prev.classList.remove("cur"); prev.classList.add("done"); } le.classList.add("cur"); }
+          var sym = le.querySelector('[data-si="' + s.si + '"]'); if(sym) sym.classList.add("on");
+        }
+        setLed(true);
+      } else {
+        setLed(false);
+        if(le){ var on = le.querySelector(".sym.on"); if(on) on.classList.remove("on"); }
+        if(s.endLetter && le){ le.classList.remove("cur"); le.classList.add("done"); }
+      }
+      setTimeout(step, s.u * unitMs());
+    }
+    step();
+  }
+
+  /* ---------- simulated console ---------- */
+  var consoleLines = [];
+  function now(){ var d = new Date(); return [d.getHours(), d.getMinutes(), d.getSeconds()].map(function(n){ return String(n).padStart(2, "0"); }).join(":"); }
+  function pushLine(html){ consoleLines.push(html); if(consoleLines.length > 40) consoleLines.shift(); var out = $("consoleOut"); out.innerHTML = consoleLines.join("\n"); var box = out.parentNode; box.scrollTop = box.scrollHeight; }
+  function seedConsole(){
+    consoleLines = [];
+    pushLine('<span class="cmd">$ arduino-cli board list</span>');
+    pushLine('<span class="dim">Port                  Type               Board Name   FQBN</span>');
+    pushLine('/dev/cu.usbmodem1101  Serial Port (USB)  Arduino Uno  arduino:avr:uno');
+    pushLine('<span class="cmd">$ arduino-cli compile --fqbn arduino:avr:uno latido</span>');
+    pushLine('<span class="dim">Sketch uses 2178 bytes (6%) of program storage space.</span>');
+    pushLine('<span class="cmd">$ arduino-cli upload -p /dev/cu.usbmodem1101 --fqbn arduino:avr:uno latido</span>');
+    pushLine('<span class="dim">Upload OK · escuchando lo que dice la placa…</span>');
+    pushLine('<span class="board">Hola, soy tu Arduino. Voy a decir: ' + esc(plainWord(state.parsed.words) || "…") + '</span>');
+  }
+  function serialHola(word){
+    $("ledTX").classList.add("lit");
+    setTimeout(function(){ $("ledTX").classList.remove("lit"); }, 180);
+    pushLine('<span class="dim">[' + now() + ']</span> <span class="board">Hola, soy tu Arduino. Dije ' + esc(word) + ' en morse.</span>');
+  }
+
+  /* ---------- generated sketch ---------- */
+  function renderSketch(){
+    var words = state.parsed.words, word = plainWord(words) || "HOLA";
+    var code = morseString(words, "/") || ".... --- .-.. .-";
+    var u = unitMs();
+    var src =
+'// Latido: el LED "L" deletrea ' + word + ' en morse\n' +
+'const char* PALABRA = "' + word + '";\n' +
+'const char* MORSE   = "' + code + '";  // espacio = entre letras, / = entre palabras\n' +
+'const int UNIDAD = ' + u + ';  // ms que dura un punto (' + $("wpm").value + ' palabras por minuto)\n\n' +
+'void setup() {\n' +
+'  pinMode(LED_BUILTIN, OUTPUT);\n' +
+'  Serial.begin(115200);\n' +
+'  Serial.print("Hola, soy tu Arduino. Voy a decir: ");\n' +
+'  Serial.println(PALABRA);\n' +
+'}\n\n' +
+'void destello(int unidades) {\n' +
+'  digitalWrite(LED_BUILTIN, HIGH); delay(UNIDAD * unidades);\n' +
+'  digitalWrite(LED_BUILTIN, LOW);  delay(UNIDAD);  // 1 unidad entre signos\n' +
+'}\n\n' +
+'void loop() {\n' +
+'  for (const char* p = MORSE; *p; p++) {\n' +
+'    if (*p == \'.\') destello(1);          // punto: 1 unidad\n' +
+'    else if (*p == \'-\') destello(3);     // raya: 3 unidades\n' +
+'    else if (*p == \' \') delay(UNIDAD * 2); // entre letras: 3 en total\n' +
+'    else if (*p == \'/\') delay(UNIDAD * 6); // entre palabras: 7 en total\n' +
+'  }\n' +
+'  Serial.print("Dije "); Serial.print(PALABRA); Serial.println(" en morse.");\n' +
+'  delay(UNIDAD * 6);  // pausa antes de repetir\n' +
+'}\n';
+    $("sketchCode").textContent = src;
+  }
+
+  function refresh(){
+    var was = state.playing;
+    stop("Listo para deletrear.");
+    state.parsed = parse($("word").value);
+    renderTape(); buildSchedule(); updateSpeed(); renderSketch();
+    $("morseText").textContent = morseString(state.parsed.words, " / ");
+    var sk = $("skipped");
+    if(state.parsed.skipped.length){ sk.hidden = false; sk.textContent = "Sin código morse, se omite: " + state.parsed.skipped.join(" "); }
+    else sk.hidden = true;
+    Array.prototype.forEach.call(document.querySelectorAll(".wordref"), function(el){ el.textContent = plainWord(state.parsed.words) || "(sin palabra)"; });
+    store("latido-word", $("word").value);
+    return was;
+  }
+
+  $("word").addEventListener("input", function(){ refresh(); });
+  $("word").addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); play(); } });
+  $("play").addEventListener("click", play);
+  $("stop").addEventListener("click", function(){ stop("Parado."); });
+  $("wpm").addEventListener("input", function(){ updateSpeed(); renderSketch(); });
+  $("sound").addEventListener("change", function(){ if(this.checked){ ensureAudio(); try{ audio && audio.ctx.resume(); }catch(e){} } else tone(false); });
+  Array.prototype.forEach.call(document.querySelectorAll(".chips [data-w]"), function(b){
+    b.addEventListener("click", function(){ $("word").value = b.dataset.w; refresh(); play(); });
+  });
+  $("copyMorse").addEventListener("click", function(){
+    var t = $("morseText").textContent, btn = this;
+    function done(ok){ btn.textContent = ok ? "Copiado" : "Selecciona y copia"; setTimeout(function(){ btn.textContent = "Copiar"; }, 1600); }
+    try{
+      navigator.clipboard.writeText(t).then(function(){ done(true); }, function(){ selectText(); done(false); });
+    }catch(e){ selectText(); done(false); }
+    function selectText(){ try{ var r = document.createRange(); r.selectNodeContents($("morseText")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }catch(e){} }
+  });
+
+  /* ---------- checklist ---------- */
+  var PHASES = [
+    {name:"Preparar", steps:[
+      {who:"cl", min:2, t:"Antes de empezar, con tu OK: instalar <code>arduino-cli</code> con Homebrew y actualizar su lista de placas.", x:"Normalmente no pide tu contraseña."},
+      {who:"tu", min:1, t:"Despeja una mesa de madera o plástico; la bebida lejos. Todavía no enchufes nada."},
+      {who:"tu", min:2, t:"Fotografía la placa (por arriba y por abajo), su conector USB y la caja. Mándale las fotos a Claude."}
+    ]},
+    {name:"Conectar e identificar", steps:[
+      {who:"tu", min:1, t:"Conecta la placa al Mac mini con el cable USB del kit. Debe encenderse una lucecita «ON».", x:"Usa un cable de <b>datos</b>: algunos cables solo cargan."},
+      {who:"cl", min:2, t:"Claude corre <code>arduino-cli board list</code>: puerto y nombre de la placa (o «Unknown»: entonces decide la foto).", clues:true},
+      {who:"cl", min:3, t:"Claude instala el soporte solo para esa familia de placas (una sola, para ahorrar disco)."}
+    ]},
+    {name:"Tu palabra en morse", steps:[
+      {who:"tu", min:1, t:'Elige una palabra corta. Ahora mismo: <span class="wordref">HOLA</span> (cámbiala arriba).'},
+      {who:"cl", min:3, t:"Claude escribe el programa Latido, lo compila y lo sube a la placa."},
+      {who:"tu", min:1, t:"Mira el LED marcado «L» deletrear tu palabra. Dile a Claude «sí» o qué viste."}
+    ]},
+    {name:"El «hola» de vuelta", steps:[
+      {who:"cl", min:1, t:"Claude lee el mensaje «Hola, soy tu Arduino…» que manda la placa por USB y te lo muestra."}
+    ]},
+    {name:"Cerrar", steps:[
+      {who:"tu", min:3, t:"Extiende las piezas del kit sobre la mesa y toma una foto. Claude escribe el inventario (<code>parts.md</code>)."},
+      {who:"tu", min:1, t:'Elige el siguiente proyecto (abajo): <span class="nextref">sin elegir</span>. Desconecta. Listo.'}
+    ]}
+  ];
+  var CLUES = [
+    ["Conector USB cuadrado, tipo impresora", "UNO R3 o Mega 2560 (original o clon)"],
+    ["Conector USB-C", "UNO R4 (Minima/WiFi), UNO Q, Nano recientes"],
+    ["Cuadrícula de 96 LEDs rojos (12 × 8)", "UNO R4 WiFi"],
+    ["Chip grande que dice ATMEGA328P", "UNO R3 (o Nano)"],
+    ["Placa larga, chip ATMEGA2560", "Mega 2560"],
+    ["Chip pequeño CH340 junto al USB, o logo ELEGOO u otro", "Clon compatible; se trata como UNO/Nano"],
+    ["Dice «UNO Q» y trae un chip Qualcomm", "UNO Q (Linux + Arduino en una placa)"]
+  ];
+  var TOTAL_STEPS = 0, TOTAL_MIN = 0;
+  PHASES.forEach(function(p){ p.steps.forEach(function(s){ TOTAL_STEPS++; TOTAL_MIN += s.min; }); });
+  var checks = store("latido-checks") || {};
+
+  function renderChecklist(){
+    var root = $("phases"), html = "", n = 0;
+    PHASES.forEach(function(p, pi){
+      html += '<div class="phase"><h3><span class="n">' + (pi + 1) + '/' + PHASES.length + '</span>' + p.name + '</h3><ol class="steps">';
+      p.steps.forEach(function(s){
+        var id = "step-" + n, on = !!checks[n];
+        html += '<li class="step' + (on ? " checked" : "") + '" data-n="' + n + '">' +
+          '<input type="checkbox" id="' + id + '"' + (on ? " checked" : "") + '>' +
+          '<label for="' + id + '"><span class="meta"><span>Paso ' + (n + 1) + '</span><span class="who ' + s.who + '">' + (s.who === "tu" ? "TÚ" : "CLAUDE") + '</span><span>' + s.min + ' min</span></span><span class="txt">' + s.t + '</span></label>';
+        if(s.x || s.clues){
+          html += '<div class="extra">' + (s.x ? '<p>' + s.x + '</p>' : '');
+          if(s.clues){
+            html += '<details><summary>Pistas para saber qué placa es</summary><div class="clues"><table><thead><tr><th>Si ves…</th><th>Probablemente es</th></tr></thead><tbody>' +
+              CLUES.map(function(c){ return '<tr><td>' + c[0] + '</td><td>' + c[1] + '</td></tr>'; }).join("") +
+              '</tbody></table></div></details>' +
+              '<p class="callout" style="margin-top:8px">Si el puerto nunca aparece (típico de clones con chip CH340): paramos ahí. Instalar ese controlador pide tu contraseña de administrador y un permiso de macOS; Claude te explica por qué antes de pedírtela.</p>';
+          }
+          html += '</div>';
+        }
+        html += '</li>';
+        n++;
+      });
+      html += '</ol></div>';
+    });
+    root.innerHTML = html;
+    Array.prototype.forEach.call(root.querySelectorAll('input[type="checkbox"]'), function(cb){
+      cb.addEventListener("change", function(){
+        var li = cb.closest(".step"), k = li.dataset.n;
+        if(cb.checked) checks[k] = true; else delete checks[k];
+        li.classList.toggle("checked", cb.checked);
+        store("latido-checks", checks); updateProgress();
+      });
+    });
+    updateProgress();
+  }
+  function updateProgress(){
+    var done = 0, mins = 0, n = 0, next = null;
+    PHASES.forEach(function(p){ p.steps.forEach(function(s){ if(checks[n]){ done++; mins += s.min; } else if(next === null){ next = {n:n, s:s}; } n++; }); });
+    $("progNum").textContent = done + " / " + TOTAL_STEPS;
+    $("progBar").style.width = (done / TOTAL_STEPS * 100) + "%";
+    $("progSub").textContent = mins + " de " + TOTAL_MIN + " min (2 de preparación + 19 de sesión)";
+    if(next){
+      var tmp = document.createElement("div"); tmp.innerHTML = next.s.t;
+      $("progNext").innerHTML = "Sigue: <b>paso " + (next.n + 1) + "</b> · " + (next.s.who === "tu" ? "tú" : "Claude") + ". " + esc(tmp.textContent);
+    } else {
+      $("progNext").innerHTML = "<b>Sesión completa.</b> Tu Arduino ya dijo hola.";
+    }
+  }
+  var t0 = store("latido-t0");
+  function tick(){
+    var out = $("timerOut"), btn = $("timerBtn");
+    if(!t0){ out.textContent = "Cronómetro: sin iniciar"; btn.textContent = "Iniciar cronómetro"; return; }
+    var sec = Math.max(0, Math.floor((Date.now() - t0) / 1000)), mm = Math.floor(sec / 60), ss = sec % 60;
+    out.innerHTML = "Llevas <b>" + mm + ":" + String(ss).padStart(2, "0") + "</b> de 20:00" + (mm >= 20 ? ' <span class="late">· hora de cerrar</span>' : "");
+    btn.textContent = "Detener";
+  }
+  $("timerBtn").addEventListener("click", function(){ t0 = t0 ? null : Date.now(); store("latido-t0", t0); tick(); });
+  setInterval(tick, 1000);
+  var resetArmed = false;
+  $("resetChecks").addEventListener("click", function(){
+    var b = this;
+    if(!resetArmed){ resetArmed = true; b.textContent = "¿Seguro? Toca otra vez"; setTimeout(function(){ resetArmed = false; b.textContent = "Borrar marcas"; }, 3000); return; }
+    resetArmed = false; b.textContent = "Borrar marcas"; checks = {}; store("latido-checks", checks); t0 = null; store("latido-t0", null); tick(); renderChecklist(); refreshRefs();
+  });
+
+  /* ---------- projects ---------- */
+  var PROJECTS = [
+    {n:1, name:"Latido", what:"El LED de la placa deletrea en morse una palabra que tú eliges.", lvl:1, kit:"Solo la placa y el cable USB", extra:"Nada", hook:"Los códigos como significado.", ses:"1 sesión", nowire:true, mac:false, mvp:true},
+    {n:2, name:"Vida", what:"El Juego de la Vida de Conway en una cuadrícula de LEDs, con mundo sin bordes.", lvl:1, kit:"Nada en una UNO R4 WiFi (cuadrícula 12 × 8)", extra:"En otras placas: la pantalla del Mac, o después un módulo de matriz LED 8 × 8", hook:"Emergencia desde reglas simples; un mundo toroidal.", ses:"1 sesión", nowire:true, mac:false},
+    {n:3, name:"Poemas en morse", what:"Un zumbador toca poemas en morse y un botón descifra lo que tú tecleas.", lvl:2, kit:"Zumbador pasivo, botón, LED, resistencia (4 a 6 cables)", extra:"Nada", hook:"¿Es el morse un código eficiente para el español? Compararlo con un código de Huffman.", ses:"1–2 sesiones", nowire:false, mac:true},
+    {n:4, name:"¿Existe el azar?", what:"Ruido eléctrico contra números pseudoaleatorios, puestos a prueba en Jupyter.", lvl:2, kit:"Nada (un pin analógico al aire) o una fotorresistencia", extra:"Nada", hook:"Determinismo; cómo se prueba el azar (chi cuadrada, truco de von Neumann).", ses:"1–2 sesiones", nowire:true, mac:true},
+    {n:5, name:"Tengo sed", what:"Tu planta avisa cuando le falta agua, con un solo chirrido suave por la tarde.", lvl:3, kit:"LED o zumbador", extra:"Sensor capacitivo de humedad (unos pocos dólares)", hook:"Calibración; umbrales con histéresis para que no parpadee.", ses:"1–2 sesiones", nowire:false, mac:true},
+    {n:6, name:"El péndulo", what:"Mide la gravedad g y el amortiguamiento con un péndulo casero.", lvl:4, kit:"Sensor ultrasónico HC-SR04 (o LED + fotorresistencia)", extra:"Hilo, una pesa, regla, cinta", hook:"Ajustar T² contra L; el error del ángulo pequeño; decaimiento exponencial.", ses:"2–3 sesiones", nowire:false, mac:true},
+    {n:7, name:"Estación del clima", what:"Temperatura y humedad en la pantalla LCD y guardadas en un CSV en el Mac.", lvl:3, kit:"DHT11, pantalla LCD 16 × 2", extra:"Opcional: BME280 para presión (unos pocos dólares)", hook:"La fórmula del punto de rocío; ciclos diarios.", ses:"2 sesiones", nowire:false, mac:true},
+    {n:8, name:"El oráculo", what:"Aprietas un botón y la pantalla muestra un aforismo escrito por el modelo local del Mac mini.", lvl:4, kit:"Pantalla LCD 16 × 2, botón", extra:"Nada", hook:"Escribir bajo restricción: 32 caracteres.", ses:"2 sesiones", nowire:false, mac:true},
+    {n:9, name:"Botón ListoLista", what:"Botones en la cocina que agregan huevos, leche o café a la lista compartida.", lvl:5, kit:"2 a 4 botones con etiqueta", extra:"Nada; ListoLista debe estar en línea primero", hook:"El «papel cuántico» recibe una entrada física.", ses:"3–4 sesiones", nowire:false, mac:true},
+    {n:10, name:"Lissajous", what:"Un brazo de dos servos dibuja curvas con una pluma.", lvl:5, kit:"1 microservo, módulo de alimentación", extra:"2.º microservo, cartón, cinta, una pluma", hook:"Curvas paramétricas; cinemática inversa de 2 eslabones.", ses:"3–4 sesiones", nowire:false, mac:false}
+  ];
+  function band(l){ return l <= 2 ? "easy" : (l === 3 ? "mid" : "hard"); }
+  var BAND_LABEL = {easy:"Fácil", mid:"Media", hard:"Difícil"};
+  var picked = store("latido-next");
+  var filter = "all";
+
+  function miniMorse(name){
+    var p = parse(name);
+    return p.words.map(function(w){ return w.map(function(l){ return '<span>' + Array.from(l.code).map(function(s){ return '<i class="' + (s === "." ? "d" : "a") + '"></i>'; }).join("") + '</span>'; }).join(""); }).join('<span style="width:8px"></span>');
+  }
+  function renderGrid(){
+    var html = "";
+    PROJECTS.forEach(function(p){
+      var b = band(p.lvl), pips = "";
+      for(var i = 1; i <= 5; i++) pips += '<i class="' + (i <= p.lvl ? "f" : "") + '"></i>';
+      var tags = (p.mvp ? '<span class="tag mvp">MVP · esta noche</span>' : "") + (p.nowire ? '<span class="tag">sin cables</span>' : "") + (p.mac ? '<span class="tag">Mac mini como cerebro</span>' : "");
+      var isPicked = picked === p.n;
+      html += '<article class="card' + (isPicked ? " picked" : "") + '" data-n="' + p.n + '" data-band="' + b + '" data-nowire="' + p.nowire + '" data-mac="' + p.mac + '">' +
+        '<div class="top"><div><span class="num">Proyecto ' + p.n + '</span><h3>' + esc(p.name) + '</h3></div>' +
+        '<div class="lvl"><div class="pips" aria-label="Dificultad ' + p.lvl + ' de 5">' + pips + '</div>' + BAND_LABEL[b] + '</div></div>' +
+        '<div class="card-morse" aria-hidden="true" title="' + esc(p.name) + ' en morse">' + miniMorse(p.name) + '</div>' +
+        '<div style="display:grid;gap:10px;align-content:start"><p class="what">' + esc(p.what) + '</p>' +
+        '<dl class="parts"><dt>Del kit</dt><dd>' + esc(p.kit) + '</dd><dt>Extra</dt><dd>' + esc(p.extra) + '</dd><dt>Gancho</dt><dd>' + esc(p.hook) + '</dd></dl>' +
+        (tags ? '<div class="tags">' + tags + '</div>' : '') + '</div>' +
+        '<div class="foot"><span class="ses">' + p.ses + '</span><button class="btn ' + (isPicked ? "" : "ghost ") + 'small pick" type="button" aria-pressed="' + isPicked + '">' + (isPicked ? "★ Siguiente" : "Elegir como siguiente") + '</button></div>' +
+        '</article>';
+    });
+    $("grid").innerHTML = html;
+    Array.prototype.forEach.call(document.querySelectorAll(".card .pick"), function(btn){
+      btn.addEventListener("click", function(){
+        var n = Number(btn.closest(".card").dataset.n);
+        picked = (picked === n) ? null : n; store("latido-next", picked); renderGrid(); refreshRefs();
+      });
+    });
+    applyFilter();
+  }
+  function applyFilter(){
+    var shown = 0;
+    Array.prototype.forEach.call(document.querySelectorAll(".card"), function(c){
+      var ok = filter === "all" || (filter === "nowire" && c.dataset.nowire === "true") || (filter === "mac" && c.dataset.mac === "true") || c.dataset.band === filter;
+      c.hidden = !ok; if(ok) shown++;
+    });
+    $("emptyMsg").hidden = shown > 0;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("#filters .chip"), function(ch){
+    ch.addEventListener("click", function(){
+      filter = ch.dataset.f;
+      Array.prototype.forEach.call(document.querySelectorAll("#filters .chip"), function(o){ o.setAttribute("aria-pressed", o === ch ? "true" : "false"); });
+      applyFilter();
+    });
+  });
+  function refreshRefs(){
+    var p = PROJECTS.filter(function(x){ return x.n === picked; })[0];
+    Array.prototype.forEach.call(document.querySelectorAll(".nextref"), function(el){ el.textContent = p ? p.n + ". " + p.name : "sin elegir"; });
+    Array.prototype.forEach.call(document.querySelectorAll(".wordref"), function(el){ el.textContent = plainWord(state.parsed.words) || "(sin palabra)"; });
+    updateProgress();
+  }
+
+  /* ---------- boot ---------- */
+  var savedWord = store("latido-word");
+  if(typeof savedWord === "string" && savedWord.trim()) $("word").value = savedWord;
+  refresh();
+  seedConsole();
+  renderChecklist();
+  renderGrid();
+  refreshRefs();
+  tick();
+  var reduce = false; try{ reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+  if(!reduce) setTimeout(play, 700);
+})();
+</script>

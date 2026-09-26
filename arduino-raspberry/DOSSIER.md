@@ -1,7 +1,7 @@
 # Idea dossier: Arduino + Raspberry Pi creative lab ("Victor directs, Claude builds")
 
 Date: 2026-09-25. Author: Claude (senior), for Victor. Status: **idea, not started; interview pending.**
-Stage: learning / portfolio / open source (not commercial). No sketch for this idea.
+Stage: learning / portfolio / open source (not commercial). Sketch: `sketch.html` (v1, 2026-09-25; see changelog at the end).
 
 ## Summary (five lines)
 - Victor gives creative direction; Claude Code writes, compiles and uploads the Arduino code from the
@@ -411,3 +411,24 @@ Running cost: $0 (Claude Max already paid; local model; no accounts or subscript
 - Arduino Forum, ESP32 core download size (~1.3 GB pack), 2022: https://forum.arduino.cc/t/huge-1-3-gb-esp32-espressif-pack-file-is-this-normal/961581
 - Local facts (Mac mini, local model speeds, sandbox): `~/local-ai/AGENTS.md`, `~/local-ai/docs/delegation.md`,
   `~/local-ai/configs/junior.sb` (read 2026-09-25).
+
+---
+
+## Sketch changelog
+- **v1, 2026-09-25** (Claude, senior): `sketch.html`, a single-page Spanish guide "Tu Arduino dice hola"
+  for the first session (checkpoint 1). Contents:
+  - **Morse simulator:** type a word (accents and ñ handled; unsupported signs listed), watch the "L"
+    LED blink on an illustrated UNO-style board (with a magnified view), follow the dots and dashes on a
+    tape, change speed, loop, optional beep. Standard timing (dot 1 unit, dash 3, 3 between letters,
+    7 between words). Shows the Arduino sketch Claude would write for that word and a simulated terminal
+    (`board list` → compile → upload → the board's "hola"); both labelled as examples.
+  - **First-session checklist:** the 12 steps from "First-session checklist" above, grouped in 5
+    phases, with who does each step (tú / Claude), minutes, the board-identification clue table, the
+    CH340 stop rule, progress, and a 20-minute timer. Ticks are saved in the browser only.
+  - **Project gallery:** the 10 projects of the ladder with difficulty (1-5, grouped fácil/media/difícil),
+    parts from the kit vs extra, the math/philosophy hook, sessions, filters (sin cables, Mac mini como
+    cerebro), and "elegir como siguiente", which feeds the checklist's last step.
+  - **Safety:** the five rules Claude repeats before any wiring.
+  - Difficulty levels are Claude's judgement from the ladder table (wiring, parts, sessions), not
+    measured. Checked: script syntax (`node --check`), no overflow at 400 px, main interactions run in
+    headless Chrome.
