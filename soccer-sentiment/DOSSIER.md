@@ -4,8 +4,8 @@ Written 2026-09-25 by Claude (senior), before Victor's alignment interview. Noth
 Working name "Marcador honesto" = "the honest scoreboard": the project's core is a scoreboard that
 compares our predictions with the betting market, without real money.
 
-Status: 💡 idea, researched. No code, no sketch (by request). Next step: Victor answers the
-interview questions at the bottom.
+Status: 💡 idea, researched. No code. Clickable mock: `sketch.html` (v1, 2026-09-25; see "Sketch
+changelog" at the end). Next step: Victor answers the interview questions at the bottom.
 
 ---
 
@@ -411,3 +411,33 @@ Gambling harm
 - Baker et al., NBER w33108 (2024): https://www.nber.org/system/files/working_papers/w33108/w33108.pdf
 - Hollenbeck, Larsen & Proserpio (2025 version): https://www.anderson.ucla.edu/sites/default/files/document/2025-05/Hollenbeck_The_Financial_Consequences_of_Legalized_Sports_Gambling.pdf
 - Illusion of control in sports betting (Nebraska Problem Gambling, 2023): https://problemgambling.nebraska.gov/november-2023-blog/
+
+---
+
+## Sketch changelog
+
+- **v1 (2026-09-25, Claude senior):** `sketch.html`, a clickable mock of the "paper-trading lab"
+  dashboard in Spanish. One self-contained file (Google Fonts only; no other network access), light
+  and dark themes, works at 400 px wide. **All data is simulated** with a fixed seed (a toy
+  ordered-logit model: 18 Liga MX clubs, J1-J9 played, J10 frozen "this Thursday"); invented
+  headlines name no players. What it shows:
+  - Sticky banner "Dinero ficticio, solo aprendizaje" + "Datos de ejemplo simulados"; Línea de la
+    Vida in the footer; no bookmaker names or links anywhere.
+  - Answer first: "does news add anything to the market?" with Δ log-loss vs market and a 95%
+    interval (paired bootstrap over jornadas) for three rows: market + news (the encompassing test),
+    numbers + news, numbers only (control). In the sample: control clearly behind the market, news
+    helps our model, the key test is inconclusive (interval includes 0).
+  - KPI tiles (log-loss and Brier per forecaster); a running log-loss chart in SVG with a
+    "difference vs market" view, jornada markers, the 1.071 base-rate reference and hover tooltips.
+  - Paper bets in fichas: switch the deciding model, the value threshold (prob × Thursday odds) and
+    the stake; summary with CLV (the honest signal) and paper profit labelled "mostly luck".
+  - Calibration chart (market vs the chosen model).
+  - Match list per jornada: market / numbers / numbers+news probabilities, the paper bet and its CLV;
+    expand for Thursday vs closing odds with margin, per-match log-loss, and headlines labelled by the
+    local 35B (event, direction, confidence, publish time, "before the cut" vs "excluded" = the
+    leakage rule), with the raw JSON label.
+  - Paper-bet log (newest first), weekly zero-click cycle explained (Thursday freeze + git commit,
+    Tuesday results).
+  - Open questions for the interview: is this the right "one screen"? Too much for the Notepad
+    benchmark (maybe verdict + chart only, the rest behind a tab)? Keep the AI-forecasters league
+    (Option D) as extra rows?

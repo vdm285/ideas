@@ -1,0 +1,893 @@
+<title>Marcador honesto</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+/* ---------- Tokens: light palette on bare :root ---------- */
+:root {
+  --bg: #F4F2EC;
+  --surface: #FFFFFF;
+  --surface-2: #F8F7F3;
+  --ink: #161B17;
+  --muted: #59625B;
+  --line: #DDD9CE;
+  --line-strong: #BDB8AA;
+  --accent: #0E7A4B;
+  --accent-ink: #FFFFFF;
+  --good: #157A3A;
+  --bad: #B42318;
+  --warn-bg: #FFF3CD;
+  --warn-line: #D9A400;
+  --warn-ink: #553B00;
+  --c-mkt: #2E3338;
+  --c-num: #C25A0A;
+  --c-news: #1B5FD0;
+  --c-enc: #7A3FC2;
+  --hl: rgba(14, 122, 75, .13);
+  --shadow: 0 1px 2px rgba(22, 27, 23, .05), 0 6px 20px rgba(22, 27, 23, .06);
+  --font-display: "Barlow Condensed", "Avenir Next Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0F1311; --surface: #171C19; --surface-2: #1D2420;
+    --ink: #E9EDEA; --muted: #9BA69F; --line: #2C3530; --line-strong: #46514B;
+    --accent: #3CCB8A; --accent-ink: #06140D; --good: #4CC47A; --bad: #FF7B6B;
+    --warn-bg: #35290A; --warn-line: #C99A1A; --warn-ink: #FFDF8A;
+    --c-mkt: #E3E7E4; --c-num: #F28C3A; --c-news: #72A6FF; --c-enc: #C39BFF;
+    --hl: rgba(60, 203, 138, .15);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 20px rgba(0, 0, 0, .25);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0F1311; --surface: #171C19; --surface-2: #1D2420;
+  --ink: #E9EDEA; --muted: #9BA69F; --line: #2C3530; --line-strong: #46514B;
+  --accent: #3CCB8A; --accent-ink: #06140D; --good: #4CC47A; --bad: #FF7B6B;
+  --warn-bg: #35290A; --warn-line: #C99A1A; --warn-ink: #FFDF8A;
+  --c-mkt: #E3E7E4; --c-num: #F28C3A; --c-news: #72A6FF; --c-enc: #C39BFF;
+  --hl: rgba(60, 203, 138, .15);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 20px rgba(0, 0, 0, .25);
+}
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+
+/* ---------- Banner ---------- */
+.banner {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  border-bottom: 2px solid var(--warn-line);
+  padding: 8px 16px;
+  font-size: 14px;
+}
+.banner-inner { max-width: 1120px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
+@media (max-width: 599px) { .banner .b-long { display: none; } }
+section[aria-labelledby] { scroll-margin-top: 72px; }
+.banner strong { font-family: var(--font-display); font-size: 19px; letter-spacing: .02em; text-transform: uppercase; }
+.pill {
+  display: inline-block; border: 1px solid currentColor; border-radius: 999px;
+  padding: 0 8px; font-size: 12px; font-weight: 600; letter-spacing: .02em; white-space: nowrap;
+}
+
+/* ---------- Layout ---------- */
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px 48px; }
+header.top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; align-items: flex-end; padding: 24px 0 16px; }
+.eyebrow { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+h1 { margin: 2px 0 4px; font-family: var(--font-display); font-weight: 700; font-size: clamp(36px, 7vw, 56px); line-height: 1; letter-spacing: .01em; }
+.lede { margin: 0; max-width: 46ch; color: var(--muted); font-size: 17px; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 1.15; margin: 0 0 4px; letter-spacing: .01em; }
+h3 { font-size: 15px; margin: 0 0 6px; font-weight: 700; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 18px; box-shadow: var(--shadow); min-width: 0;
+}
+.stack > * + * { margin-top: 16px; }
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 860px) { .grid-2 { grid-template-columns: 1.1fr .9fr; } }
+.card-head { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.card-head p { margin: 0; }
+
+/* ---------- Segmented controls ---------- */
+.seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 999px; padding: 2px; background: var(--surface-2); flex-wrap: wrap; }
+.seg button {
+  border: 0; background: transparent; border-radius: 999px; padding: 5px 12px; font-size: 14px; font-weight: 600; color: var(--muted);
+  min-height: 32px;
+}
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+/* ---------- Verdict ---------- */
+.verdict .answer { font-family: var(--font-display); font-size: clamp(28px, 5vw, 40px); font-weight: 700; line-height: 1.05; margin: 6px 0 10px; }
+.verdict .answer .tag-no { color: var(--muted); }
+.ci-rows { display: grid; gap: 10px; margin: 16px 0 8px; }
+.ci-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
+@media (min-width: 640px) { .ci-row { grid-template-columns: 230px minmax(0, 1fr) 200px; align-items: center; gap: 12px; } }
+.ci-label { font-weight: 600; font-size: 14px; display: flex; gap: 8px; align-items: center; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.ci-track { position: relative; height: 26px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; }
+.ci-zero { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); }
+.ci-bar { position: absolute; top: 10px; height: 6px; border-radius: 3px; opacity: .45; }
+.ci-dot { position: absolute; top: 6px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; border: 2px solid var(--surface); }
+.ci-val { font-size: 13px; }
+.ci-axis { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+@media (min-width: 640px) { .ci-axis { margin-left: 242px; margin-right: 212px; } }
+.verdict p.explain { margin: 12px 0 0; max-width: 75ch; }
+
+/* ---------- KPI tiles ---------- */
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (min-width: 860px) { .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; box-shadow: var(--shadow); min-width: 0; }
+.kpi .k-label { font-size: 13px; color: var(--muted); font-weight: 600; display: flex; gap: 6px; align-items: center; }
+.kpi .k-val { font-family: var(--font-mono); font-size: 26px; font-weight: 600; line-height: 1.2; margin-top: 4px; }
+.kpi .k-sub { font-size: 13px; color: var(--muted); }
+.delta-bad { color: var(--bad); }
+.delta-good { color: var(--good); }
+
+/* ---------- Chart ---------- */
+.chart-box { position: relative; width: 100%; }
+.chart-box svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart-box text { font-family: var(--font-body); font-size: 12px; fill: var(--muted); }
+.grid-line { stroke: var(--line); stroke-width: 1; }
+.zero-line { stroke: var(--ink); stroke-width: 1.5; }
+.ref-line { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 4; }
+.j-line { stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 3; }
+.s-line { fill: none; stroke-width: 2.25; stroke-linejoin: round; stroke-linecap: round; }
+.s-mkt { stroke: var(--c-mkt); }
+.s-num { stroke: var(--c-num); }
+.s-news { stroke: var(--c-news); }
+.s-enc { stroke: var(--c-enc); }
+.f-mkt { fill: var(--c-mkt); }
+.f-num { fill: var(--c-num); }
+.f-news { fill: var(--c-news); }
+.hover-line { stroke: var(--muted); stroke-width: 1; }
+.chart-box text.halo { paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
+.tip {
+  position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px;
+  padding: 8px 10px; font-size: 13px; box-shadow: var(--shadow); min-width: 170px; display: none; z-index: 5;
+}
+.tip b { display: block; margin-bottom: 2px; }
+.tip .row { display: flex; justify-content: space-between; gap: 12px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; margin-top: 8px; }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.legend i { width: 18px; height: 3px; border-radius: 2px; display: inline-block; }
+.note { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+
+/* ---------- Controls ---------- */
+.ctrl { display: grid; gap: 6px; margin-bottom: 14px; }
+.ctrl label, .ctrl .lbl { font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; gap: 8px; }
+input[type="range"] { width: 100%; accent-color: var(--accent); min-height: 28px; }
+.paper-sum { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 6px; }
+.paper-sum > div { background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; min-width: 0; }
+.paper-sum .v { font-family: var(--font-mono); font-size: 20px; font-weight: 600; }
+.paper-sum .l { font-size: 12px; color: var(--muted); font-weight: 600; }
+.luck { font-size: 12px; font-weight: 600; color: var(--warn-ink); background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: 6px; padding: 1px 6px; }
+
+/* ---------- Calibration ---------- */
+.calib svg { display: block; width: 100%; max-width: 360px; height: auto; margin: 0 auto; }
+.calib text { font-family: var(--font-body); font-size: 11px; fill: var(--muted); }
+
+/* ---------- Matches ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.chips button {
+  border: 1px solid var(--line-strong); background: var(--surface-2); border-radius: 8px; min-width: 44px; min-height: 36px;
+  padding: 4px 10px; font-weight: 700; font-size: 14px; font-family: var(--font-mono);
+}
+.chips button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.chips button.next { border-style: dashed; }
+.jhead { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
+.match { border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; background: var(--surface); overflow: hidden; }
+.match > .m-head {
+  width: 100%; text-align: left; padding: 12px; display: grid; gap: 10px; cursor: pointer;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 760px) { .match > .m-head { grid-template-columns: 250px minmax(0, 1fr) 220px; align-items: center; } }
+.match > .m-head:hover { background: var(--surface-2); }
+.chev-btn { justify-self: start; border: 1px solid var(--line); background: var(--surface-2); border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 4px; min-height: 28px; }
+.m-teams { display: grid; gap: 2px; }
+.m-when { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.m-score { font-family: var(--font-display); font-size: 22px; font-weight: 700; line-height: 1.1; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.m-score .sc { font-family: var(--font-mono); font-size: 19px; padding: 0 6px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--line); }
+.ptab { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ptab th { font-weight: 600; color: var(--muted); text-align: right; padding: 2px 4px; font-size: 12px; }
+.ptab th:first-child, .ptab td:first-child { text-align: left; }
+.ptab td { padding: 2px 4px; text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ptab td:first-child { font-family: var(--font-body); font-weight: 600; white-space: normal; }
+.ptab td.won, .ptab th.won { background: var(--hl); }
+.ptab th.won { color: var(--ink); }
+.cell-bar { display: inline-block; height: 5px; border-radius: 2px; vertical-align: middle; margin-right: 4px; opacity: .85; }
+.bet { font-size: 13px; border-radius: 10px; padding: 8px 10px; border: 1px solid var(--line); background: var(--surface-2); }
+.bet b { display: block; font-size: 14px; }
+.bet.none { color: var(--muted); }
+.bet.win { border-color: var(--good); }
+.bet.loss { border-color: var(--bad); }
+.m-body { border-top: 1px solid var(--line); padding: 12px; display: grid; gap: 14px; background: var(--surface-2); }
+@media (min-width: 760px) { .m-body { grid-template-columns: 1fr 1fr; } }
+.otab { border-collapse: collapse; font-size: 13px; width: 100%; }
+.otab th, .otab td { padding: 3px 6px; border-bottom: 1px solid var(--line); text-align: right; }
+.otab th:first-child, .otab td:first-child { text-align: left; }
+.otab td { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.otab td:first-child { font-family: var(--font-body); }
+.headline { border-left: 3px solid var(--line-strong); padding: 4px 0 4px 10px; margin-bottom: 10px; font-size: 14px; }
+.headline.pos { border-left-color: var(--good); }
+.headline.neg { border-left-color: var(--bad); }
+.headline.late { opacity: .7; border-left-style: dashed; }
+.labels { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.lab { font-size: 11px; font-weight: 600; border-radius: 5px; padding: 1px 6px; background: var(--surface); border: 1px solid var(--line); white-space: nowrap; }
+.lab.ok { color: var(--good); border-color: var(--good); }
+.lab.x { color: var(--bad); border-color: var(--bad); }
+details.json { margin-top: 4px; font-size: 12px; }
+details.json summary { cursor: pointer; color: var(--muted); font-weight: 600; }
+details.json pre { margin: 6px 0 0; padding: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; font-family: var(--font-mono); font-size: 12px; white-space: pre-wrap; word-break: break-word; }
+
+/* ---------- Log ---------- */
+.ltab { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ltab th { text-align: left; font-size: 12px; color: var(--muted); font-weight: 600; padding: 6px 4px; border-bottom: 1px solid var(--line-strong); }
+.ltab td { padding: 7px 4px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.ltab td.r, .ltab th.r { text-align: right; }
+.ltab .sub { font-size: 12px; color: var(--muted); }
+.btn-link { border: 1px solid var(--line-strong); background: var(--surface-2); border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 14px; margin-top: 10px; min-height: 36px; }
+
+footer.foot { margin-top: 24px; font-size: 14px; color: var(--muted); display: grid; gap: 8px; }
+footer.foot p { margin: 0; max-width: 90ch; }
+footer.foot strong { color: var(--ink); }
+.help { border: 1px solid var(--line-strong); border-radius: 12px; padding: 12px 14px; background: var(--surface); color: var(--ink); }
+</style>
+
+<div class="banner" role="note" aria-label="Aviso">
+  <div class="banner-inner">
+    <strong>Dinero ficticio, solo aprendizaje</strong>
+    <span class="b-long">Apuestas en fichas, nunca pesos. Sin casas de apuestas, sin enlaces, sin picks para nadie.</span>
+    <span class="pill">Datos de ejemplo simulados</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Laboratorio de paper trading · Liga MX · Apertura 2026</p>
+      <h1>Marcador honesto</h1>
+      <p class="lede">¿Las noticias leídas por IA dicen algo que el mercado de apuestas no sepa ya? Cada pronóstico se compara con las cuotas de cierre.</p>
+    </div>
+    <div class="seg" role="group" aria-label="Tema de color" id="themeSeg">
+      <button type="button" data-theme-set="auto" aria-pressed="true">Auto</button>
+      <button type="button" data-theme-set="light" aria-pressed="false">Claro</button>
+      <button type="button" data-theme-set="dark" aria-pressed="false">Oscuro</button>
+    </div>
+  </header>
+
+  <main class="stack">
+    <!-- Answer first -->
+    <section class="card verdict" aria-labelledby="vTitle">
+      <div class="card-head">
+        <div>
+          <h2 id="vTitle">¿Las noticias agregan algo al mercado?</h2>
+          <p class="muted small" id="vMeta"></p>
+        </div>
+        <span class="pill muted" title="Hipótesis, métrica y umbral escritos antes de ver resultados">Pre-registrado · 2026-07-17 · commit 3e9a1c4 (ejemplo)</span>
+      </div>
+      <p class="answer" id="vAnswer"></p>
+      <div class="ci-rows" id="ciRows"></div>
+      <div class="ci-axis"><span>← mejor que el mercado</span><span>0 = igual</span><span>peor que el mercado →</span></div>
+      <p class="explain" id="vExplain"></p>
+    </section>
+
+    <section class="kpis" id="kpis" aria-label="Indicadores"></section>
+
+    <!-- Running log-loss chart -->
+    <section class="card" aria-labelledby="cTitle">
+      <div class="card-head">
+        <div>
+          <h2 id="cTitle">Log-loss acumulado contra el mercado</h2>
+          <p class="muted small">Promedio corrido, partido por partido. Más bajo = mejor pronóstico.</p>
+        </div>
+        <div class="seg" role="group" aria-label="Vista de la gráfica" id="modeSeg">
+          <button type="button" data-mode="ll" aria-pressed="true">Log-loss</button>
+          <button type="button" data-mode="delta" aria-pressed="false">Diferencia vs mercado</button>
+        </div>
+      </div>
+      <div class="chart-box" id="chart"><div class="tip" id="tip"></div></div>
+      <div class="legend" id="legend"></div>
+      <p class="note" id="chartNote"></p>
+    </section>
+
+    <div class="grid-2">
+      <!-- Paper trading controls -->
+      <section class="card" aria-labelledby="pTitle">
+        <h2 id="pTitle">Apuestas ficticias</h2>
+        <p class="muted small" style="margin:0 0 14px">Regla fija: apostar a un resultado solo si <span class="num">prob. del modelo × cuota del jueves &gt; umbral</span>. Un resultado por partido como máximo.</p>
+        <div class="ctrl">
+          <span class="lbl">Modelo que decide</span>
+          <div class="seg" role="group" aria-label="Modelo que decide" id="modelSeg">
+            <button type="button" data-model="num" aria-pressed="false">Solo números</button>
+            <button type="button" data-model="news" aria-pressed="true">Números + noticias</button>
+          </div>
+        </div>
+        <div class="ctrl">
+          <label for="thr">Umbral de valor <span class="num" id="thrVal"></span></label>
+          <input type="range" id="thr" min="1.00" max="1.15" step="0.01" value="1.03">
+        </div>
+        <div class="ctrl">
+          <label for="stake">Fichas por apuesta <span class="num" id="stakeVal"></span></label>
+          <input type="range" id="stake" min="1" max="5" step="1" value="1">
+        </div>
+        <div class="paper-sum" id="paperSum"></div>
+        <p class="note">CLV (valor contra el cierre) = cuota tomada ÷ cuota justa de cierre − 1. Es la señal honesta: menos ruidosa que la ganancia.</p>
+      </section>
+
+      <!-- Calibration -->
+      <section class="card calib" aria-labelledby="calTitle">
+        <h2 id="calTitle">Calibración</h2>
+        <p class="muted small" style="margin:0 0 10px">Cuando decimos 40%, ¿pasa 40% de las veces? Los puntos sobre la diagonal están bien calibrados. Tamaño = número de pronósticos.</p>
+        <div id="calib"></div>
+        <div class="legend" id="calLegend"></div>
+      </section>
+    </div>
+
+    <!-- Matches -->
+    <section class="card" aria-labelledby="mTitle">
+      <div class="card-head">
+        <div>
+          <h2 id="mTitle">Partidos por jornada</h2>
+          <p class="muted small">L = local, E = empate, V = visita. Toca un partido para ver cuotas, titulares y etiquetas del modelo local.</p>
+          <p class="muted small"><strong>Ciclo semanal, cero clics:</strong> jueves 20:00 se congelan pronósticos y cuotas (commit en git, prueba de que fue antes del partido) → fin de semana se juega → martes llegan cuotas de cierre y resultados, y el marcador se redibuja.</p>
+        </div>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Jornada"></div>
+      <div id="matchList"></div>
+    </section>
+
+    <!-- Log -->
+    <section class="card" aria-labelledby="lTitle">
+      <div class="card-head">
+        <div>
+          <h2 id="lTitle">Bitácora de apuestas ficticias</h2>
+          <p class="muted small" id="logMeta"></p>
+        </div>
+      </div>
+      <table class="ltab" id="logTable"></table>
+      <button type="button" class="btn-link" id="logMore"></button>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p class="help"><strong>Si las apuestas te están causando problemas:</strong> Línea de la Vida, <span class="num">800 911 2000</span> (gratuita, 24 horas). Este laboratorio no apuesta, no recomienda apuestas y no enlaza a ninguna casa de apuestas.</p>
+    <p><strong>Datos de ejemplo.</strong> Todo lo que ves aquí está simulado con una semilla fija: marcadores, cuotas, probabilidades y titulares son inventados y no describen a los clubes reales. En el laboratorio real: cuotas de cierre promedio de football-data.co.uk (uso privado, no se redistribuyen), tono de noticias de GDELT (con cita y enlace) y titulares etiquetados por Qwen3.6-35B en esta Mac.</p>
+    <p><strong>Cómo leer el marcador.</strong> Log-loss = −ln(probabilidad que diste al resultado que ocurrió), promediado. Referencias históricas de Liga MX (2012/13-2026): mercado 1.022, tasas base 1.071. Con ~80 partidos no se puede probar una ventaja: hacen falta cientos.</p>
+    <p class="small">Boceto v1 · 2026-09-25 · Marcador honesto</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ================= Sample data (simulated, fixed seed) ================= */
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function normal(r) {
+    var u = 0; while (u === 0) u = r();
+    var v = r();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  var sigm = function (x) { return 1 / (1 + Math.exp(-x)); };
+  var C1 = -0.55, C2 = 0.55, HOME = 0.40, MARGIN = 1.075, BETA = 0.20;
+  // Ordered-logit toy model: latent strength gap d -> [local, empate, visita]
+  function probs(d) { var a = sigm(C1 - d), ad = sigm(C2 - d); return [1 - ad, ad - a, a]; }
+  function dFromProbs(p) { var pa = Math.min(Math.max(p[2], 1e-6), 1 - 1e-6); return C1 - Math.log(pa / (1 - pa)); }
+  function toOdds(p) { return Math.max(1.01, Math.round(100 / (p * MARGIN)) / 100); }
+  function normInv(odds) { var inv = odds.map(function (o) { return 1 / o; }); var s = inv[0] + inv[1] + inv[2]; return inv.map(function (x) { return x / s; }); }
+
+  var TEAMS = [
+    ['AME', 'América', .45], ['GDL', 'Guadalajara', .10], ['CAZ', 'Cruz Azul', .40], ['PUM', 'Pumas', .05],
+    ['TIG', 'Tigres', .38], ['MTY', 'Monterrey', .30], ['TOL', 'Toluca', .42], ['SAN', 'Santos', -.30],
+    ['LEO', 'León', .00], ['PAC', 'Pachuca', .15], ['ATL', 'Atlas', -.10], ['PUE', 'Puebla', -.35],
+    ['QRO', 'Querétaro', -.30], ['NEC', 'Necaxa', -.05], ['TIJ', 'Tijuana', .00], ['JUA', 'Juárez', -.20],
+    ['MAZ', 'Mazatlán', -.40], ['ASL', 'San Luis', -.10]
+  ];
+  var EVENTS = [
+    { k: 'lesion', name: 'lesión', dir: -1, tpl: ['{T}: su delantero titular sale lesionado y sería baja el fin de semana', 'Parte médico en {T}: dos titulares en duda para la jornada'] },
+    { k: 'suspension', name: 'suspensión', dir: -1, tpl: ['{T} no contará con su central titular por acumulación de tarjetas', 'Sanción de la Comisión Disciplinaria deja a {T} sin su contención'] },
+    { k: 'conflicto', name: 'conflicto en vestidor', dir: -1, tpl: ['Reportan tensión en el vestidor de {T} tras la última derrota', 'Jugadores de {T} piden reunión con la directiva por adeudos'] },
+    { k: 'cambio_tecnico', name: 'cambio de técnico', dir: -1, tpl: ['{T} cesa a su director técnico; un interino dirigirá el próximo partido'] },
+    { k: 'racha', name: 'buena racha', dir: 1, tpl: ['{T} llega con cuatro partidos sin perder y el plantel completo', 'Ambiente de fiesta en {T}: boletos agotados para el fin de semana'] },
+    { k: 'regreso', name: 'regreso de titular', dir: 1, tpl: ['Vuelve el capitán de {T} tras superar su lesión', '{T} recupera a su portero titular para la jornada'] },
+    { k: 'refuerzo', name: 'refuerzo disponible', dir: 1, tpl: ['{T} registra a su refuerzo y podría debutar este fin de semana'] }
+  ];
+  var DAYS = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+  var MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  var SLOTS = [[0, '19:00'], [0, '21:05'], [1, '17:00'], [1, '19:00'], [1, '19:05'], [1, '21:05'], [2, '12:00'], [2, '17:00'], [2, '19:00']];
+  var N_J = 10, LAST_PLAYED = 9;
+
+  function schedule(n, rounds) {
+    var rest = []; for (var i = 1; i < n; i++) rest.push(i);
+    var out = [];
+    for (var r = 0; r < rounds; r++) {
+      var arr = [0].concat(rest), games = [];
+      for (var g = 0; g < n / 2; g++) {
+        var h = arr[g], a = arr[n - 1 - g];
+        if ((r + g) % 2 === 1) { var t = h; h = a; a = t; }
+        games.push([h, a]);
+      }
+      out.push(games);
+      rest.unshift(rest.pop());
+    }
+    return out;
+  }
+  function dateOf(j, off) { return new Date(Date.UTC(2026, 6, 24 + 7 * (j - 1) + off)); }
+  function fmtDay(d) { return DAYS[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()]; }
+  function hex(r, n) { var s = ''; for (var i = 0; i < n; i++) s += '0123456789abcdef'[Math.floor(r() * 16)]; return s; }
+  function pad2(x) { return (x < 10 ? '0' : '') + x; }
+
+  function buildData(seed) {
+    var r = mulberry32(seed);
+    var teams = TEAMS.map(function (t) { return { c: t[0], n: t[1], s: t[2], est: t[2] + normal(r) * 0.15 }; });
+    var rounds = schedule(18, N_J);
+    var jornadas = [], matches = [];
+    rounds.forEach(function (games, ji) {
+      var J = ji + 1, played = J <= LAST_PLAYED;
+      var news = {};
+      teams.forEach(function (t, ti) {
+        if (r() < 0.38) {
+          var ev = EVENTS[Math.floor(r() * EVENTS.length)];
+          var tpl = ev.tpl[Math.floor(r() * ev.tpl.length)];
+          var conf = Math.round((0.6 + 0.35 * r()) * 100) / 100;
+          var late = r() < 0.12;
+          var eff = ev.dir * 0.22 * (0.5 + r());
+          var pub;
+          if (late) { pub = 'vie ' + pad2(8 + Math.floor(r() * 4)) + ':' + pad2(Math.floor(r() * 60)); }
+          else { var dd = Math.floor(r() * 4); pub = ['lun', 'mar', 'mié', 'jue'][dd] + ' ' + pad2(dd === 3 ? 8 + Math.floor(r() * 11) : 8 + Math.floor(r() * 15)) + ':' + pad2(Math.floor(r() * 60)); }
+          news[ti] = { team: t.c, teamName: t.n, ev: ev, text: tpl.replace('{T}', t.n), conf: conf, late: late, eff: eff, pub: pub };
+        }
+      });
+      var jor = { J: J, played: played, commit: hex(r, 7), freeze: fmtDay(dateOf(J, -1)) + ' 20:00', from: fmtDay(dateOf(J, 0)), to: fmtDay(dateOf(J, 2)), matches: [] };
+      games.forEach(function (hg, gi) {
+        var h = hg[0], a = hg[1];
+        var nh = news[h], na = news[a];
+        var newsTrue = (nh ? nh.eff : 0) - (na ? na.eff : 0);
+        var dBase = teams[h].s - teams[a].s + HOME;
+        var pTrue = probs(dBase + newsTrue);
+        var pClose = probs(dBase + newsTrue + normal(r) * 0.07);
+        var pEarly = probs(dBase + 0.35 * newsTrue + normal(r) * 0.09);
+        var early = pEarly.map(toOdds), close = pClose.map(toOdds);
+        var sig = (nh && !nh.late ? nh.ev.dir * nh.conf : 0) - (na && !na.late ? na.ev.dir * na.conf : 0);
+        var dNum = teams[h].est - teams[a].est + HOME;
+        var pNum = probs(dNum), pNews = probs(dNum + BETA * sig);
+        var u = r();
+        var y = u < pTrue[0] ? 0 : (u < pTrue[0] + pTrue[1] ? 1 : 2);
+        var w = 1 + Math.floor(r() * 3), l = Math.floor(r() * w), k = Math.floor(r() * 3);
+        var score = y === 0 ? [w, l] : (y === 2 ? [l, w] : [k, k]);
+        var mkt = played ? normInv(close) : normInv(early);
+        var pEnc = probs(dFromProbs(mkt) + BETA * sig);
+        var slot = SLOTS[gi];
+        var m = {
+          id: 'J' + J + '-' + gi, J: J, idx: -1, played: played,
+          h: teams[h], a: teams[a], when: fmtDay(dateOf(J, slot[0])) + ' · ' + slot[1],
+          early: early, close: played ? close : null, mkt: mkt, num: pNum, news: pNews, enc: pEnc,
+          y: played ? y : null, score: played ? score : null, sig: sig,
+          headlines: [nh, na].filter(Boolean)
+        };
+        jor.matches.push(m);
+        if (played) { m.idx = matches.length; matches.push(m); }
+      });
+      jornadas.push(jor);
+    });
+    return { teams: teams, jornadas: jornadas, matches: matches };
+  }
+
+  var DATA = buildData(67);
+
+  /* ================= Scoring ================= */
+  function ll(p, y) { return -Math.log(Math.max(p[y], 1e-9)); }
+  function brier(p, y) { var s = 0; for (var k = 0; k < 3; k++) { var o = k === y ? 1 : 0; s += (p[k] - o) * (p[k] - o); } return s; }
+  function mean(a) { var s = 0; for (var i = 0; i < a.length; i++) s += a[i]; return a.length ? s / a.length : NaN; }
+  var KEYS = ['mkt', 'num', 'news', 'enc'];
+  DATA.matches.forEach(function (m) { m.ll = {}; m.br = {}; KEYS.forEach(function (k) { m.ll[k] = ll(m[k], m.y); m.br[k] = brier(m[k], m.y); }); });
+
+  // Paired bootstrap resampling whole jornadas (matches in a weekend share news)
+  function bootstrapDelta(key) {
+    var byJ = [];
+    for (var j = 1; j <= LAST_PLAYED; j++) byJ.push(DATA.matches.filter(function (m) { return m.J === j; }).map(function (m) { return m.ll[key] - m.ll.mkt; }));
+    var all = [].concat.apply([], byJ), point = mean(all);
+    var r = mulberry32(777), B = 2000, stats = [];
+    for (var b = 0; b < B; b++) {
+      var s = 0, n = 0;
+      for (var q = 0; q < byJ.length; q++) { var arr = byJ[Math.floor(r() * byJ.length)]; for (var i = 0; i < arr.length; i++) { s += arr[i]; n++; } }
+      stats.push(s / n);
+    }
+    stats.sort(function (x, y) { return x - y; });
+    return { point: point, lo: stats[Math.floor(0.025 * B)], hi: stats[Math.floor(0.975 * B) - 1] };
+  }
+  var CI = { enc: bootstrapDelta('enc'), news: bootstrapDelta('news'), num: bootstrapDelta('num') };
+
+  /* ================= Helpers ================= */
+  function $(s, el) { return (el || document).querySelector(s); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function f(x, d) { return (x < 0 ? '−' : '') + Math.abs(x).toFixed(d == null ? 3 : d); }
+  function sg(x, d) { return (x > 0 ? '+' : x < 0 ? '−' : '±') + Math.abs(x).toFixed(d == null ? 3 : d); }
+  function pct(x) { return Math.round(x * 100) + '%'; }
+  function pct1(x) { return (x > 0 ? '+' : x < 0 ? '−' : '') + Math.abs(x * 100).toFixed(1) + '%'; }
+  var OUT = ['L', 'E', 'V'];
+  var NAMES = { mkt: 'Mercado (cierre)', num: 'Solo números', news: 'Números + noticias', enc: 'Mercado + noticias' };
+  var COLORS = { mkt: 'var(--c-mkt)', num: 'var(--c-num)', news: 'var(--c-news)', enc: 'var(--c-enc)' };
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } return null; }
+
+  /* ================= State ================= */
+  var state = { model: 'news', thr: 1.03, stake: 1, mode: 'll', J: LAST_PLAYED, open: {}, logAll: false };
+
+  function betFor(m) {
+    var p = m[state.model], best = -1, ev = 0;
+    for (var k = 0; k < 3; k++) { var e = p[k] * m.early[k]; if (e > state.thr && e > ev) { ev = e; best = k; } }
+    if (best < 0) return null;
+    var bet = { k: best, odds: m.early[best], ev: ev, stake: state.stake, pending: !m.played };
+    if (m.played) {
+      var fairClose = 1 / m.mkt[best];
+      bet.clv = bet.odds / fairClose - 1;
+      bet.win = m.y === best;
+      bet.profit = bet.win ? state.stake * (bet.odds - 1) : -state.stake;
+    }
+    return bet;
+  }
+  function allBets() {
+    var out = [];
+    DATA.jornadas.forEach(function (j) { j.matches.forEach(function (m) { var b = betFor(m); if (b) out.push({ m: m, b: b }); }); });
+    return out;
+  }
+
+  /* ================= Verdict ================= */
+  function renderVerdict() {
+    var n = DATA.matches.length, e = CI.enc;
+    $('#vMeta').textContent = n + ' partidos jugados (J1-J' + LAST_PLAYED + ') · intervalo de 95% por bootstrap pareado sobre jornadas';
+    var ans;
+    if (e.hi < 0) ans = 'Sí, en este ejemplo: el intervalo queda debajo de 0.';
+    else if (e.lo > 0) ans = 'No: sumar noticias al mercado empeora el pronóstico.';
+    else ans = 'Todavía no se puede decir. <span class="tag-no">El intervalo incluye el 0.</span>';
+    $('#vAnswer').innerHTML = ans;
+
+    var rows = ['enc', 'news', 'num'];
+    var maxAbs = 0.01;
+    rows.forEach(function (k) { maxAbs = Math.max(maxAbs, Math.abs(CI[k].lo), Math.abs(CI[k].hi)); });
+    maxAbs *= 1.15;
+    var pos = function (x) { return (50 + 50 * x / maxAbs).toFixed(2) + '%'; };
+    var LABEL = { enc: 'Mercado + noticias (la prueba clave)', news: 'Números + noticias', num: 'Solo números (grupo control)' };
+    $('#ciRows').innerHTML = rows.map(function (k) {
+      var c = CI[k];
+      return '<div class="ci-row">' +
+        '<div class="ci-label"><span class="swatch" style="background:' + COLORS[k] + '"></span>' + LABEL[k] + '</div>' +
+        '<div class="ci-track" role="img" aria-label="' + esc(LABEL[k] + ': diferencia ' + sg(c.point) + ', intervalo ' + sg(c.lo) + ' a ' + sg(c.hi)) + '">' +
+        '<span class="ci-zero" style="left:50%"></span>' +
+        '<span class="ci-bar" style="left:' + pos(c.lo) + ';width:calc(' + pos(c.hi) + ' - ' + pos(c.lo) + ');background:' + COLORS[k] + '"></span>' +
+        '<span class="ci-dot" style="left:' + pos(c.point) + ';background:' + COLORS[k] + '"></span></div>' +
+        '<div class="ci-val num">Δ ' + sg(c.point) + ' <span class="muted">[' + sg(c.lo) + ', ' + sg(c.hi) + ']</span></div></div>';
+    }).join('');
+
+    var ne = CI.news.point - CI.num.point;
+    $('#vExplain').innerHTML =
+      '<strong>En palabras simples:</strong> Δ es cuánto peor (+) o mejor (−) pronosticamos que el mercado, en log-loss por partido. ' +
+      'Agregar las noticias a nuestro modelo de números lo ' + (ne < 0 ? 'mejora' : 'empeora') + ' (' + sg(ne) + '), ' +
+      'pero la pregunta que importa es la primera fila: ¿las noticias le enseñan algo al <em>propio mercado</em>? ' +
+      'Con ' + n + ' partidos, el intervalo es demasiado ancho para responder. Según el cálculo de potencia del dossier, detectar una ventaja de 0.01 requiere unos 200-800 partidos.';
+  }
+
+  /* ================= KPIs ================= */
+  function renderKpis() {
+    var M = DATA.matches;
+    var L = {}; KEYS.forEach(function (k) { L[k] = mean(M.map(function (m) { return m.ll[k]; })); });
+    var B = {}; KEYS.forEach(function (k) { B[k] = mean(M.map(function (m) { return m.br[k]; })); });
+    function tile(k, label) {
+      var d = L[k] - L.mkt;
+      var sub = k === 'mkt' ? 'Brier ' + B.mkt.toFixed(3) + ' · la vara a superar'
+        : '<span class="' + (d > 0 ? 'delta-bad' : 'delta-good') + '">' + sg(d) + ' vs mercado</span> · Brier ' + B[k].toFixed(3);
+      return '<div class="kpi"><div class="k-label"><span class="swatch" style="background:' + COLORS[k] + '"></span>' + label + '</div>' +
+        '<div class="k-val">' + L[k].toFixed(3) + '</div><div class="k-sub">' + sub + '</div></div>';
+    }
+    $('#kpis').innerHTML = tile('mkt', 'Log-loss mercado') + tile('num', 'Solo números') + tile('news', 'Números + noticias') + tile('enc', 'Mercado + noticias');
+  }
+
+  /* ================= Running chart ================= */
+  function running(key, delta) {
+    var s = 0, out = [];
+    DATA.matches.forEach(function (m, i) { s += delta ? (m.ll[key] - m.ll.mkt) : m.ll[key]; out.push(s / (i + 1)); });
+    return out;
+  }
+  function renderChart() {
+    var box = $('#chart');
+    var W = Math.max(300, Math.floor(box.clientWidth || 600));
+    var H = W < 560 ? 240 : 300;
+    var P = { l: 46, r: 12, t: 12, b: 30 };
+    var delta = state.mode === 'delta';
+    var keys = delta ? ['num', 'news', 'enc'] : ['mkt', 'num', 'news'];
+    var series = {}; keys.forEach(function (k) { series[k] = running(k, delta); });
+    var n = DATA.matches.length, start = 17;
+    var lo = Infinity, hi = -Infinity;
+    keys.forEach(function (k) { series[k].forEach(function (v, i) { if (i >= start) { lo = Math.min(lo, v); hi = Math.max(hi, v); } }); });
+    if (delta) { lo = Math.min(lo, 0); hi = Math.max(hi, 0); } else { lo = Math.min(lo, 1.0); hi = Math.max(hi, 1.071); }
+    var padY = (hi - lo) * 0.08 || 0.01; lo -= padY; hi += padY;
+    var step = [0.005, 0.01, 0.02, 0.025, 0.05, 0.1, 0.2].find(function (st) { return (hi - lo) / st <= 6; }) || 0.2;
+    lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step;
+    var x = function (i) { return P.l + (W - P.l - P.r) * (n === 1 ? 0 : i / (n - 1)); };
+    var y = function (v) { return P.t + (H - P.t - P.b) * (1 - (v - lo) / (hi - lo)); };
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="' +
+      (delta ? 'Diferencia acumulada de log-loss contra el mercado' : 'Log-loss acumulado por modelo') + '">';
+    svg += '<defs><clipPath id="plotClip"><rect x="' + P.l + '" y="' + P.t + '" width="' + (W - P.l - P.r) + '" height="' + (H - P.t - P.b) + '"/></clipPath></defs>';
+    // y grid
+    var ticks = Math.round((hi - lo) / step);
+    for (var t = 0; t <= ticks; t++) {
+      var v = lo + step * t, yy = y(v).toFixed(1);
+      svg += '<line class="grid-line" x1="' + P.l + '" x2="' + (W - P.r) + '" y1="' + yy + '" y2="' + yy + '"/>';
+      svg += '<text x="' + (P.l - 6) + '" y="' + (+yy + 4) + '" text-anchor="end">' + (delta ? sg(v, 2) : v.toFixed(2)) + '</text>';
+    }
+    // jornada boundaries
+    for (var j = 1; j <= LAST_PLAYED; j++) {
+      var first = DATA.matches.findIndex(function (m) { return m.J === j; });
+      var last = first + 8;
+      if (j > 1) svg += '<line class="j-line" x1="' + x(first - 0.5).toFixed(1) + '" x2="' + x(first - 0.5).toFixed(1) + '" y1="' + P.t + '" y2="' + (H - P.b) + '"/>';
+      if (W >= 420 || j % 2 === 1) svg += '<text x="' + x((first + last) / 2).toFixed(1) + '" y="' + (H - 10) + '" text-anchor="middle">J' + j + '</text>';
+    }
+    if (delta) {
+      svg += '<line class="zero-line" x1="' + P.l + '" x2="' + (W - P.r) + '" y1="' + y(0).toFixed(1) + '" y2="' + y(0).toFixed(1) + '"/>';
+
+    } else {
+      svg += '<line class="ref-line" x1="' + P.l + '" x2="' + (W - P.r) + '" y1="' + y(1.071).toFixed(1) + '" y2="' + y(1.071).toFixed(1) + '"/>';
+
+    }
+    svg += '<g clip-path="url(#plotClip)">';
+    keys.forEach(function (k) {
+      var d = series[k].map(function (v, i) { return (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1); }).join('');
+      svg += '<path class="s-line s-' + k + '" d="' + d + '"' + (k === 'mkt' ? ' stroke-dasharray="6 4"' : '') + '/>';
+    });
+    svg += '</g>';
+    svg += delta
+      ? '<text x="' + (W - P.r - 4) + '" y="' + (y(0) - 6).toFixed(1) + '" text-anchor="end" class="halo" style="fill:var(--ink)">0 = igual que el mercado</text>'
+      : '<text x="' + (W - P.r - 4) + '" y="' + (y(1.071) - 6).toFixed(1) + '" text-anchor="end" class="halo">tasas base históricas 1.071</text>';
+    svg += '<line class="hover-line" id="hoverLine" x1="0" x2="0" y1="' + P.t + '" y2="' + (H - P.b) + '" style="display:none"/>';
+    svg += '<rect id="hitArea" x="' + P.l + '" y="' + P.t + '" width="' + (W - P.l - P.r) + '" height="' + (H - P.t - P.b) + '" fill="transparent"/>';
+    svg += '</svg>';
+    var tip = $('#tip');
+    box.innerHTML = svg;
+    box.appendChild(tip);
+
+    $('#legend').innerHTML = keys.map(function (k) {
+      return '<span><i style="background:' + COLORS[k] + '"></i>' + (delta ? NAMES[k] + ' − mercado' : NAMES[k]) + '</span>';
+    }).join('');
+    $('#chartNote').textContent = delta
+      ? 'Arriba de 0 = peor que el mercado. Las primeras jornadas son muy ruidosas; solo el final cuenta, y aun así con un intervalo ancho.'
+      : 'Línea punteada = el mercado (cuotas de cierre promedio, sin margen). Los primeros partidos oscilan mucho: con pocos datos el promedio es ruido.';
+
+    var hit = $('#hitArea'), hl = $('#hoverLine');
+    function show(evt) {
+      var rect = box.getBoundingClientRect();
+      var px = evt.clientX - rect.left;
+      var i = Math.round((px - P.l) / (W - P.l - P.r) * (n - 1));
+      i = Math.max(0, Math.min(n - 1, i));
+      var m = DATA.matches[i];
+      hl.setAttribute('x1', x(i)); hl.setAttribute('x2', x(i)); hl.style.display = '';
+      var rows = keys.map(function (k) {
+        return '<div class="row"><span><span class="swatch" style="display:inline-block;background:' + COLORS[k] + '"></span> ' + NAMES[k] + '</span><span class="num">' + (delta ? sg(series[k][i]) : series[k][i].toFixed(3)) + '</span></div>';
+      }).join('');
+      tip.innerHTML = '<b>Partido ' + (i + 1) + ' · J' + m.J + '</b><div class="muted small" style="margin-bottom:4px">' + m.h.c + ' ' + m.score[0] + '-' + m.score[1] + ' ' + m.a.c + '</div>' + rows;
+      tip.style.display = 'block';
+      var tw = tip.offsetWidth;
+      var left = x(i) + 12; if (left + tw > W) left = x(i) - tw - 12; if (left < 0) left = 0;
+      tip.style.left = left + 'px'; tip.style.top = (P.t + 4) + 'px';
+    }
+    hit.addEventListener('pointermove', show);
+    hit.addEventListener('pointerdown', show);
+    hit.addEventListener('pointerleave', function () { tip.style.display = 'none'; hl.style.display = 'none'; });
+  }
+
+  /* ================= Calibration ================= */
+  function renderCalib() {
+    var keys = ['mkt', state.model];
+    var S = 300, P = { l: 40, r: 10, t: 10, b: 36 };
+    var x = function (v) { return P.l + (S - P.l - P.r) * v; };
+    var y = function (v) { return S - P.b - (S - P.t - P.b) * v; };
+    var svg = '<svg viewBox="0 0 ' + S + ' ' + S + '" role="img" aria-label="Gráfica de calibración">';
+    for (var t = 0; t <= 5; t++) {
+      var v = t / 5;
+      svg += '<line class="grid-line" x1="' + x(0) + '" x2="' + x(1) + '" y1="' + y(v) + '" y2="' + y(v) + '"/>';
+      svg += '<text x="' + (P.l - 6) + '" y="' + (y(v) + 4) + '" text-anchor="end">' + pct(v) + '</text>';
+      svg += '<text x="' + x(v) + '" y="' + (S - P.b + 16) + '" text-anchor="middle">' + pct(v) + '</text>';
+    }
+    svg += '<line class="ref-line" x1="' + x(0) + '" y1="' + y(0) + '" x2="' + x(1) + '" y2="' + y(1) + '"/>';
+    svg += '<text x="' + x(.5) + '" y="' + (S - 4) + '" text-anchor="middle">probabilidad pronosticada</text>';
+    svg += '<text transform="translate(11 ' + y(.5) + ') rotate(-90)" text-anchor="middle">frecuencia real</text>';
+    keys.forEach(function (k, ki) {
+      var bins = [];
+      for (var b = 0; b < 10; b++) bins.push({ n: 0, p: 0, o: 0 });
+      DATA.matches.forEach(function (m) {
+        for (var q = 0; q < 3; q++) { var p = m[k][q], bi = Math.min(9, Math.floor(p * 10)); bins[bi].n++; bins[bi].p += p; bins[bi].o += (m.y === q ? 1 : 0); }
+      });
+      var pts = bins.filter(function (b) { return b.n >= 5; }).map(function (b) { return { p: b.p / b.n, o: b.o / b.n, n: b.n }; });
+      svg += '<path class="s-line s-' + k + '" d="' + pts.map(function (pt, i) { return (i ? 'L' : 'M') + x(pt.p).toFixed(1) + ' ' + y(pt.o).toFixed(1); }).join('') + '"' + (k === 'mkt' ? ' stroke-dasharray="5 4"' : '') + ' style="stroke-width:1.5;opacity:.8"/>';
+      pts.forEach(function (pt) {
+        var rr = (2.5 + Math.sqrt(pt.n) * 0.7).toFixed(1);
+        svg += '<circle cx="' + x(pt.p).toFixed(1) + '" cy="' + y(pt.o).toFixed(1) + '" r="' + rr + '" class="f-' + k + '" style="' + (ki === 0 ? 'fill-opacity:.25;stroke:var(--c-mkt);stroke-width:1.5' : 'fill-opacity:.85') + '"><title>' +
+          NAMES[k] + ': dijo ' + pct(pt.p) + ', pasó ' + pct(pt.o) + ' (' + pt.n + ' pronósticos)</title></circle>';
+      });
+    });
+    svg += '</svg>';
+    $('#calib').innerHTML = svg;
+    $('#calLegend').innerHTML = keys.map(function (k) { return '<span><i style="background:' + COLORS[k] + '"></i>' + NAMES[k] + '</span>'; }).join('') +
+      '<span class="muted small">Cambia con "Modelo que decide".</span>';
+  }
+
+  /* ================= Paper summary ================= */
+  function renderPaper() {
+    $('#thrVal').textContent = state.thr.toFixed(2);
+    $('#stakeVal').textContent = state.stake + (state.stake === 1 ? ' ficha' : ' fichas');
+    var bets = allBets().filter(function (x) { return !x.b.pending; });
+    var staked = bets.length * state.stake;
+    var profit = bets.reduce(function (s, x) { return s + x.b.profit; }, 0);
+    var clv = mean(bets.map(function (x) { return x.b.clv; }));
+    var clvPos = bets.filter(function (x) { return x.b.clv > 0; }).length;
+    var hits = bets.filter(function (x) { return x.b.win; }).length;
+    $('#paperSum').innerHTML =
+      '<div><div class="l">Apuestas ficticias</div><div class="v">' + bets.length + '</div><div class="l">' + hits + ' acertadas · ' + staked + ' fichas en juego</div></div>' +
+      '<div><div class="l">CLV promedio</div><div class="v ' + (clv > 0 ? 'delta-good' : 'delta-bad') + '">' + (bets.length ? pct1(clv) : '—') + '</div><div class="l">' + clvPos + ' de ' + bets.length + ' mejor que el cierre</div></div>' +
+      '<div style="grid-column:1/-1"><div class="l">Ganancia ficticia <span class="luck">mayormente suerte con esta muestra</span></div><div class="v ' + (profit >= 0 ? 'delta-good' : 'delta-bad') + '">' + sg(profit, 2) + ' fichas</div><div class="l">ROI ' + (staked ? pct1(profit / staked) : '—') + ' · el margen promedio de las casas es 7.5%</div></div>';
+  }
+
+  /* ================= Matches ================= */
+  function renderChips() {
+    var html = '';
+    for (var j = 1; j <= N_J; j++) {
+      var next = j > LAST_PLAYED;
+      html += '<button type="button" data-j="' + j + '" aria-pressed="' + (state.J === j) + '"' + (next ? ' class="next" title="Próxima jornada: pronósticos congelados"' : '') + '>J' + j + (next ? ' ⏳' : '') + '</button>';
+    }
+    $('#chips').innerHTML = html;
+  }
+  function probRow(key, m) {
+    var p = m[key];
+    var name = key === 'mkt' ? (m.played ? 'Mercado' : 'Mercado (jue)') : NAMES[key];
+    return '<tr><td><span class="swatch" style="display:inline-block;background:' + COLORS[key] + ';vertical-align:-1px"></span> ' + name + '</td>' +
+      p.map(function (v, k) {
+        return '<td class="' + (m.y === k ? 'won' : '') + '"><span class="cell-bar" style="width:' + Math.round(v * 34) + 'px;background:' + COLORS[key] + '"></span>' + pct(v) + '</td>';
+      }).join('') + '</tr>';
+  }
+  function betBox(m) {
+    var b = betFor(m);
+    if (!b) return '<div class="bet none"><b>Sin apuesta</b>Ningún resultado supera el umbral ' + state.thr.toFixed(2) + '.</div>';
+    var sel = OUT[b.k] + ' · ' + (b.k === 0 ? m.h.n : b.k === 2 ? m.a.n : 'empate');
+    var head = b.stake + (b.stake === 1 ? ' ficha' : ' fichas') + ' a ' + sel + ' @ ' + b.odds.toFixed(2);
+    if (b.pending) return '<div class="bet"><b>' + esc(head) + '</b>Pendiente · valor esperado ×' + b.ev.toFixed(3) + ' · congelada el jueves</div>';
+    return '<div class="bet ' + (b.win ? 'win' : 'loss') + '"><b>' + esc(head) + '</b>' + (b.win ? 'Acertada ' : 'Fallada ') + '<span class="num">' + sg(b.profit, 2) + '</span> fichas · CLV <span class="num ' + (b.clv > 0 ? 'delta-good' : 'delta-bad') + '">' + pct1(b.clv) + '</span></div>';
+  }
+  function headlineHtml(hd, withJson) {
+    var cls = hd.late ? 'late' : (hd.ev.dir > 0 ? 'pos' : 'neg');
+    var json = {
+      equipo: hd.teamName, evento: hd.ev.k, direccion: hd.ev.dir > 0 ? '+' : '-', confianza: hd.conf,
+      publicado: hd.pub, antes_del_corte: !hd.late
+    };
+    return '<div class="headline ' + cls + '">“' + esc(hd.text) + '”' +
+      '<div class="labels"><span class="lab">' + esc(hd.team) + '</span><span class="lab">' + esc(hd.ev.name) + '</span>' +
+      '<span class="lab">' + (hd.ev.dir > 0 ? '+ a favor' : '− en contra') + '</span><span class="lab num">conf. ' + hd.conf.toFixed(2) + '</span>' +
+      '<span class="lab">publicado ' + esc(hd.pub) + '</span>' +
+      (hd.late ? '<span class="lab x">después del corte: excluido</span>' : '<span class="lab ok">antes del corte ✓</span>') + '</div>' +
+      (withJson ? '<details class="json"><summary>Ver etiqueta JSON del modelo local</summary><pre>' + esc(JSON.stringify(json, null, 2)) + '</pre></details>' : '') +
+      '</div>';
+  }
+  function matchHtml(m) {
+    var open = !!state.open[m.id];
+    var score = m.played ? '<span class="sc">' + m.score[0] + '-' + m.score[1] + '</span>' : '<span class="sc muted">vs</span>';
+    var head = '<div class="m-head" data-open="' + m.id + '">' +
+      '<div class="m-teams"><span class="m-when">' + esc(m.when) + (m.headlines.length ? ' · ' + m.headlines.length + (m.headlines.length === 1 ? ' titular' : ' titulares') : '') + '</span>' +
+      '<span class="m-score"><span>' + esc(m.h.n) + '</span>' + score + '<span>' + esc(m.a.n) + '</span></span>' +
+      '<button type="button" class="chev-btn" data-toggle="' + m.id + '" aria-expanded="' + open + '">' + (open ? '▲ Ocultar detalle' : '▼ Ver cuotas y titulares') + '</button></div>' +
+      '<table class="ptab"><thead><tr><th></th>' + OUT.map(function (o, k) { return '<th class="' + (m.y === k ? 'won' : '') + '">' + o + (m.y === k ? ' ✓' : '') + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      probRow('mkt', m) + probRow('num', m) + probRow('news', m) + '</tbody></table>' +
+      betBox(m) + '</div>';
+    if (!open) return '<div class="match">' + head + '</div>';
+    var odds = '<table class="otab"><thead><tr><th>Cuotas (decimales)</th><th>L</th><th>E</th><th>V</th><th>Margen</th></tr></thead><tbody>' +
+      '<tr><td>Jueves (congelada ' + (m.played ? '' : 'hoy ') + '20:00)</td>' + m.early.map(function (o) { return '<td>' + o.toFixed(2) + '</td>'; }).join('') + '<td>' + pct1(m.early.reduce(function (s, o) { return s + 1 / o; }, 0) - 1) + '</td></tr>' +
+      (m.played ? '<tr><td>Cierre (promedio)</td>' + m.close.map(function (o) { return '<td>' + o.toFixed(2) + '</td>'; }).join('') + '<td>' + pct1(m.close.reduce(function (s, o) { return s + 1 / o; }, 0) - 1) + '</td></tr>' : '<tr><td>Cierre</td><td colspan="4" class="muted">se llena el martes</td></tr>') +
+      '</tbody></table>';
+    var lls = m.played ? '<h3 style="margin-top:12px">Log-loss de este partido</h3><table class="otab"><tbody>' +
+      ['mkt', 'num', 'news', 'enc'].map(function (k) { return '<tr><td>' + NAMES[k] + '</td><td>' + m.ll[k].toFixed(3) + '</td><td class="' + (m.ll[k] - m.ll.mkt > 0 ? 'delta-bad' : 'delta-good') + '">' + (k === 'mkt' ? '' : sg(m.ll[k] - m.ll.mkt)) + '</td></tr>'; }).join('') +
+      '</tbody></table><p class="note">Un solo partido no dice nada: es ruido. Solo cuenta el promedio de muchos.</p>' : '<p class="note">Sin resultado todavía: el pronóstico quedó guardado en git antes del partido.</p>';
+    var heads = m.headlines.length ? m.headlines.map(function (hd, i) { return headlineHtml(hd, i === 0); }).join('') : '<p class="muted small" style="margin:0">Sin titulares relevantes antes del corte. El modelo con noticias queda igual al de solo números.</p>';
+    var sigTxt = '<p class="note">Señal de noticias neta (local − visita): <span class="num">' + sg(m.sig, 2) + '</span> · ajuste β = ' + BETA.toFixed(2) + ' fijado en el pre-registro.</p>';
+    return '<div class="match">' + head + '<div class="m-body"><div><h3>Cuotas</h3>' + odds + lls + '</div><div><h3>Titulares etiquetados por Qwen3.6-35B (local)</h3>' + heads + sigTxt + '</div></div></div>';
+  }
+  function renderMatches() {
+    var j = DATA.jornadas[state.J - 1];
+    var info = j.played
+      ? '<strong>Jornada ' + j.J + '</strong> <span class="muted small">' + j.from + ' - ' + j.to + ' · congelada ' + j.freeze + ' · commit <span class="num">' + j.commit + '</span></span>'
+      : '<strong>Jornada ' + j.J + ' (próxima)</strong> <span class="muted small">pronósticos congelados ' + j.freeze + ' · commit <span class="num">' + j.commit + '</span> · resultados el martes</span>';
+    $('#matchList').innerHTML = '<div class="jhead">' + info + '</div>' + j.matches.map(matchHtml).join('');
+  }
+
+  /* ================= Log ================= */
+  function renderLog() {
+    var bets = allBets().slice().reverse();
+    var shown = state.logAll ? bets : bets.slice(0, 10);
+    var pend = bets.filter(function (x) { return x.b.pending; }).length;
+    $('#logMeta').textContent = NAMES[state.model] + ' · umbral ' + state.thr.toFixed(2) + ' · ' + bets.length + ' apuestas ficticias' + (pend ? ' (' + pend + ' pendientes de J' + N_J + ')' : '') + ' · más recientes primero';
+    $('#logTable').innerHTML = '<thead><tr><th>Partido</th><th class="r">Cuota jue</th><th class="r">CLV</th><th class="r">Fichas</th></tr></thead><tbody>' +
+      shown.map(function (x) {
+        var m = x.m, b = x.b;
+        var sel = OUT[b.k] + ' (' + (b.k === 0 ? m.h.c : b.k === 2 ? m.a.c : 'empate') + ')';
+        return '<tr><td>J' + m.J + ' · ' + m.h.c + '-' + m.a.c + '<div class="sub">' + sel + (m.played ? ' · ' + m.score[0] + '-' + m.score[1] : ' · pendiente') + '</div></td>' +
+          '<td class="r num">' + b.odds.toFixed(2) + '</td>' +
+          '<td class="r num ' + (b.pending ? 'muted' : (b.clv > 0 ? 'delta-good' : 'delta-bad')) + '">' + (b.pending ? '—' : pct1(b.clv)) + '</td>' +
+          '<td class="r num ' + (b.pending ? 'muted' : (b.profit > 0 ? 'delta-good' : 'delta-bad')) + '">' + (b.pending ? '·' : sg(b.profit, 2)) + '</td></tr>';
+      }).join('') + '</tbody>';
+    var more = $('#logMore');
+    if (bets.length <= 10) { more.style.display = 'none'; }
+    else { more.style.display = ''; more.textContent = state.logAll ? 'Mostrar solo las 10 más recientes' : 'Mostrar todas (' + bets.length + ')'; }
+  }
+
+  /* ================= Wiring ================= */
+  function setPressed(groupSel, attr, val) {
+    Array.prototype.forEach.call(document.querySelectorAll(groupSel + ' button'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute(attr) === val)); });
+  }
+  function applyTheme(t) {
+    var root = document.documentElement;
+    if (t === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
+    setPressed('#themeSeg', 'data-theme-set', t);
+  }
+  function renderAll() { renderVerdict(); renderKpis(); renderChart(); renderPaper(); renderCalib(); renderChips(); renderMatches(); renderLog(); }
+
+  $('#themeSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    var t = b.getAttribute('data-theme-set'); applyTheme(t); store('mh-theme', t);
+  });
+  $('#modeSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    state.mode = b.getAttribute('data-mode'); setPressed('#modeSeg', 'data-mode', state.mode);
+    $('#cTitle').textContent = state.mode === 'delta' ? 'Diferencia acumulada contra el mercado' : 'Log-loss acumulado contra el mercado';
+    renderChart();
+  });
+  $('#modelSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    state.model = b.getAttribute('data-model'); setPressed('#modelSeg', 'data-model', state.model);
+    renderPaper(); renderCalib(); renderMatches(); renderLog();
+  });
+  $('#thr').addEventListener('input', function (e) { state.thr = parseFloat(e.target.value); renderPaper(); renderMatches(); renderLog(); });
+  $('#stake').addEventListener('input', function (e) { state.stake = parseInt(e.target.value, 10); renderPaper(); renderMatches(); renderLog(); });
+  $('#chips').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    state.J = parseInt(b.getAttribute('data-j'), 10); renderChips(); renderMatches();
+  });
+  $('#matchList').addEventListener('click', function (e) {
+    if (e.target.closest('details')) return;
+    var b = e.target.closest('[data-open]'); if (!b) return;
+    var id = b.getAttribute('data-open'); state.open[id] = !state.open[id]; renderMatches();
+    var again = document.querySelector('button[data-toggle="' + id + '"]'); if (again) again.focus();
+  });
+  $('#logMore').addEventListener('click', function () { state.logAll = !state.logAll; renderLog(); });
+
+  var rt = null;
+  window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(renderChart, 120); });
+
+  var savedTheme = store('mh-theme');
+  applyTheme(savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : 'auto');
+  // Open the first match of the latest played jornada so the detail view is discoverable
+  state.open[DATA.jornadas[LAST_PLAYED - 1].matches[0].id] = true;
+  renderAll();
+})();
+</script>
