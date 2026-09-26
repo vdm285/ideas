@@ -360,7 +360,7 @@ function nameOf(f) {
 features.forEach(f => { f.name = nameOf(f); f.area = d3.geoArea(f); });
 const byCode = {};
 features.forEach(f => { if (f.properties.a) byCode[f.properties.a] = f; });
-const fold = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+const fold = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
 /* ---------- State ---------- */
 const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

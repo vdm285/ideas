@@ -524,7 +524,7 @@ function fillOrder(c) {
     .forEach(k => { for (let j = 0; j < c[k]; j++) out.push(k); });
   return out;
 }
-const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
 const EL = SYM.map((s, i) => {
   const z = i + 1, conf = configOf(z);
