@@ -86,7 +86,7 @@ a{color:var(--accent)}
 .hook .fact{margin:0}
 .dig{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .dig p{margin:0;flex:1 1 220px}
-.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-left:auto}
 .sheettop{display:contents}
 .sbar{display:none}
 .tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-weight:700;font-size:.9rem;padding:3px 9px;border-radius:6px;white-space:nowrap;transform:translate(-50%,-140%)}
@@ -117,7 +117,7 @@ a{color:var(--accent)}
 .panel > *{flex-shrink:0}
 .handle{display:none;align-self:center;width:100%;justify-content:center;align-items:center;gap:8px;border:0;background:none;padding:6px 0 2px;cursor:pointer;color:var(--muted);font-size:.8rem;font-weight:700}
 .handle::before{content:"";width:44px;height:5px;border-radius:5px;background:var(--line)}
-.head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:8px 10px}
 .panel h2{font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,4.4vw,2.2rem);line-height:1.1;margin:0;text-wrap:balance;min-width:0}
 .panel h2 .flag{font-size:.85em;margin-right:.25em}
 .facts{margin:4px 0 0;color:var(--muted);font-size:.95rem}
@@ -163,8 +163,8 @@ footer p{margin:0}
   .sheettop{display:flex;flex-direction:column;gap:6px;position:sticky;top:-4px;background:var(--surface);z-index:2;padding-bottom:6px}
   .sbar{display:block}
   .sbar .search{max-width:none}
-  .sbar #random{width:44px;padding:0;justify-content:center}
-  .sbar #random .txt{display:none}
+  .sbar #random,.sbar #quiz{width:44px;padding:0;justify-content:center;flex:none}
+  .sbar .txt{display:none}
   #spin{display:none!important}
   .panel h2{cursor:pointer}
 }
@@ -213,7 +213,7 @@ footer p{margin:0}
         </button>
         <button class="btn" id="quiz" type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
-          ¿Dónde está…?
+          <span class="txt">¿Dónde está…?</span>
         </button>
       </div>
       <form class="search" id="searchForm" autocomplete="off">
@@ -821,13 +821,13 @@ function seasonOf(f) {
   if (Math.abs(lat) < 23.5) {
     const northRain = m >= 5 && m <= 9; // jun–oct
     const rain = lat >= 0 ? northRain : !northRain;
-    return (kids ? "Allá casi no hay invierno: " : "En los trópicos el año va más por lluvias que por frío: ") +
+    return (kids ? (f === byCode.MX ? "Aquí" : "Allá") + " casi no hay invierno: " : "En los trópicos el año va más por lluvias que por frío: ") +
       "ahora " + (rain ? "suele ser temporada de lluvias" : "suele ser temporada de secas") + " (aprox.)";
   }
   const north = md >= 220 && md < 521 ? "primavera" : md >= 521 && md < 822 ? "verano" : md >= 822 && md < 1121 ? "otoño" : "invierno";
   const flip = { primavera: "otoño", verano: "invierno", "otoño": "primavera", invierno: "verano" };
   const s = lat >= 0 ? north : flip[north];
-  return "Ahora allá es " + s + (lat < 0 ? " (está al sur del ecuador: las estaciones van al revés que en México)" : "");
+  return "Ahora " + (f === byCode.MX ? "aquí" : "allá") + " es " + s + (lat < 0 ? " (está al sur del ecuador: las estaciones van al revés que en México)" : "");
 }
 function sizeRank(f) {
   const r = bySize.indexOf(f) + 1;
@@ -1100,8 +1100,13 @@ $("quiz").onclick = quizStart;
 /* ---------- Phones: search + Sorpréndeme live in a sticky bar at the top of the sheet ---------- */
 const searchHome = $("searchForm").parentNode, searchNext = $("searchForm").nextElementSibling, ctrlBox = document.querySelector(".controls");
 function placeSearch() {
-  if (phone.matches) { $("sbar").append($("searchForm")); $("searchForm").append($("random")); $("random").setAttribute("aria-label", "Sorpréndeme"); }
-  else { searchHome.insertBefore($("searchForm"), searchNext); ctrlBox.insertBefore($("random"), $("quiz")); $("random").removeAttribute("aria-label"); }
+  if (phone.matches) {
+    $("sbar").append($("searchForm")); $("searchForm").append($("random"), $("quiz"));
+    $("random").setAttribute("aria-label", "Sorpréndeme"); $("quiz").setAttribute("aria-label", "Juego: ¿Dónde está…?");
+  } else {
+    searchHome.insertBefore($("searchForm"), searchNext); ctrlBox.append($("random"), $("quiz"));
+    $("random").removeAttribute("aria-label"); $("quiz").removeAttribute("aria-label");
+  }
 }
 if (phone.addEventListener) phone.addEventListener("change", placeSearch);
 placeSearch();
