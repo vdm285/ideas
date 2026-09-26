@@ -1,0 +1,678 @@
+<title>Cámara del tiempo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --bg:#E3E7E5;--surface:#F4F6F5;--surface-2:#D6DDDA;--ink:#141D1A;--ink-2:#4A5852;--line:#C2CBC7;
+  --accent:#0A6963;--accent-ink:#FFFFFF;--tez:#8E3A2B;--tez-soft:#F0DCD6;--bezel:#0B0F0E;
+  --f-display:'Archivo','Arial Narrow',system-ui,sans-serif;
+  --f-body:'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){color-scheme:dark;--bg:#0D1211;--surface:#151C1A;--surface-2:#26302D;--ink:#E1E9E5;--ink-2:#9DADA7;--line:#2B3733;--accent:#4BC2B4;--accent-ink:#05201D;--tez:#E5846A;--tez-soft:#3A1E18;--bezel:#040606;}
+}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0D1211;--surface:#151C1A;--surface-2:#26302D;--ink:#E1E9E5;--ink-2:#9DADA7;--line:#2B3733;--accent:#4BC2B4;--accent-ink:#05201D;--tez:#E5846A;--tez-soft:#3A1E18;--bezel:#040606;}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
+.page{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.kicker{margin:0 0 4px;font:500 11.5px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+h1{margin:0;font-family:var(--f-display);font-weight:800;font-stretch:118%;font-size:clamp(28px,6vw,40px);line-height:1.02;letter-spacing:-.01em;text-wrap:balance}
+.lede{margin:8px 0 0;max-width:52ch;color:var(--ink-2)}
+.chip{display:inline-flex;align-items:center;font:600 11.5px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--tez);background:var(--tez-soft);border-radius:999px;padding:7px 10px;white-space:nowrap}
+.app{display:grid;gap:22px;grid-template-columns:minmax(0,1fr);align-items:start}
+@media (min-width:880px){
+  .app{grid-template-columns:minmax(320px,430px) minmax(0,1fr);gap:28px}
+  .cam{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px)}
+}
+.cam{display:grid;gap:12px;min-width:0}
+.side{display:grid;gap:16px;min-width:0}
+.vf{position:relative;width:100%;aspect-ratio:4/5;max-height:62vh;max-height:62svh;border-radius:24px;border:6px solid var(--bezel);background:#000;overflow:hidden;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;outline:none}
+.vf:focus-visible{box-shadow:0 0 0 3px var(--accent)}
+.vf.dragging{cursor:grabbing}
+.vf svg.scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.layer{opacity:0;transition:opacity .5s ease}
+.layer.on{opacity:1}
+.hud{position:absolute;left:10px;right:10px;top:10px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;pointer-events:none}
+.hud span{font:500 10.5px/1.3 var(--f-mono);color:#fff;background:rgba(8,12,11,.48);padding:5px 7px;border-radius:6px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.hud .gps{text-align:right}
+.hud .rec::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff5a4a;margin-right:6px;vertical-align:0}
+.hud .rec.past::before{background:#f2c14e}
+.reticle{position:absolute;left:50%;top:55%;width:34px;height:34px;margin:-17px 0 0 -17px;pointer-events:none;opacity:.75}
+.stamp{position:absolute;left:12px;bottom:14px;max-width:calc(100% - 24px);pointer-events:none;background:rgba(142,58,43,.94);color:#fff;border:1.5px solid rgba(255,255,255,.8);box-shadow:0 0 0 3px rgba(142,58,43,.94);padding:6px 9px 5px;border-radius:2px;transform:rotate(-2.5deg);transform-origin:left bottom}
+.stamp b{display:block;font:700 12px/1.1 var(--f-mono);letter-spacing:.1em}
+.stamp small{display:block;font:500 10px/1.3 var(--f-mono);margin-top:3px}
+.strip{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.strip svg{display:block;width:100%;height:auto}
+.strip .fov{position:absolute;top:0;bottom:0;left:25%;width:50%;border-left:1.5px solid var(--accent);border-right:1.5px solid var(--accent);background:transparent;background:color-mix(in srgb,var(--accent) 10%,transparent);pointer-events:none}
+.strip .needle{position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:var(--accent);pointer-events:none}
+.tk{stroke:var(--ink-2);stroke-width:1}
+.tk.mj{stroke:var(--ink);stroke-width:1.5}
+.tl{fill:var(--ink);font:600 8.5px var(--f-mono);text-anchor:middle}
+.mk{fill:var(--tez)}
+.turn{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px}
+.heading{text-align:center;font:600 20px/1.1 var(--f-mono);font-variant-numeric:tabular-nums}
+.heading small{display:block;font:500 11px/1.3 var(--f-mono);color:var(--ink-2);margin-top:3px}
+.btn{font:600 14px/1 var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;min-height:44px;padding:0 14px;cursor:pointer;touch-action:manipulation}
+.btn:hover{border-color:var(--ink-2)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn:focus-visible,summary:focus-visible,.mark:focus-visible,.around button:focus-visible,#era:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hint{margin:-4px 0 0;text-align:center;font:500 11.5px/1.3 var(--f-mono);color:var(--ink-2)}
+.hold{width:100%;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.era{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 12px 8px;display:grid;gap:4px}
+.era-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.lbl{display:block;font:600 11px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.era-note{font:500 11px/1.3 var(--f-mono);color:var(--ink-2)}
+#era{-webkit-appearance:none;appearance:none;display:block;height:34px;background:transparent;width:calc(83.333% + 26px);margin:0 0 0 calc(8.333% - 13px);cursor:pointer;--p:60%}
+#era::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--accent) 0 var(--p),var(--surface-2) var(--p) 100%)}
+#era::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:50%;background:var(--accent);border:4px solid var(--surface);box-shadow:0 0 0 1px var(--accent),0 2px 6px rgba(0,0,0,.25);margin-top:-10px}
+#era::-moz-range-track{height:6px;border-radius:3px;background:var(--surface-2)}
+#era::-moz-range-progress{height:6px;border-radius:3px;background:var(--accent)}
+#era::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);border:4px solid var(--surface);box-shadow:0 0 0 1px var(--accent)}
+.marks{display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+.mark{background:none;border:0;padding:4px 0;color:var(--ink-2);cursor:pointer;text-align:center;font-family:inherit;border-radius:8px;min-width:0}
+.mark b{display:block;font:600 12px/1.2 var(--f-mono);color:var(--ink);white-space:nowrap}
+.mark span{display:block;font:500 10.5px/1.2 var(--f-body);font-stretch:76%;margin-top:2px;overflow-wrap:anywhere}
+.mark[aria-pressed="true"] b{color:var(--accent)}
+.mark[aria-pressed="true"] span{color:var(--ink)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.panel>section{padding-block:14px}
+.panel>section:first-child{padding-top:0}
+.panel>section:last-child{padding-bottom:0}
+.panel>section+section{border-top:1px solid var(--line)}
+.eyebrow{margin:0 0 6px;font:600 11px/1.3 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tez)}
+.eyebrow.live{color:var(--accent)}
+h2{margin:0;font-family:var(--f-display);font-weight:750;font-stretch:108%;font-size:22px;line-height:1.15;text-wrap:balance}
+.ago{margin:4px 0 0;color:var(--ink-2);font:500 13px/1.4 var(--f-mono)}
+.meter{display:flex;gap:4px;margin:8px 0 2px}
+.meter i{flex:0 0 26px;height:8px;border-radius:2px;background:var(--surface-2)}
+.meter i.on{background:var(--accent)}
+.panel p{margin:6px 0 0;max-width:62ch}
+.front h3{margin:6px 0 0;font-family:var(--f-display);font-weight:700;font-size:18px;font-stretch:104%;line-height:1.25}
+.around{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.around button{display:inline-flex;align-items:center;gap:6px;font:500 13px/1.2 var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:7px 11px 7px 8px;cursor:pointer;min-height:36px;text-align:left}
+.around button:hover{border-color:var(--ink-2)}
+.around button svg{flex:none;color:var(--accent)}
+.around em{font-style:normal;color:var(--ink-2);font-family:var(--f-mono);font-size:11px;white-space:nowrap}
+.src{margin:8px 0 0;padding-left:18px;display:grid;gap:5px;font-size:13.5px}
+.src span{color:var(--ink-2);font-family:var(--f-mono);font-size:11.5px}
+.ai{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:0 18px}
+.ai summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:16px 0;font:700 16px/1.2 var(--f-display);font-stretch:106%}
+.ai summary::-webkit-details-marker{display:none}
+.ai summary .opt{font:600 10.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-left:auto}
+.ai summary::after{content:"+";font:500 20px/1 var(--f-mono);color:var(--ink-2)}
+.ai[open] summary::after{content:"\2212"}
+.ai-body{padding-bottom:18px;display:grid;gap:10px}
+.ai-body p{margin:0;font-size:14px;color:var(--ink-2);max-width:62ch}
+textarea{width:100%;min-height:210px;resize:vertical;font:12.5px/1.5 var(--f-mono);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+#copyMsg{font-size:13px;color:var(--ink-2)}
+.story{display:grid;gap:14px;border-top:1px solid var(--line);padding-top:22px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));counter-reset:s}
+.steps li{counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;font-size:14px;color:var(--ink-2)}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font:700 12px/1 var(--f-mono);margin-bottom:8px}
+.steps b{display:block;font-family:var(--f-display);font-size:15.5px;color:var(--ink);margin-bottom:2px}
+.notes{font-size:14px;color:var(--ink-2)}
+.notes h3{margin:0 0 6px;font:600 11px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.notes ul{margin:0;padding-left:18px;display:grid;gap:4px;max-width:75ch}
+footer{font:500 11.5px/1.6 var(--f-mono);color:var(--ink-2);border-top:1px solid var(--line);padding-top:14px}
+@media (prefers-reduced-motion:reduce){.layer{transition:none}}
+</style>
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><defs id="panos"></defs></svg>
+
+<div class="page">
+  <header class="top">
+    <div>
+      <p class="kicker">Boceto · Zócalo, Ciudad de México</p>
+      <h1>Cámara del tiempo</h1>
+      <p class="lede">Apunta el celular, elige una época y mira ese mismo lugar como pudo verse.</p>
+    </div>
+    <span class="chip">Datos de muestra</span>
+  </header>
+
+  <main class="app">
+    <section class="cam" aria-label="Cámara simulada">
+      <div class="vf" id="vf" tabindex="0" aria-describedby="vfHelp">
+        <svg class="scene" id="scene" viewBox="0 0 240 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Vista simulada del Zócalo">
+          <g class="layer" id="L0"></g><g class="layer" id="L1"></g>
+        </svg>
+        <div class="hud"><span class="rec" id="rec">EN VIVO · simulado</span><span class="gps">19.4324° N · 99.1330° O<br>±15 m · muestra</span></div>
+        <svg class="reticle" viewBox="0 0 34 34" aria-hidden="true"><path d="M17 3V12M17 22V31M3 17H12M22 17H31" stroke="#ffffff" stroke-width="1.5" fill="none"/><circle cx="17" cy="17" r="1.6" fill="#ffffff"/></svg>
+        <div class="stamp" id="stamp" hidden><b>RECONSTRUCCIÓN ARTÍSTICA</b><small id="stampConf">No es una foto</small></div>
+      </div>
+      <p id="vfHelp" hidden>Arrastra la vista o usa las flechas del teclado para girar.</p>
+      <div class="strip" aria-hidden="true">
+        <svg id="strip" viewBox="0 0 240 34" preserveAspectRatio="xMidYMid meet"><g id="ticks"></g><g id="smarks"></g></svg>
+        <div class="fov"></div><div class="needle"></div>
+      </div>
+      <div class="turn">
+        <button class="btn" id="turnL" type="button" aria-label="Girar 15 grados a la izquierda">◀ Girar</button>
+        <div class="heading" aria-live="polite"><span id="hdeg">008°</span><small id="hdir">norte</small></div>
+        <button class="btn" id="turnR" type="button" aria-label="Girar 15 grados a la derecha">Girar ▶</button>
+      </div>
+      <p class="hint">Arrastra la vista para girar, o usa los botones.</p>
+      <div class="era">
+        <div class="era-head"><label class="lbl" for="era">Época</label><span class="era-note">cada paso salta más atrás</span></div>
+        <input type="range" id="era" min="0" max="5" step="1" value="3">
+        <div class="marks" id="marks"></div>
+      </div>
+      <button class="btn hold" id="hold" type="button">Mantén presionado para ver hoy</button>
+    </section>
+
+    <div class="side">
+      <article class="panel" id="panel">
+        <section>
+          <p class="eyebrow" id="pEyebrow">Reconstrucción artística · no es una foto</p>
+          <h2 id="pTitle">México-Tenochtitlan, hacia 1500</h2>
+          <p class="ago" id="pAgo"></p>
+        </section>
+        <section>
+          <span class="lbl">Qué tan seguros estamos</span>
+          <div class="meter" id="meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <p id="pConf"></p>
+        </section>
+        <section class="front">
+          <span class="lbl">Frente a ti · <span id="pHead">008° N</span></span>
+          <h3 id="fName"></h3>
+          <p id="fNote"></p>
+        </section>
+        <section>
+          <span class="lbl">Qué verías</span>
+          <p id="pSee"></p>
+        </section>
+        <section>
+          <span class="lbl">Alrededor · toca para girar</span>
+          <ul class="around" id="around"></ul>
+        </section>
+        <section>
+          <span class="lbl">En qué se basa (muestra)</span>
+          <ul class="src" id="pSrc"></ul>
+        </section>
+        <section>
+          <span class="lbl">Lo que no sabemos</span>
+          <p id="pUnk"></p>
+        </section>
+      </article>
+
+      <details class="ai" id="ai">
+        <summary>Hazlo con tu IA <span class="opt">opcional</span></summary>
+        <div class="ai-body">
+          <p>En la app real tomarías una foto aquí mismo. Esta instrucción ya sabe dónde estás, hacia dónde miras y qué época elegiste. La pegas en tu Gemini o ChatGPT junto con la foto. Costo para el proyecto: $0.</p>
+          <textarea id="prompt" readonly aria-label="Instrucción para tu IA"></textarea>
+          <div class="row"><button class="btn primary" id="copy" type="button">Copiar instrucción</button><span id="copyMsg" role="status"></span></div>
+        </div>
+      </details>
+    </div>
+  </main>
+
+  <section class="story" aria-labelledby="storyH">
+    <h2 id="storyH">Cómo sería en tu celular</h2>
+    <ol class="steps">
+      <li><b>Abres el enlace.</b>Sin cuenta y sin instalar nada: la vista aparece al instante. En iPhone, un toque para permitir la brújula.</li>
+      <li><b>Apuntas.</b>La vista gira contigo y el panel dice qué tienes enfrente, antes y hoy.</li>
+      <li><b>Deslizas la época.</b>Hoy, 1910, 1700, Tenochtitlan, hace 14 mil años y el Cretácico.</li>
+      <li><b>Ves qué tan seguro es.</b>Cada vista pasada lleva el sello de reconstrucción artística, un nivel de confianza y sus fuentes.</li>
+    </ol>
+    <div class="notes">
+      <h3>Qué es real y qué no en este boceto</h3>
+      <ul>
+        <li>La cámara, el GPS y la brújula están simulados: arrastra la vista o usa los botones para girar.</li>
+        <li>Los dibujos son esquemas con ángulos a escala: 60° de campo, como un celular en vertical, y montañas a su altura real sobre el horizonte. En la app serían imágenes revisadas para cada dirección.</li>
+        <li>Textos, fechas y fuentes son de muestra y hay que verificarlos antes de construir.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>Boceto conceptual · 25 sep 2026 · Idea de Victor, boceto de Claude · Datos de muestra, no es un producto</footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+/* ---------- geometry: 4 units per degree, horizon at y=165, eye height 1.6 m ---------- */
+var U=4,H=165,VH=300,EYE=1.6,FOV=60,R=Math.PI/180,UPR=U/R;
+function f1(v){return Math.round(v*10)/10;}
+function X(a){return f1(a*U);}
+function Y(z,d){return f1(H-UPR*Math.atan((z-EYE)/d));}
+function w360(a){return ((a%360)+360)%360;}
+function w180(a){a=w360(a);return a>180?a-360:a;}
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+/* ---------- colour tone per era (1910 = sepia photo, 1700 = oil painting) ---------- */
+function h2r(h){return [1,3,5].map(function(i){return parseInt(h.slice(i,i+2),16);});}
+function r2h(a){return '#'+a.map(function(v){return Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0');}).join('');}
+var TONES={
+  sepia:function(c){var r=c[0],g=c[1],b=c[2];return [.393*r+.769*g+.189*b,.349*r+.686*g+.168*b,.272*r+.534*g+.131*b].map(function(v){return v*.84+16;});},
+  oil:function(c){var r=c[0],g=c[1],b=c[2],l=.3*r+.59*g+.11*b;return [(r*.72+l*.28)*1.05+8,(g*.72+l*.28)*.99+4,(b*.72+l*.28)*.84];}
+};
+var TONE=null,G='';
+function C(h){return (TONE&&h.charAt(0)==='#')?r2h(TONE(h2r(h))):h;}
+
+/* ---------- drawing primitives ---------- */
+function P(pts,fill,extra){return '<polygon points="'+pts.map(function(p){return p[0]+','+p[1];}).join(' ')+'" fill="'+C(fill)+'"'+(extra?' '+extra:'')+'/>';}
+function Rc(x,y,w,h,fill,extra){return '<rect x="'+f1(x)+'" y="'+f1(y)+'" width="'+f1(Math.max(w,0))+'" height="'+f1(Math.max(h,0))+'" fill="'+C(fill)+'"'+(extra?' '+extra:'')+'/>';}
+function arch(x,yt,w,yb,fill){var r=w/2;if(yt+r>yb)yt=yb-r;return '<path d="M'+f1(x)+' '+f1(yb)+'V'+f1(yt+r)+'A'+f1(r)+' '+f1(r)+' 0 0 1 '+f1(x+w)+' '+f1(yt+r)+'V'+f1(yb)+'Z" fill="'+C(fill)+'"/>';}
+function obj(az,d){return {cx:X(az),s:UPR/d,y:function(z){return Y(z,d);}};}
+function slab(q,cx,w,z0,z1,col){return Rc(cx-w/2,q.y(z1),w,q.y(z0)-q.y(z1),col);}
+function range(a0,a1,step){var A=[];for(var a=a0;a<a1;a+=step)A.push(a);A.push(a1);return A;}
+
+/* a straight facade seen from the viewer: normal azimuth n, perpendicular distance d (m), height h (m) */
+function wall(o){
+  var dist=function(a){return o.d/Math.cos((a-o.n)*R);};
+  var A=range(o.a0,o.a1,1);
+  var band=function(z0,z1){return A.map(function(a){return [X(a),Y(z1,dist(a))];}).concat(A.slice().reverse().map(function(a){return [X(a),Y(z0,dist(a))];}));};
+  var s=P(band(0,o.h),o.fill),a,D,w;
+  if(o.base)s+=P(band(0,o.base),o.baseColor);
+  if(o.band)s+=P(band(o.h-o.band,o.h),o.bandColor);
+  if(o.floors&&o.step){
+    var fh=o.h/o.floors;
+    for(var f=0;f<o.floors;f++){
+      var arc=o.arcade&&f===0,z1=arc?0:f*fh+fh*.3,z2=arc?fh*.8:f*fh+fh*.75;
+      for(a=o.a0+o.step/2;a<=o.a1-o.step/2+1e-6;a+=o.step){
+        D=dist(a);w=UPR*Math.atan((arc?(o.arcW||3.4):(o.winW||1.5))/D);
+        var x=X(a)-w/2,yt=Y(z2,D),yb=Y(z1,D);
+        if(arc)s+=arch(x,yt,w,yb,o.arcColor||'#3a302b');
+        else{if(o.frame)s+=Rc(x-w*.22,yt-(yb-yt)*.12,w*1.44,(yb-yt)*1.24,o.frame);s+=Rc(x,yt,w,yb-yt,o.win||'#40362f');}
+      }
+    }
+  }
+  if(o.doors){for(a=o.a0+o.doors/2;a<=o.a1-o.doors/2+1e-6;a+=o.doors){D=dist(a);w=UPR*Math.atan(1.8/D);s+=Rc(X(a)-w/2,Y(2.3,D),w,Y(0,D)-Y(2.3,D),o.doorColor||'#3a2d26');}}
+  if(o.merlons){for(a=o.a0+o.merlons/2;a<=o.a1-o.merlons/2+1e-6;a+=o.merlons){D=dist(a);w=UPR*Math.atan(.8/D);s+=Rc(X(a)-w/2,Y(o.h+1,D),w,Y(o.h,D)-Y(o.h+1,D),o.merlonColor||o.fill);}}
+  if(o.gardens){for(a=o.a0+2;a<o.a1-1;a+=o.gardens){D=dist(a);var k=UPR/D;s+='<ellipse cx="'+X(a)+'" cy="'+Y(o.h+.6,D)+'" rx="'+f1(1.8*k)+'" ry="'+f1(1.1*k)+'" fill="'+C('#5f7d45')+'"/>';}}
+  if(o.cornice)s+='<polyline points="'+A.map(function(a){return X(a)+','+Y(o.h,dist(a));}).join(' ')+'" fill="none" stroke="'+C(o.cornice)+'" stroke-width=".9"/>';
+  return s;
+}
+
+function base(k,s1,s2,g1,g2){
+  G+='<linearGradient id="sky-'+k+'" gradientUnits="userSpaceOnUse" x1="0" y1="-10" x2="0" y2="'+H+'"><stop offset="0" stop-color="'+C(s1)+'"/><stop offset="1" stop-color="'+C(s2)+'"/></linearGradient>'+
+     '<linearGradient id="gnd-'+k+'" gradientUnits="userSpaceOnUse" x1="0" y1="'+H+'" x2="0" y2="'+VH+'"><stop offset="0" stop-color="'+C(g1)+'"/><stop offset="1" stop-color="'+C(g2)+'"/></linearGradient>';
+  return '<rect x="-2" y="-60" width="1444" height="'+(H+60)+'" fill="url(#sky-'+k+')"/><rect x="-2" y="'+H+'" width="1444" height="'+(VH-H+20)+'" fill="url(#gnd-'+k+')"/>';
+}
+function haze(k,col){
+  G+='<linearGradient id="haze-'+k+'" gradientUnits="userSpaceOnUse" x1="0" y1="'+(H-26)+'" x2="0" y2="'+(H+2)+'"><stop offset="0" stop-color="'+C(col)+'" stop-opacity="0"/><stop offset="1" stop-color="'+C(col)+'" stop-opacity=".6"/></linearGradient>';
+  return '<rect x="-2" y="'+(H-26)+'" width="1444" height="28" fill="url(#haze-'+k+')"/>';
+}
+function clouds(list,op){
+  return list.map(function(c){var x=X(c[0]),y=H-c[1],sc=c[2];
+    return '<g fill="'+C('#ffffff')+'" opacity="'+op+'"><ellipse cx="'+x+'" cy="'+y+'" rx="'+f1(16*sc)+'" ry="'+f1(4.5*sc)+'"/><ellipse cx="'+f1(x-7*sc)+'" cy="'+f1(y-3*sc)+'" rx="'+f1(8*sc)+'" ry="'+f1(5*sc)+'"/><ellipse cx="'+f1(x+5*sc)+'" cy="'+f1(y-4.5*sc)+'" rx="'+f1(9*sc)+'" ry="'+f1(6.5*sc)+'"/></g>';}).join('');
+}
+function paving(col,op){
+  return [3,4.2,5.8,8,11,15,21,30,44].map(function(d){var y=Y(0,d);return '<line x1="-2" y1="'+y+'" x2="1442" y2="'+y+'" stroke="'+C(col)+'" stroke-width="'+f1(Math.max(.3,6/d))+'" opacity="'+op+'"/>';}).join('');
+}
+function ripples(col,op,r){
+  var s='';for(var i=0;i<16;i++){var d=2.6*Math.pow(1.32,i),y=Y(0,d);
+    s+='<line x1="-2" y1="'+y+'" x2="1442" y2="'+y+'" stroke="'+C(col)+'" stroke-width="'+f1(Math.max(.3,4/d))+'" stroke-dasharray="'+f1(Math.max(2,180/d))+' '+f1(Math.max(3,270/d))+'" stroke-dashoffset="'+f1(r()*100)+'" opacity="'+op+'"/>';}
+  return s;
+}
+
+/* mountains around the Basin of Mexico, true angular height above the horizon (degrees) */
+var FAR=[[113,2.75,3.6,'r',1],[118.5,2.95,3.4,'r',1],[124,2.7,3.2,'r',1],[130.5,2.62,4.4,'c',1],[205,2.9,9,'r',0],[212,3.45,5.5,'r',0],[250,2.4,20,'r',0],[276,2.7,15,'r',0],[70,.9,32,'r',0],[172,.8,26,'r',0]];
+var NEAR=[[352,2.9,20,'r',0],[8,1.7,6,'r',0],[127,1.5,9,'r',0],[150,1.05,3.2,'r',0]];
+function ridge(peaks,a,b){var m=b;peaks.forEach(function(p){var dd=Math.abs(w180(a-p[0]));if(dd>=p[2])return;var t=dd/p[2];var v=p[3]==='c'?p[1]*Math.min(1,(1-t)*1.12):p[1]*Math.pow(Math.cos(t*Math.PI/2),1.3);if(v>m)m=v;});return m;}
+function mrange(peaks,b,fill){var pts=[];for(var a=-1;a<=361;a+=.5){var e=ridge(peaks,a,b)+.06*Math.sin(a*R*17)+.04*Math.sin(a*R*41);pts.push([X(a),f1(H-U*Math.max(0,e))]);}pts.push([X(361),H+1],[X(-1),H+1]);return P(pts,fill);}
+function snow(peaks,fill,frac){return peaks.filter(function(p){return p[4];}).map(function(p){var sl=f1(H-U*p[1]*frac),top=[];for(var a=p[0]-p[2];a<=p[0]+p[2];a+=.25){top.push([X(a),Math.min(f1(H-U*ridge(peaks,a,0)),sl)]);}return P(top.concat([[X(p[0]+p[2]),sl],[X(p[0]-p[2]),sl]]),fill);}).join('');}
+function mountains(o){return mrange(FAR,.3,o.far)+snow(FAR,o.snow,o.snowAt)+mrange(NEAR,0,o.near);}
+
+/* ---------- buildings and things ---------- */
+var CAT={stone:'#a59a87',stone2:'#b4a891',shade:'#7b705f',tower:'#9f937f',cap:'#8c8373',dome:'#c7bda7',sag:'#ad7b60',sagPortal:'#cdbd9e',door:'#3a3230'};
+function cathedral(o){
+  var c=CAT,d=145,D=function(a){return d/Math.cos(a*R);},s='';
+  var q=obj(-13.7,211),r=11*q.s,yb=q.y(40),yt=q.y(60);
+  s+='<path d="M'+f1(q.cx-r)+' '+yb+'C'+f1(q.cx-r)+' '+f1(yt+(yb-yt)*.1)+' '+f1(q.cx-r*.45)+' '+yt+' '+q.cx+' '+yt+'C'+f1(q.cx+r*.45)+' '+yt+' '+f1(q.cx+r)+' '+f1(yt+(yb-yt)*.1)+' '+f1(q.cx+r)+' '+yb+'Z" fill="'+C(c.dome)+'"/>';
+  s+=slab(q,q.cx,3.6*q.s,60,65,c.dome);
+  s+=wall({n:0,d:d,a0:-28.7,a1:-8,h:30,fill:c.stone,cornice:c.shade});
+  s+=wall({n:0,d:d,a0:-21.4,a1:-16.6,h:40,fill:c.stone2,cornice:c.shade});
+  s+=P([[X(-21.4),Y(40,D(-21.4))],[X(-19),Y(46,D(-19))],[X(-16.6),Y(40,D(-16.6))]],c.stone2);
+  [-24.5,-19,-13.2].forEach(function(a){var p=obj(a,D(a)),big=a===-19,w=(big?7:5.5)*p.s;s+=arch(p.cx-w/2,p.y(big?13:10),w,p.y(0),c.door);});
+  [-27,-10.2].forEach(function(a){
+    var p=obj(a,D(a)),w=13*p.s,zt=o.full?56:38;
+    s+=slab(p,p.cx,w,0,zt,c.tower);
+    s+=slab(p,p.cx,w+1.2*p.s,30,30.8,c.shade);
+    if(o.full){
+      [[33,44],[46,54]].forEach(function(z){[-1,1].forEach(function(k){var ww=3.2*p.s;s+=arch(p.cx+k*3.2*p.s-ww/2,p.y(z[1]),ww,p.y(z[0]),c.door);});});
+      s+=slab(p,p.cx,w+p.s,45,45.6,c.shade);
+      var b=p.y(56),t=p.y(67),hw=w*.42;
+      s+='<path d="M'+f1(p.cx-hw)+' '+b+'C'+f1(p.cx-hw)+' '+f1(t+(b-t)*.55)+' '+f1(p.cx-hw*.25)+' '+f1(t+(b-t)*.45)+' '+p.cx+' '+t+'C'+f1(p.cx+hw*.25)+' '+f1(t+(b-t)*.45)+' '+f1(p.cx+hw)+' '+f1(t+(b-t)*.55)+' '+f1(p.cx+hw)+' '+b+'Z" fill="'+C(c.cap)+'"/>';
+      s+=slab(p,p.cx,.5*p.s,67,70,c.shade);
+    } else {
+      for(var i=0;i<4;i++){s+=slab(p,p.cx-w/2+w/16+i*w/4+w/16,w/8,zt,zt+1.2+(i%2)*.9,c.tower);}
+      s+='<path d="M'+f1(p.cx-w*.6)+' '+p.y(zt+6)+'L'+f1(p.cx+w*.6)+' '+p.y(zt+6)+'M'+f1(p.cx-w*.5)+' '+p.y(zt)+'L'+f1(p.cx-w*.5)+' '+p.y(zt+6)+'M'+f1(p.cx+w*.5)+' '+p.y(zt)+'L'+f1(p.cx+w*.5)+' '+p.y(zt+6)+'" stroke="'+C('#6b5a45')+'" stroke-width=".8"/>';
+    }
+  });
+  if(o.sagrario){
+    s+=wall({n:0,d:d,a0:-8,a1:9.8,h:21,fill:c.sag,cornice:c.shade});
+    var g=obj(1,D(1)),gw=8*g.s;
+    s+=slab(g,g.cx,gw,0,27,c.sagPortal);
+    s+=P([[g.cx-gw/2,g.y(27)],[g.cx,g.y(31)],[g.cx+gw/2,g.y(27)]],c.sagPortal);
+    s+=arch(g.cx-2.5*g.s,g.y(9),5*g.s,g.y(0),c.door);
+  } else if(o.oldSide){
+    s+=wall({n:0,d:d,a0:-8,a1:9.8,h:11,fill:o.oldSide,floors:2,step:2.8,win:'#4a3f38',cornice:c.shade});
+  }
+  return s;
+}
+function palacio(o){
+  var s=wall({n:90,d:100,a0:34.6,a1:128.7,h:o.h,fill:o.fill,floors:o.floors,step:o.step||3,winW:1.8,win:o.win,frame:o.frame,cornice:o.cornice,base:1.4,baseColor:o.baseColor});
+  var a=78.7,q=obj(a,100/Math.cos((a-90)*R));
+  s+=slab(q,q.cx,14*q.s,0,o.h,o.frame||o.fill);
+  s+=arch(q.cx-2.4*q.s,q.y(7),4.8*q.s,q.y(0),'#2e2624');
+  if(o.bell){
+    s+=slab(q,q.cx,6*q.s,o.h,o.h+7,o.frame||o.fill);
+    s+=arch(q.cx-1.4*q.s,q.y(o.h+5.5),2.8*q.s,q.y(o.h+1.5),'#2e2624');
+    s+=P([[q.cx-3.5*q.s,q.y(o.h+7)],[q.cx,q.y(o.h+9.5)],[q.cx+3.5*q.s,q.y(o.h+7)]],o.cornice);
+  }
+  return s;
+}
+function flagpole(az,d){var q=obj(az,d);return slab(q,q.cx,4*q.s,0,1.2,'#8a857c')+P([[q.cx-.55*q.s,q.y(0)],[q.cx+.55*q.s,q.y(0)],[q.cx+.3*q.s,-60],[q.cx-.3*q.s,-60]],'#6e6d6a');}
+function tree(az,d,h,c1,c2){var q=obj(az,d),cr=3.6*q.s,cy=q.y(h-3.2);
+  return slab(q,q.cx,.6*q.s,0,h-4,'#4b3b2e')+'<ellipse cx="'+q.cx+'" cy="'+f1(cy)+'" rx="'+f1(cr)+'" ry="'+f1(cr*.95)+'" fill="'+C(c1)+'"/><ellipse cx="'+f1(q.cx-cr*.3)+'" cy="'+f1(cy+cr*.3)+'" rx="'+f1(cr*.7)+'" ry="'+f1(cr*.55)+'" fill="'+C(c2)+'"/>';}
+function trees(r,spans,dmin,dmax){var L=[];spans.forEach(function(sp){for(var a=sp[0];a<sp[1];a+=sp[2])L.push([a+(r()-.5)*sp[2]*.6,dmin+r()*(dmax-dmin),10+r()*3]);});L.sort(function(p,q){return q[1]-p[1];});return L.map(function(t){return tree(t[0],t[1],t[2],'#6f8a52','#58733f');}).join('');}
+function tram(az,d){var q=obj(az,d),k=q.s,x=q.cx,L=9*k,s=Rc(x-L/2,q.y(3.4),L,q.y(.5)-q.y(3.4),'#c89b3c');
+  s+=Rc(x-L/2-.3*k,q.y(3.6),L+.6*k,q.y(3.4)-q.y(3.6),'#6b4a2a');
+  for(var i=0;i<6;i++)s+=Rc(x-L/2+(.7+i*1.35)*k,q.y(2.9),.9*k,q.y(1.9)-q.y(2.9),'#3b3a36');
+  s+='<circle cx="'+f1(x-L*.3)+'" cy="'+q.y(.35)+'" r="'+f1(.4*k)+'" fill="'+C('#2a2826')+'"/><circle cx="'+f1(x+L*.3)+'" cy="'+q.y(.35)+'" r="'+f1(.4*k)+'" fill="'+C('#2a2826')+'"/>';
+  s+='<line x1="'+f1(x+2*k)+'" y1="'+q.y(3.6)+'" x2="'+f1(x-1*k)+'" y2="'+q.y(6.2)+'" stroke="'+C('#2a2826')+'" stroke-width="'+f1(Math.max(.6,.15*k))+'"/>';
+  return s;}
+function stall(az,d,r){var q=obj(az,d),k=q.s,x=q.cx,w=(3.2+r()*1.6)*k;
+  return Rc(x-w/2,q.y(2.2),w,q.y(0)-q.y(2.2),r()<.5?'#8a6a4a':'#7a5e44')+P([[x-w/2-.4*k,q.y(2.2)],[x+w/2+.4*k,q.y(2.2)],[x+w/2,q.y(3.1)],[x-w/2,q.y(3.1)]],r()<.6?'#a4553b':'#8f7a5a')+Rc(x-w*.3,q.y(1.8),w*.6,q.y(1.1)-q.y(1.8),'#4a382a');}
+function stalls(r){var L=[];for(var i=0;i<46;i++)L.push([108+r()*192,26+r()*50]);L.sort(function(p,q){return q[1]-p[1];});return L.map(function(p){return stall(p[0],p[1],r);}).join('');}
+function waterLine(a0,a1,n,d,col){var A=range(a0,a1,1);return '<polyline points="'+A.map(function(a){return X(a)+','+Y(0,d/Math.cos((a-n)*R));}).join(' ')+'" fill="none" stroke="'+C(col)+'" stroke-width="1.5"/>';}
+function canoe(az,d){var q=obj(az,d);return '<ellipse cx="'+q.cx+'" cy="'+q.y(.2)+'" rx="'+f1(3*q.s)+'" ry="'+f1(Math.max(.5,.35*q.s))+'" fill="'+C('#3d2f25')+'"/>';}
+function tiers(q,list,col,edge){return list.map(function(t){var w=t[0],wt=w-5;return P([[f1(q.cx-w/2*q.s),q.y(t[1])],[f1(q.cx+w/2*q.s),q.y(t[1])],[f1(q.cx+wt/2*q.s),q.y(t[2])],[f1(q.cx-wt/2*q.s),q.y(t[2])]],col)+slab(q,q.cx,wt*q.s,t[2]-.8,t[2],edge);}).join('');}
+function templo(az,d){
+  var q=obj(az,d),s=tiers(q,[[82,0,10],[74,10,20],[66,20,30],[58,30,40]],'#e6dcc8','#bfb199');
+  [[-1,'#3f6fa6'],[1,'#a8382c']].forEach(function(p){var cx=q.cx+(-4+p[0]*5.5)*q.s;
+    s+=P([[f1(cx-4*q.s),q.y(0)],[f1(cx+4*q.s),q.y(0)],[f1(cx+3*q.s),q.y(40)],[f1(cx-3*q.s),q.y(40)]],'#d2c4aa');
+    var ex=cx+p[0]*3.6*q.s;s+='<line x1="'+f1(ex+p[0]*.4*q.s)+'" y1="'+q.y(0)+'" x2="'+f1(ex-p[0]*.4*q.s)+'" y2="'+q.y(40)+'" stroke="'+C(p[1])+'" stroke-width="'+f1(Math.max(.6,.8*q.s))+'"/>';});
+  [[-12,'#3f6fa6'],[12,'#a8382c']].forEach(function(p){var cx=q.cx+p[0]*q.s,w=14*q.s;
+    s+=slab(q,cx,w,40,50,'#ece6da');
+    for(var i=0;i<3;i++)s+=slab(q,cx,w,42.5+i*2.6,43.6+i*2.6,p[1]);
+    s+=slab(q,cx,w*.84,50,53.5,p[1]);
+    s+=slab(q,cx,w*.28,40,46,'#2b2320');});
+  return s;
+}
+function temple(az,d,h,col){var q=obj(az,d);return tiers(q,[[h*1.8,0,h*.5],[h*1.4,h*.5,h]],col,'#bfb199')+slab(q,q.cx,h*.6*q.s,h,h*1.35,'#ece6da')+slab(q,q.cx,h*.6*q.s,h*1.28,h*1.35,'#a8402f');}
+function ehecatl(az,d){var q=obj(az,d);return tiers(q,[[34,0,8]],'#e3d9c6','#bfb199')+slab(q,q.cx,12*q.s,8,14,'#e9e2d4')+P([[f1(q.cx-7.5*q.s),q.y(14)],[q.cx,q.y(21)],[f1(q.cx+7.5*q.s),q.y(14)]],'#a88a5c')+slab(q,q.cx,2.4*q.s,8,12,'#3a2d26');}
+function mammoth(az,d,sc,dir){
+  var q=obj(az,d),k=q.s*sc,x=q.cx,g=Y(0,d),col=C('#5b4333'),dk=C('#3f2e24'),s='';
+  var yy=function(z){return f1(g-z*k);},xx=function(m){return f1(x+dir*m*k);};
+  [-1.7,-.8,.9,1.7].forEach(function(m){s+='<rect x="'+f1(x+dir*m*k-.28*k)+'" y="'+yy(1.5)+'" width="'+f1(.56*k)+'" height="'+f1(1.5*k)+'" fill="'+(m<0?dk:col)+'"/>';});
+  s+='<ellipse cx="'+x+'" cy="'+yy(2.35)+'" rx="'+f1(2.5*k)+'" ry="'+f1(1.25*k)+'" fill="'+col+'"/>';
+  s+='<ellipse cx="'+xx(.9)+'" cy="'+yy(3.05)+'" rx="'+f1(1.2*k)+'" ry="'+f1(.8*k)+'" fill="'+col+'"/>';
+  s+='<circle cx="'+xx(2.35)+'" cy="'+yy(3)+'" r="'+f1(.95*k)+'" fill="'+col+'"/>';
+  s+='<path d="M'+xx(2.9)+' '+yy(2.7)+'Q'+xx(3.5)+' '+yy(1.6)+' '+xx(3.1)+' '+yy(.5)+'" stroke="'+col+'" stroke-width="'+f1(.45*k)+'" fill="none" stroke-linecap="round"/>';
+  s+='<path d="M'+xx(2.8)+' '+yy(2.3)+'Q'+xx(4.1)+' '+yy(1.9)+' '+xx(3.9)+' '+yy(3)+'" stroke="'+C('#eee4cf')+'" stroke-width="'+f1(.22*k)+'" fill="none" stroke-linecap="round"/>';
+  s+='<line x1="'+xx(-3)+'" y1="'+yy(.45)+'" x2="'+xx(3.6)+'" y2="'+yy(.45)+'" stroke="'+C('#b9d3d6')+'" stroke-width="'+f1(.5*k)+'" opacity=".85"/>';
+  return s;
+}
+function reeds(r){var s='';for(var a=0;a<360;a+=1.2){if(r()<.22)continue;var x=X(a+r()),h=22+r()*48,lean=(r()-.5)*10,c=r()<.5?'#6f7d3c':'#8c9a4c';
+  s+='<path d="M'+x+' '+(VH+4)+'Q'+f1(x+lean*.3)+' '+f1(VH-h*.5)+' '+f1(x+lean)+' '+f1(VH-h)+'" stroke="'+C(c)+'" stroke-width="'+f1(1+r()*1.2)+'" fill="none"/>';}return s;}
+function birds(list){return list.map(function(b){var x=X(b[0]),y=H-b[1];return '<path d="M'+f1(x-3)+' '+f1(y-1)+'Q'+f1(x-1.5)+' '+f1(y-2.2)+' '+x+' '+y+'Q'+f1(x+1.5)+' '+f1(y-2.2)+' '+f1(x+3)+' '+f1(y-1)+'" stroke="'+C('#34424a')+'" stroke-width=".7" fill="none"/>';}).join('');}
+function reefs(r){var s='';for(var i=0;i<60;i++){var a=r()*360,d=6+r()*40,q=obj(a,d),rx=(2+r()*5)*q.s,ry=Math.max(.6,UPR*1.6*(1.5+r()*2)/(d*d));
+  s+='<ellipse cx="'+q.cx+'" cy="'+Y(0,d)+'" rx="'+f1(rx)+'" ry="'+f1(ry)+'" fill="'+C(r()<.55?'#7fd0bf':'#1f7a80')+'" opacity=".75"/>';}return s;}
+function ptero(az,el,sc){var x=X(az),y=H-el,k=sc*9;
+  return '<path d="M'+f1(x-k)+' '+f1(y-k*.15)+'Q'+f1(x-k*.45)+' '+f1(y-k*.55)+' '+f1(x-k*.08)+' '+y+'L'+f1(x+k*.05)+' '+f1(y-k*.25)+'L'+f1(x+k*.3)+' '+f1(y-k*.35)+'L'+f1(x+k*.12)+' '+f1(y+k*.05)+'Q'+f1(x+k*.5)+' '+f1(y-k*.5)+' '+f1(x+k)+' '+f1(y-k*.1)+'Q'+f1(x+k*.45)+' '+f1(y+k*.05)+' '+x+' '+f1(y+k*.12)+'Q'+f1(x-k*.45)+' '+f1(y+k*.05)+' '+f1(x-k)+' '+f1(y-k*.15)+'Z" fill="'+C('#2f3c42')+'"/>';}
+function island(a0,a1,col){var pts=[];for(var a=a0;a<=a1;a+=.5){var t=(a-a0)/(a1-a0);pts.push([X(a),f1(H-U*.5*Math.pow(Math.sin(Math.PI*t),.6))]);}pts.push([X(a1),H+.5],[X(a0),H+.5]);return P(pts,col);}
+
+/* ---------- one 360° panorama per era, seen from ~20 m SE of the flagpole ---------- */
+var DRAW={
+  hoy:function(k){
+    var s=base(k,'#8db5d4','#dfe6e8','#c4bfb6','#a6a097');
+    s+=clouds([[40,72,1],[150,88,1.3],[262,64,1],[322,92,.8]],.75);
+    s+=paving('#8f897f',.45);
+    s+=wall({n:0,d:145,a0:-44,a1:-28.7,h:15,fill:'#8e5d4c',floors:3,step:2.6,win:'#3a2e2b',frame:'#cdbfa9',cornice:'#6d463a'});
+    s+=cathedral({full:true,sagrario:true});
+    s+=wall({n:0,d:145,a0:9.8,a1:34.6,h:17,fill:'#b39b82',floors:4,step:2.3,win:'#473c35',cornice:'#8d7a66'});
+    s+=palacio({h:25,floors:3,fill:'#8a4a3b',win:'#2f2624',frame:'#d8cbb5',cornice:'#6c392d',baseColor:'#5c3f37',bell:true,step:3});
+    s+=wall({n:180,d:80,a0:128.7,a1:150,h:21,fill:'#a79a8b',floors:4,step:2.6,win:'#3b3431',frame:'#d6cbb9',cornice:'#7d7266'});
+    s+=wall({n:180,d:80,a0:150,a1:215,h:22,fill:'#96533f',floors:4,step:3,arcade:true,win:'#2f2624',frame:'#d8cbb5',cornice:'#6c392d',arcColor:'#2e2622'});
+    s+=wall({n:180,d:80,a0:215,a1:240.3,h:20,fill:'#b7a48e',floors:4,step:2.6,win:'#3b3431',cornice:'#877663'});
+    s+=wall({n:270,d:140,a0:240.3,a1:300,h:18,fill:'#a0604b',floors:4,step:2.2,arcade:true,win:'#2f2624',frame:'#d8cbb5',cornice:'#6c392d'});
+    s+=wall({n:270,d:140,a0:300,a1:316,h:16,fill:'#b6a38b',floors:4,step:2.2,win:'#3b3431',cornice:'#877663'});
+    s+=flagpole(-45,28);
+    return s;
+  },
+  y1910:function(k){
+    var r=rng(19),s=base(k,'#a9c4d8','#e8ecec','#c2bba8','#a19a86');
+    s+=clouds([[20,80,1.2],[130,70,1],[230,92,1.3],[300,66,.9]],.8);
+    s+=paving('#8f887a',.3);
+    s+=wall({n:0,d:145,a0:-44,a1:-28.7,h:14,fill:'#8e5d4c',floors:3,step:2.6,win:'#3a2e2b',frame:'#cdbfa9',cornice:'#6d463a'});
+    s+=cathedral({full:true,sagrario:true});
+    s+=wall({n:0,d:145,a0:9.8,a1:34.6,h:15,fill:'#b39b82',floors:3,step:2.3,win:'#473c35',cornice:'#8d7a66'});
+    s+=palacio({h:17,floors:2,fill:'#8a4a3b',win:'#2f2624',frame:'#d8cbb5',cornice:'#6c392d',baseColor:'#5c3f37',bell:true,step:3.2});
+    s+=wall({n:180,d:80,a0:128.7,a1:150,h:16,fill:'#a79a8b',floors:3,step:2.6,win:'#3b3431',frame:'#d6cbb9',cornice:'#7d7266'});
+    s+=wall({n:180,d:80,a0:150,a1:215,h:17,fill:'#96533f',floors:2,step:3,arcade:true,win:'#2f2624',frame:'#d8cbb5',cornice:'#6c392d',arcColor:'#2e2622'});
+    s+=wall({n:180,d:80,a0:215,a1:240.3,h:16,fill:'#b7a48e',floors:3,step:2.6,win:'#3b3431',cornice:'#877663'});
+    s+=wall({n:270,d:140,a0:240.3,a1:300,h:16,fill:'#a0604b',floors:3,step:2.2,arcade:true,win:'#2f2624',frame:'#d8cbb5',cornice:'#6c392d'});
+    s+=wall({n:270,d:140,a0:300,a1:316,h:15,fill:'#b6a38b',floors:3,step:2.2,win:'#3b3431',cornice:'#877663'});
+    s+=trees(r,[[40,122,6],[138,236,6],[248,306,6],[318,330,6]],48,72);
+    s+=tram(205,40);
+    return s;
+  },
+  y1700:function(k){
+    var r=rng(7),s=base(k,'#94b3c9','#e3e3d6','#cdbd9e','#b09a78');
+    s+=clouds([[20,85,1.2],[140,70,1],[250,95,1.3]],.8);
+    s+=paving('#a38f70',.25);
+    s+=wall({n:0,d:145,a0:-44,a1:-28.7,h:12,fill:'#b19a7c',floors:2,step:2.8,win:'#3f342c',cornice:'#8a7560'});
+    s+=cathedral({full:false,sagrario:false,oldSide:'#b8a283'});
+    s+=wall({n:0,d:145,a0:9.8,a1:34.6,h:12,fill:'#b49c82',floors:2,step:2.8,win:'#3f342c',cornice:'#8a7560'});
+    s+=palacio({h:15,floors:2,fill:'#b7a386',win:'#3a302a',frame:'#d8ccb4',cornice:'#8a7560',baseColor:'#8f7d64',bell:false,step:3.4});
+    s+=waterLine(129,240,180,68,'#5f8f8c');
+    s+=canoe(170,72)+canoe(198,73);
+    s+=wall({n:180,d:80,a0:128.7,a1:150,h:12,fill:'#b8a283',floors:2,step:2.8,win:'#3f342c'});
+    s+=wall({n:180,d:80,a0:150,a1:215,h:13,fill:'#a86f55',floors:2,step:3,arcade:true,frame:'#d8ccb4',win:'#3a302a',arcColor:'#3d302a'});
+    s+=wall({n:180,d:80,a0:215,a1:240.3,h:12,fill:'#b8a283',floors:2,step:2.8,win:'#3f342c'});
+    s+=wall({n:270,d:140,a0:240.3,a1:300,h:13,fill:'#a86f55',floors:2,step:2.4,arcade:true,frame:'#d8ccb4',win:'#3a302a'});
+    s+=wall({n:270,d:140,a0:300,a1:316,h:12,fill:'#b8a283',floors:2,step:2.4,win:'#3f342c'});
+    s+=stalls(r);
+    return s;
+  },
+  y1500:function(k){
+    var s=base(k,'#6ea5d5','#d6e6ee','#e0d8c7','#cbbda4');
+    s+=clouds([[70,98,.9],[200,82,1.1],[300,104,.8]],.85);
+    s+=mountains({far:'#94a8ba',near:'#7d91a2',snow:'#f5f7f8',snowAt:.7});
+    s+=haze(k,'#e8f0f3');
+    s+=paving('#bcae94',.35);
+    s+=temple(-30,262,17,'#e4dccb')+temple(-12,236,13,'#e2d9c7')+temple(4,330,21,'#e6ddcc');
+    s+=ehecatl(17,300)+templo(26,333);
+    s+=wall({n:0,d:145,a0:-44,a1:34.6,h:3.6,fill:'#e8e0cf',band:.7,bandColor:'#a8402f',merlons:1.3});
+    s+=tree(36.3,150,14,'#51703f','#3f5c33');
+    s+=wall({n:90,d:100,a0:38,a1:128.7,h:9,fill:'#ebe3d3',band:.9,bandColor:'#a3412f',base:.8,baseColor:'#cbbfa8',doors:5.5,gardens:7});
+    s+=waterLine(129,240,180,68,'#5f9ea3');
+    s+=canoe(165,72)+canoe(201,74);
+    s+=wall({n:180,d:88,a0:128.7,a1:240.3,h:4.5,fill:'#e6dece',band:.45,bandColor:'#b0533d',doors:4.2});
+    s+=wall({n:270,d:140,a0:240.3,a1:284,h:4.5,fill:'#e6dece',band:.45,bandColor:'#b0533d',doors:3.4});
+    s+=wall({n:270,d:140,a0:284,a1:316,h:8.5,fill:'#ece3d2',band:.8,bandColor:'#a3412f',doors:3.8,merlons:2});
+    return s;
+  },
+  pleisto:function(k){
+    var r=rng(14),s=base(k,'#9fbfd6','#e6edee','#8fb0b6','#56858c');
+    s+=clouds([[20,70,1.2],[110,90,1],[190,75,1.4],[280,95,1.1],[340,60,.9]],.9);
+    s+=mountains({far:'#8499ab',near:'#6f8595',snow:'#f7f9fa',snowAt:.55});
+    s+=haze(k,'#eef3f3');
+    s+=ripples('#c4dcdf',.5,r);
+    s+=mammoth(331,98,1,1)+mammoth(318,85,1,-1)+mammoth(324,80,.6,-1);
+    s+=birds([[60,55],[64,60],[150,70],[153,66]]);
+    s+=reeds(r);
+    return s;
+  },
+  creta:function(k){
+    var r=rng(100),s=base(k,'#86c3e3','#eef3e8','#58b9bb','#2c8f95');
+    s+=clouds([[30,80,1.4],[95,65,1.1],[170,95,1.6],[250,70,1.2],[320,88,1.3]],.92);
+    s+=island(238,256,'#5d7a55');
+    s+=haze(k,'#f1f5ee');
+    s+=ripples('#a6e0d8',.55,r);
+    s+=reefs(r);
+    s+=ptero(72,72,1)+ptero(96,48,.6);
+    return s;
+  }
+};
+
+/* ---------- eras: sample content, to be verified ---------- */
+var ERAS=[
+ {key:'hoy',draw:'hoy',short:'Hoy',sub:'2026',title:'El Zócalo hoy',ago:'Ahora',conf:5,confWord:'total',confText:'Es lo que ve tu cámara. En este boceto, un dibujo.',
+  see:'Al norte, la Catedral y el Sagrario; al oriente, el Palacio Nacional; al sur, los edificios del Gobierno de la Ciudad; al poniente, los portales. Desliza la época para viajar atrás.',
+  unknown:'Nada: es el presente. En la app real aquí va la imagen en vivo de tu cámara.',
+  src:[['Tu cámara','ahora']],
+  lm:[{az:-19,n:'Catedral Metropolitana',t:'Se construyó entre 1573 y 1813.'},{az:1,n:'Sagrario Metropolitano',t:'Templo del siglo XVIII junto a la Catedral.'},{az:-45,n:'Asta bandera monumental',t:'La bandera ondea arriba, fuera del cuadro.'},{az:79,n:'Palacio Nacional',t:'Sede del Poder Ejecutivo. Su tercer piso se agregó en 1926–1929.'},{az:182,n:'Edificios del Gobierno de la Ciudad',t:'El antiguo Palacio del Ayuntamiento, con portales.'},{az:270,n:'Portal de Mercaderes',t:'Portales comerciales desde la época virreinal.'},{az:324,n:'Nacional Monte de Piedad',t:'Sobre parte del antiguo palacio de Axayácatl.'}]},
+ {key:'1910',draw:'y1910',tone:'sepia',short:'1910',sub:'Centenario',title:'La Plaza de la Constitución, hacia 1910',ago:'Hace ~116 años',conf:4,confWord:'alta',confText:'Alta: hay fotografías de la época.',
+  see:'Un jardín con árboles altos llenaba la plaza y pasaban tranvías eléctricos. La Catedral ya lucía sus torres. El Palacio Nacional tenía solo dos pisos: el tercero se agregó entre 1926 y 1929.',
+  unknown:'El jardín, los postes y las vías cambiaron varias veces en esos años. Las fotos son en blanco y negro: los colores son supuestos.',
+  src:[['Palacio Nacional: tercer piso agregado en 1926–1929','Wikipedia ES, consultado 2026-09-25'],['Fotografías de la plaza, Fototeca Nacional del INAH','Mediateca INAH, CC BY-NC-ND 4.0']],
+  phrase:'hacia 1910, en tiempos del Centenario de la Independencia',rules:'El Palacio Nacional tenía solo dos pisos (el tercero se agregó en 1926–1929). La Catedral ya tenía sus torres. La plaza era un jardín con árboles altos y había tranvías eléctricos.',
+  lm:[{az:-19,n:'Catedral Metropolitana',t:'Ya con sus torres, terminadas en 1791.'},{az:1,n:'Sagrario Metropolitano',t:'Igual que hoy.'},{az:79,n:'Palacio Nacional',t:'Con dos pisos. Hoy tiene tres.'},{az:150,n:'Jardín de la plaza',t:'Árboles y bancas. Hoy la plaza está despejada.'},{az:182,n:'Palacio del Ayuntamiento',t:'Hoy: edificios del Gobierno de la Ciudad.'},{az:205,n:'Tranvía eléctrico',t:'La ciudad tuvo tranvías eléctricos desde 1900 (muestra).'},{az:270,n:'Portal de Mercaderes',t:'Portales comerciales, como hoy.'}]},
+ {key:'1700',draw:'y1700',tone:'oil',short:'1700',sub:'Virreinato',title:'La Plaza Mayor, hacia 1700',ago:'Hace ~326 años',conf:3,confWord:'media',confText:'Media: pinturas y planos de la época.',
+  see:'Una plaza llena de puestos de mercado con techos de teja. La Catedral seguía en obra: sus torres se terminaron hasta 1791 y el Sagrario aún no existía. Al oriente, el palacio del virrey; al sur, las Casas del Cabildo y un canal con canoas.',
+  unknown:'Las pinturas de la época simplifican. La posición de cada puesto es imaginada, y el trazo exacto del canal es aproximado.',
+  src:[['Cristóbal de Villalpando, «Vista de la Plaza Mayor de México» (pintura)','1695'],['Torres de la Catedral terminadas el 14 de mayo de 1791','IMER']],
+  phrase:'hacia 1700, en la época virreinal, cuando era la Plaza Mayor',rules:'La Catedral aún no tenía sus torres completas (se terminaron en 1791) y el Sagrario todavía no existía. La plaza estaba llena de puestos de mercado de madera con techos de teja. Arquitectura virreinal de cantera y tezontle.',
+  lm:[{az:-19,n:'Catedral en obra',t:'Sin torres completas; se terminaron en 1791.'},{az:79,n:'Palacio del virrey',t:'Hoy: Palacio Nacional.'},{az:182,n:'Casas del Cabildo y canal',t:'Canal con canoas frente al Cabildo (ubicación aproximada). Hoy: Gobierno de la Ciudad.'},{az:225,n:'Puestos del mercado',t:'Cajones de madera y teja. Hoy la plaza está vacía.'},{az:270,n:'Portal de Mercaderes',t:'Ya existía, más bajo que hoy.'}]},
+ {key:'1500',draw:'y1500',short:'1500',sub:'Tenochtitlan',title:'México-Tenochtitlan, hacia 1500',ago:'Hace ~526 años',conf:2,confWord:'media-baja',confText:'Media-baja: crónicas, excavaciones y reconstrucciones de expertos.',
+  see:'Una gran plaza de estuco frente al muro del recinto sagrado. Detrás asoma el Templo Mayor con sus dos templos: Tláloc (azul) y Huitzilopochtli (rojo). Al oriente, las Casas Nuevas de Moctezuma. Los volcanes quedan ocultos tras el palacio: se verían desde las azoteas.',
+  unknown:'Nadie dibujó la ciudad con exactitud antes de 1521. Los límites del recinto bajo el Zócalo actual son aproximados, y cada reconstrucción es una interpretación.',
+  src:[['Thomas Kole, «A Portrait of Tenochtitlan» (CC BY 4.0; no se usa como insumo de IA)','2023'],['Casas Nuevas de Moctezuma bajo el Palacio Nacional (hallazgo del INAH)','2008'],['Templo de Ehécatl detrás de la Catedral (INAH)','2017']],
+  phrase:'hacia 1500, en México-Tenochtitlan, antes de la llegada de los españoles',rules:'Arquitectura mexica: muros de estuco blanco con franjas rojas, azoteas planas, sin arcos, cúpulas ni torres. No hay Catedral ni Palacio Nacional. Sin escenas de sacrificio.',
+  lm:[{az:-20,n:'Muro del recinto sagrado',t:'Hoy: más o menos la línea de la Catedral (aproximado).'},{az:17,n:'Templo de Ehécatl',t:'Templo circular del dios del viento. Hoy: restos detrás de la Catedral.'},{az:26,n:'Templo Mayor',t:'Doble templo de Tláloc y Huitzilopochtli. Hoy: zona arqueológica.'},{az:79,n:'Casas Nuevas de Moctezuma',t:'Palacio de Moctezuma Xocoyotzin. Hoy: Palacio Nacional.'},{az:182,n:'Canal y casas',t:'Hoy: edificios del Gobierno de la Ciudad (aproximado).'},{az:212,n:'Ajusco, a lo lejos',t:'Se asoma sobre las casas bajas.'},{az:300,n:'Palacio de Axayácatl',t:'Donde se alojaron Cortés y los suyos en 1519. Hoy: Monte de Piedad.'},{az:352,n:'Sierra de Guadalupe, a lo lejos',t:'Visible sobre el muro bajo del recinto.'}]},
+ {key:'pleisto',draw:'pleisto',short:'−14 mil',sub:'Pleistoceno',title:'Hace unos 14,000 años',ago:'Final de la última glaciación',conf:1,confWord:'baja',confText:'Baja: sabemos el tipo de paisaje, no la vista exacta.',
+  see:'Sin ciudad: un gran lago con orillas de tules. Mamuts en el agua poco profunda. Alrededor, las sierras y los volcanes, con más glaciares que hoy.',
+  unknown:'No sabemos si este punto era orilla o lago: el nivel del agua subía y bajaba. Los volcanes tenían formas algo distintas.',
+  src:[['Trampas para mamut en Tultepec (INAH)','2019'],['Mamuts hallados en Santa Lucía (INAH)','2020']],
+  phrase:'hace unos 14,000 años, al final del Pleistoceno, cuando la cuenca tenía grandes lagos',rules:'Sin edificios, caminos ni personas. Lago somero con tules, pastizales en las orillas, mamuts colombinos a lo lejos. Mantén las montañas del horizonte donde están en la foto.',
+  lm:[{az:45,n:'Lago abierto',t:'El gran lago de la cuenca.'},{az:118,n:'Iztaccíhuatl',t:'Ya existía, con más glaciares.'},{az:130,n:'Popocatépetl',t:'Ya existía, con otra forma.'},{az:212,n:'Ajusco',t:'La sierra al sur.'},{az:265,n:'Sierra de las Cruces',t:'La sierra al poniente.'},{az:324,n:'Mamuts',t:'Mamut colombino (muestra).'},{az:352,n:'Sierra de Guadalupe',t:'La sierra al norte.'}]},
+ {key:'creta',draw:'creta',short:'−100 M',sub:'Cretácico',title:'Hace unos 100 millones de años',ago:'Cretácico medio',conf:1,confWord:'muy baja',confText:'Muy baja: solo sabemos el tipo de ambiente.',
+  see:'Mar. Esta zona estaba bajo un mar cálido y poco profundo, con arrecifes. No hay montañas ni volcanes: nacieron decenas de millones de años después. ¿Dinosaurios? Aquí no: vivían en tierra firme, lejos (por ejemplo, en lo que hoy es Coahuila).',
+  unknown:'No sabemos dónde estaba la costa ni la profundidad exacta. El pterosaurio del dibujo es posible, no comprobado.',
+  src:[['Calizas marinas en pozos de Tulyehualco y Mixuca (SECTEI CDMX)','2019-11-27'],['Formación Morelos: plataforma marina somera y cálida (Servicio Geológico Mexicano)','consultado 2026-09-25']],
+  phrase:'hace unos 100 millones de años, en el Cretácico, cuando esta zona era un mar somero y cálido',rules:'Sin montañas ni volcanes: todavía no existían. Sin dinosaurios terrestres. Mar turquesa poco profundo con arrecifes; quizá un pterosaurio en el cielo. Conserva la altura de la cámara sobre el agua.',
+  lm:[{az:0,n:'Mar abierto',t:'Mar cálido y poco profundo.'},{az:72,n:'Pterosaurio',t:'Posible, no comprobado.'},{az:130,n:'Sin volcanes todavía',t:'Aquí estará el Popocatépetl, dentro de muchísimo tiempo.'},{az:160,n:'Arrecifes',t:'Arrecifes someros (muestra).'},{az:247,n:'¿Tierra lejana?',t:'No sabemos dónde estaba la costa.'}]}
+];
+
+/* ---------- build the panoramas once ---------- */
+var html='';
+ERAS.forEach(function(e){TONE=e.tone?TONES[e.tone]:null;html+='<g id="pano-'+e.key+'">'+DRAW[e.draw](e.key)+'</g>';});
+TONE=null;
+document.getElementById('panos').innerHTML=G+html;
+
+/* ---------- UI ---------- */
+function $(id){return document.getElementById(id);}
+var scene=$('scene'),strip=$('strip'),vf=$('vf'),slider=$('era'),hold=$('hold');
+var layers=[$('L0'),$('L1')],active=0,shown=null,fadeT=0,raf=0,anim=0,drag=null;
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var st={era:3,h:8,preview:false};
+var DIR16=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO'];
+var DIRL=['norte','nornoreste','noreste','estenoreste','oriente','estesureste','sureste','sursureste','sur','sursuroeste','suroeste','oestesuroeste','poniente','oestenoroeste','noroeste','nornoroeste'];
+var DIR8=['norte','noreste','oriente','sureste','sur','suroeste','poniente','noroeste'];
+function d16(h){return Math.round(w360(h)/22.5)%16;}
+function deg3(h){return String(Math.round(w360(h))%360).padStart(3,'0')+'°';}
+function uses(k){return '<use href="#pano-'+k+'" x="-1440"></use><use href="#pano-'+k+'"></use><use href="#pano-'+k+'" x="1440"></use>';}
+
+function showPano(k){
+  if(k===shown)return;
+  var first=shown===null;shown=k;
+  var next=layers[1-active],prev=layers[active];
+  next.style.transition='none';next.classList.remove('on');
+  next.innerHTML=uses(k);scene.appendChild(next);
+  void scene.getBoundingClientRect();next.style.transition='';
+  active=1-active;
+  if(first||reduce){next.classList.add('on');prev.classList.remove('on');return;}
+  requestAnimationFrame(function(){requestAnimationFrame(function(){next.classList.add('on');});});
+  clearTimeout(fadeT);fadeT=setTimeout(function(){layers[1-active].classList.remove('on');},560);
+}
+
+/* compass strip: 2 units per degree, 120° visible, the 60° camera field in the middle */
+(function(){var s='',L=['N','NE','E','SE','S','SO','O','NO'];for(var a=-90;a<=450;a+=5){var w=w360(a),mj=w%45===0,md=w%15===0,x=a*2;s+='<line x1="'+x+'" y1="'+(mj?14:md?18:21)+'" x2="'+x+'" y2="26" class="tk'+(mj?' mj':'')+'"/>';if(mj)s+='<text x="'+x+'" y="10" class="tl">'+L[w/45]+'</text>';}$('ticks').innerHTML=s;})();
+
+/* era marks under the slider */
+var marks=ERAS.map(function(e,i){var b=document.createElement('button');b.type='button';b.className='mark';b.innerHTML='<b>'+e.short+'</b><span>'+e.sub+'</span>';b.addEventListener('click',function(){setEra(i);});$('marks').appendChild(b);return b;});
+
+var aroundBtns=[];
+function relText(rel){var a=Math.abs(rel);if(a<=12)return 'enfrente';if(a>=150)return 'detrás de ti';return Math.round(a)+'° a la '+(rel>0?'derecha':'izquierda');}
+var ARROW='<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 1.5 13 9H9.6V14.5H6.4V9H3Z" fill="currentColor"/></svg>';
+
+function renderEra(){
+  var e=ERAS[st.era],past=e.key!=='hoy';
+  slider.value=st.era;slider.style.setProperty('--p',(st.era*20)+'%');slider.setAttribute('aria-valuetext',e.title);
+  marks.forEach(function(m,i){m.setAttribute('aria-pressed',String(i===st.era));});
+  var eb=$('pEyebrow');eb.textContent=past?'Reconstrucción artística · no es una foto':'Cámara en vivo (simulada)';eb.className='eyebrow'+(past?'':' live');
+  $('pTitle').textContent=e.title;$('pAgo').textContent=e.ago;
+  Array.prototype.forEach.call($('meter').children,function(i,n){i.className=n<e.conf?'on':'';});
+  $('pConf').textContent=e.confText;$('pSee').textContent=e.see;$('pUnk').textContent=e.unknown;
+  var ul=$('pSrc');ul.innerHTML='';e.src.forEach(function(s){var li=document.createElement('li');li.textContent=s[0]+' ';var sp=document.createElement('span');sp.textContent='· '+s[1];li.appendChild(sp);ul.appendChild(li);});
+  $('stampConf').textContent='No es una foto · confianza '+e.confWord;
+  hold.disabled=!past;
+  var list=$('around');list.innerHTML='';
+  aroundBtns=e.lm.map(function(l){var li=document.createElement('li'),b=document.createElement('button');b.type='button';b.innerHTML=ARROW+'<span></span><em></em>';b.querySelector('span').textContent=l.n;b.addEventListener('click',function(){turnTo(l.az);});li.appendChild(b);list.appendChild(li);return {b:b,l:l};});
+  var s='';e.lm.forEach(function(l){[-360,0,360].forEach(function(o){s+='<circle cx="'+f1((w360(l.az)+o)*2)+'" cy="30" r="2.3" class="mk"/>';});});$('smarks').innerHTML=s;
+  updateHud();showPano(st.preview?'hoy':e.key);renderView();
+}
+function updateHud(){
+  var e=ERAS[st.era],past=e.key!=='hoy',rec=$('rec');
+  if(st.preview){rec.textContent='HOY · comparando';rec.className='rec';}
+  else if(past){rec.textContent=e.short+' · '+e.sub;rec.className='rec past';}
+  else{rec.textContent='EN VIVO · simulado';rec.className='rec';}
+  $('stamp').hidden=!(past&&!st.preview);
+}
+function renderView(){
+  var h=st.h,e=ERAS[st.era],i16=d16(h);
+  scene.setAttribute('viewBox',f1(h*U-120)+' 0 240 300');
+  strip.setAttribute('viewBox',f1(h*2-120)+' 0 240 34');
+  $('hdeg').textContent=deg3(h);$('hdir').textContent=DIRL[i16];
+  $('pHead').textContent=deg3(h)+' '+DIR16[i16];
+  var best=null,bd=99;e.lm.forEach(function(l){var d=Math.abs(w180(l.az-h));if(d<bd){bd=d;best=l;}});
+  if(best&&bd<=22){$('fName').textContent=best.n;$('fNote').textContent=best.t;}
+  else{$('fName').textContent='Nada destacado justo enfrente';$('fNote').textContent='Gira o toca un punto de la lista «Alrededor».';}
+  aroundBtns.forEach(function(o){var rel=w180(o.l.az-h);o.b.querySelector('svg').style.transform='rotate('+Math.round(rel)+'deg)';o.b.querySelector('em').textContent=relText(rel);});
+  scene.setAttribute('aria-label',(e.key==='hoy'?'Vista simulada del Zócalo hoy':'Reconstrucción artística: '+e.title)+', mirando al '+DIRL[i16]+'. '+(best&&bd<=22?'Enfrente: '+best.n+'.':''));
+  $('prompt').value=buildPrompt();
+}
+function schedule(){if(!raf)raf=requestAnimationFrame(function(){raf=0;renderView();});}
+function setHeading(h){st.h=w360(h);schedule();}
+function turnTo(target){
+  cancelAnimationFrame(anim);
+  var start=st.h,delta=w180(target-start);
+  if(reduce){setHeading(target);return;}
+  var t0=performance.now(),dur=Math.min(700,250+Math.abs(delta)*4);
+  var step=function(now){var t=Math.min(1,(now-t0)/dur),k=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;setHeading(start+delta*k);if(t<1)anim=requestAnimationFrame(step);};
+  anim=requestAnimationFrame(step);
+}
+function setEra(i){i=Math.max(0,Math.min(ERAS.length-1,i));if(i===st.era&&!st.preview)return;st.era=i;st.preview=false;hold.classList.remove('active');renderEra();}
+
+function buildPrompt(){
+  var e=ERAS[st.era];
+  if(e.key==='hoy')return 'Elige una época pasada con el deslizador. Aquí aparecerá una instrucción lista para pegar en tu IA junto con tu foto.';
+  var h=st.h,inView=e.lm.map(function(l){return {l:l,rel:w180(l.az-h)};}).filter(function(o){return Math.abs(o.rel)<=30;}).sort(function(a,b){return a.rel-b.rel;});
+  var list=inView.length?inView.map(function(o){return '- '+o.l.n+' ('+(o.rel<-8?'a la izquierda':o.rel>8?'a la derecha':'al centro')+')';}).join('\n'):'- Nada destacado; mantén el paisaje coherente con la época.';
+  return 'Edita la foto adjunta. La tomé en el Zócalo de la Ciudad de México (19.4324 N, 99.1330 O), de pie cerca del asta bandera, mirando hacia el '+DIR8[Math.round(w360(h)/45)%8]+' (rumbo '+deg3(h)+').\n\n'+
+    'Muéstrala como se habría visto '+e.phrase+'. Conserva exactamente la misma posición de la cámara, la altura de los ojos (1.6 m), el horizonte y el encuadre.\n\n'+
+    'En esta dirección deberían verse:\n'+list+'\n\n'+e.rules+'\n'+
+    'Sin personas. Estilo: fotografía realista con luz de mediodía, sin texto sobreimpreso.\n'+
+    'Al final, dime en una lista corta qué partes de la imagen son más inciertas.';
+}
+
+/* input: drag, keys, buttons, slider, hold-to-compare, copy */
+vf.addEventListener('pointerdown',function(ev){if(ev.pointerType==='mouse'&&ev.button!==0)return;cancelAnimationFrame(anim);drag={x:ev.clientX,h:st.h,id:ev.pointerId};try{vf.setPointerCapture(ev.pointerId);}catch(_){}vf.classList.add('dragging');});
+vf.addEventListener('pointermove',function(ev){if(!drag||ev.pointerId!==drag.id)return;setHeading(drag.h-(ev.clientX-drag.x)*FOV/Math.max(1,vf.clientWidth));});
+['pointerup','pointercancel'].forEach(function(t){vf.addEventListener(t,function(ev){if(drag&&ev.pointerId===drag.id){drag=null;vf.classList.remove('dragging');}});});
+vf.addEventListener('keydown',function(ev){if(ev.key==='ArrowLeft'){ev.preventDefault();turnTo(st.h-10);}else if(ev.key==='ArrowRight'){ev.preventDefault();turnTo(st.h+10);}});
+$('turnL').addEventListener('click',function(){turnTo(st.h-15);});
+$('turnR').addEventListener('click',function(){turnTo(st.h+15);});
+slider.addEventListener('input',function(){setEra(+slider.value);});
+function startPrev(ev){if(hold.disabled||st.preview)return;if(ev.type==='keydown'){if(ev.key!==' '&&ev.key!=='Enter')return;ev.preventDefault();}st.preview=true;hold.classList.add('active');updateHud();showPano('hoy');}
+function endPrev(ev){if(!st.preview)return;if(ev.type==='keyup'&&ev.key!==' '&&ev.key!=='Enter')return;st.preview=false;hold.classList.remove('active');updateHud();showPano(ERAS[st.era].key);}
+hold.addEventListener('pointerdown',function(ev){try{hold.setPointerCapture(ev.pointerId);}catch(_){}startPrev(ev);});
+['pointerup','pointercancel','lostpointercapture','blur','keyup'].forEach(function(t){hold.addEventListener(t,endPrev);});
+hold.addEventListener('keydown',startPrev);
+hold.addEventListener('contextmenu',function(ev){ev.preventDefault();});
+$('copy').addEventListener('click',function(){
+  var ta=$('prompt'),msg=$('copyMsg'),txt=ta.value;
+  if(ERAS[st.era].key==='hoy'){msg.textContent='Primero elige una época pasada.';return;}
+  var fallback=function(){ta.focus();ta.select();msg.textContent='Texto seleccionado: cópialo con Ctrl+C o Cmd+C.';};
+  try{navigator.clipboard.writeText(txt).then(function(){msg.textContent='Copiado. Pégalo en Gemini o ChatGPT junto con tu foto.';},fallback);}catch(_){fallback();}
+});
+
+renderEra();
+})();
+</script>
