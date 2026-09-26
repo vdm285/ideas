@@ -432,3 +432,31 @@ Running cost: $0 (Claude Max already paid; local model; no accounts or subscript
   - Difficulty levels are Claude's judgement from the ladder table (wiring, parts, sessions), not
     measured. Checked: script syntax (`node --check`), no overflow at 400 px, main interactions run in
     headless Chrome.
+- **v2 (round 2), 2026-09-25** (Claude, senior), after a critic pass. Changed:
+  - Opens correctly as a local file and on a phone: `<meta charset="utf-8">` and a viewport tag right
+    after `<title>` (the publishing rules forbid `<!doctype>/<html>`, so `lang="es"` sits on the page wrapper).
+  - Typing your own word now works end to end: 600 ms after you stop typing, the simulated terminal
+    prints board list → compile → upload line by line (TX LED flashes), says "Voy a decir: TU PALABRA",
+    and the LED starts spelling it. The blinking pauses while the demo is off screen.
+  - Phone layout: one Deletrear/Parar toggle; the board sticks to the top of the screen while you use the
+    controls (capped height); smaller dashes and letters under 420 px so "HOLA" fits on one line; 44 px
+    word chips; speed, repeat, sound and the dot-dash text moved into "Ajustes".
+  - Handoff: "Copiar mensaje para Claude" (in the demo and at the end of the checklist) copies a ready
+    message with the word, speed, "placa por identificar" and the chosen next project; falls back to a
+    selectable text box if the clipboard is blocked. Step 3 now says to drag the photos into Claude.
+  - Timer: starts on the first ticked step, stops at 12/12 with "Lo lograste en m:ss" and a one-time
+    finale (the LED spells LISTO); a start older than 3 hours is discarded; "unos 20 min" everywhere.
+  - Accessibility: only the progress number and "Sigue" line are live regions (timer is `role="timer"`,
+    not announced); focus returns to the pick button after choosing; morse glyphs have `role="img"` and
+    read as "punto raya…".
+  - Gallery: project 1 shows an "Esta noche" badge instead of a pick button; after a pick, a line under the
+    card says "Guardado: aparece en el paso 12" with a link; parts sit in a "Qué necesitas" fold on narrow
+    screens; the "Mac mini" tag is gone from cards (kept as the filter "Usa el Mac mini").
+  - Wording: Etapa 1, Esta noche, Para pensar, Claude ejecuta, the shopping-list hook in plain words, the
+    board note (photos in step 3, identification in step 5), and an honest accent note (Í is sent as I;
+    Ñ has its own code).
+  - Checked: `node --check` on the script; headless Chrome at 375 and 400 px (no horizontal scroll, board
+    sticky, chips 44 px), typing "MARÍA" → terminal and LED update, pick focus, 12/12 → "Lo lograste" + LISTO.
+  - Still pending: a real test on Victor's phone and in dark mode; the finale plays only once the demo is
+    scrolled back into view; no "mark all Claude steps" shortcut; card parts fold is decided at page load
+    (does not react to resizing); the sample terminal still assumes an UNO until the real board is known.

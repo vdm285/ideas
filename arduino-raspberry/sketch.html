@@ -1,4 +1,6 @@
 <title>Tu Arduino dice hola</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 :root{
   --bg:#EAF0EE; --surface:#F7FAF9; --surface-2:#DFE8E5; --ink:#12302E; --muted:#4F6360; --line:#C5D3CF;
@@ -66,7 +68,7 @@ header.top .lede{max-width:62ch;color:var(--muted);font-size:1.06rem}
 .field{display:grid;gap:6px}
 .field label{font-weight:700}
 .word-row{display:flex;gap:8px;flex-wrap:wrap}
-#word{flex:1 1 160px;min-width:0;font-family:var(--mono);font-size:1.3rem;letter-spacing:.14em;text-transform:uppercase;padding:10px 12px;border-radius:8px;border:2px solid var(--line);background:var(--bg)}
+#word{flex:1 1 120px;min-width:0;font-family:var(--mono);font-size:1.3rem;letter-spacing:.14em;text-transform:uppercase;padding:10px 12px;border-radius:8px;border:2px solid var(--line);background:var(--bg)}
 #word:focus{border-color:var(--accent);outline:none}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
 .btn:hover{filter:brightness(1.08)}
@@ -79,7 +81,19 @@ header.top .lede{max-width:62ch;color:var(--muted);font-size:1.06rem}
 .opts input[type=checkbox]{accent-color:var(--accent);width:17px;height:17px}
 .speed-out{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:4px 11px;font-size:.84rem;cursor:pointer}
+.chip{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:4px 13px;font-size:.84rem;cursor:pointer;min-height:44px}
+#play{min-width:8.2em;flex:0 0 auto}
+details.settings{border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+details.settings summary{cursor:pointer;padding:10px 12px;font-weight:700;font-size:.92rem;min-height:44px;display:flex;align-items:center}
+details.settings .inner{display:grid;gap:10px;padding:0 12px 12px}
+.handoff{display:grid;gap:8px;padding:12px;border-radius:10px;background:var(--accent-soft);border:1px solid var(--line)}
+.handoff p{font-size:.88rem}
+.handoff textarea{width:100%;min-height:92px;font:inherit;font-size:.84rem;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
+.badge-tonight{display:inline-flex;align-items:center;min-height:36px;padding:4px 12px;border-radius:999px;background:var(--led);color:#2A1E00;font-weight:700;font-size:.86rem}
+.pick-ok{flex-basis:100%;margin:0;font-size:.86rem;color:var(--ok);font-weight:700}
+.done-box{display:grid;gap:8px;padding:14px;border-radius:10px;background:var(--accent-soft);border:1px solid var(--line);margin-top:14px}
+details.need summary{cursor:pointer;color:var(--accent);font-weight:700;font-size:.9rem;min-height:36px;display:flex;align-items:center}
+@media (min-width:821px){details.need > summary{display:none}}
 .chip:hover{border-color:var(--accent)}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 
@@ -93,6 +107,18 @@ header.top .lede{max-width:62ch;color:var(--muted);font-size:1.06rem}
 .sym.dot{width:9px}
 .sym.dash{width:27px}
 .letter.cur{background:var(--accent-soft)}
+@media (max-width:820px){
+  .board-box{position:sticky;top:0;z-index:2;background:var(--surface);padding-block:6px;border-bottom:1px solid var(--line)}
+  .board-box svg{max-height:min(30vh,210px)}
+  .board-note{display:none}
+}
+@media (max-width:420px){
+  .sym.dash{width:18px}
+  .letter{min-width:28px;padding:5px 4px}
+  .letter .ch{font-size:1.25rem}
+  .tape{gap:8px 3px;padding:10px 8px}
+  .tape .word{gap:4px}
+}
 .letter.done .sym{opacity:.9;background:var(--ink)}
 .sym.on{background:var(--led)!important;opacity:1!important;box-shadow:0 0 10px var(--led-glow)}
 .morse-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-family:var(--mono);font-size:.95rem;word-break:break-all}
@@ -191,12 +217,12 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
 
-<div class="wrap">
+<div class="wrap" lang="es">
   <header class="top">
-    <span class="eyebrow">Proyecto 1 · Latido · boceto v1</span>
+    <span class="eyebrow">Proyecto 1 · Latido · boceto v2</span>
     <h1>Tu Arduino dice hola</h1>
     <p class="lede">La primera sesión con tu Arduino: tú enchufas, eliges una palabra y miras. Claude identifica la placa, escribe el programa, lo compila y lo sube. El LED de la placa deletrea tu palabra en morse y la placa te contesta «hola».</p>
-    <div class="facts"><span><b>≈ 19 min</b> la sesión</span><span><b>0</b> líneas de código que teclees</span><span><b>$0</b> de costo</span><span><b>1</b> cable USB, nada más</span></div>
+    <div class="facts"><span><b>unos 20 min</b> la sesión</span><span><b>0</b> líneas de código que teclees</span><span><b>$0</b> de costo</span><span><b>1</b> cable USB, nada más</span></div>
   </header>
 
   <!-- ================= DEMO ================= -->
@@ -279,7 +305,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
         <text x="96" y="244" font-family="var(--mono)" font-size="9" fill="var(--silk)" opacity=".9">MODELO:</text>
         <text x="96" y="256" font-family="var(--mono)" font-size="9" fill="var(--silk)" opacity=".9">POR IDENTIFICAR</text>
       </svg>
-      <p class="board-note">Ilustración genérica tipo UNO. Tu placa puede verse distinta: el modelo real se identifica con fotos en el paso 5.</p>
+      <p class="board-note">Ilustración genérica tipo UNO. Tu placa puede verse distinta: el modelo real se identifica en el paso 5, con las fotos del paso 3.</p>
     </div>
 
     <div class="controls">
@@ -287,10 +313,9 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
         <label for="word">Tu palabra</label>
         <div class="word-row">
           <input id="word" type="text" maxlength="16" value="HOLA" autocomplete="off" spellcheck="false" aria-describedby="wordHelp">
-          <button class="btn" id="play" type="button">▶ Deletrear</button>
-          <button class="btn ghost" id="stop" type="button">■ Parar</button>
+          <button class="btn" id="play" type="button" aria-pressed="false">▶ Deletrear</button>
         </div>
-        <span id="wordHelp" class="status">Hasta 16 letras. Acentos y ñ funcionan.</span>
+        <span id="wordHelp" class="status">Hasta 16 letras. El morse no lleva tildes: Í se envía como I; la Ñ tiene su propio código.</span>
         <div class="chips" aria-label="Ideas de palabras">
           <button class="chip" type="button" data-w="HOLA">HOLA</button>
           <button class="chip" type="button" data-w="TE QUIERO">TE QUIERO</button>
@@ -301,16 +326,27 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
       </div>
 
       <div class="tape" id="tape" aria-live="off"></div>
-      <div class="morse-line"><output id="morseText" for="word"></output><button class="btn ghost small" id="copyMorse" type="button">Copiar</button></div>
       <p class="skipped" id="skipped" hidden></p>
+      <p class="status" id="status" aria-live="polite">Listo para deletrear.</p>
 
-      <div class="opts">
-        <label for="wpm">Velocidad <input id="wpm" type="range" min="4" max="16" step="1" value="7"></label>
-        <span class="speed-out" id="speedOut"></span>
-        <label for="loop"><input id="loop" type="checkbox" checked> Repetir</label>
-        <label for="sound"><input id="sound" type="checkbox"> Sonido</label>
+      <div class="handoff">
+        <p><b>¿Esta es tu palabra?</b> Copia el mensaje y pégalo en Claude la noche de la sesión: con eso arranca, sin que tengas que escribir nada más.</p>
+        <button class="btn copy-msg" type="button">Copiar mensaje para Claude</button>
+        <textarea class="msg-fallback" readonly hidden aria-label="Mensaje para Claude (selecciónalo y cópialo)"></textarea>
       </div>
-      <p class="status" id="status">Listo para deletrear.</p>
+
+      <details class="settings">
+        <summary>Ajustes: velocidad, repetir, sonido</summary>
+        <div class="inner">
+          <div class="opts">
+            <label for="wpm">Velocidad <input id="wpm" type="range" min="4" max="16" step="1" value="7"></label>
+            <label for="loop"><input id="loop" type="checkbox" checked> Repetir</label>
+            <label for="sound"><input id="sound" type="checkbox"> Sonido</label>
+          </div>
+          <span class="speed-out" id="speedOut"></span>
+          <div class="morse-line"><span>En puntos y rayas:</span><output id="morseText" for="word"></output></div>
+        </div>
+      </details>
 
       <div class="console" role="log" aria-label="Monitor serie simulado">
         <div class="hd"><span>Terminal de Claude</span><span class="sample">ejemplo simulado</span></div>
@@ -327,19 +363,26 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
   <!-- ================= CHECKLIST ================= -->
   <section class="block" id="sesion" aria-labelledby="sesionTitle">
     <div class="sec-head">
-      <span class="eyebrow">Checkpoint 1 · la noche que lo enchufas</span>
+      <span class="eyebrow">Etapa 1 · la noche que lo enchufas</span>
       <h2 id="sesionTitle">La primera sesión, paso a paso</h2>
-      <p>Marca cada paso al terminarlo. Los pasos de Claude los hace Claude en la terminal; tú solo confirmas lo que ves. Las marcas se guardan en este navegador.</p>
+      <p>Marca cada paso al terminarlo; el cronómetro arranca solo con la primera marca. Los pasos de Claude los hace Claude en la terminal; tú solo confirmas lo que ves. Las marcas se guardan en este navegador.</p>
     </div>
     <div class="check-wrap">
-      <div id="phases"></div>
-      <aside class="progress" aria-live="polite">
+      <div>
+        <div id="phases"></div>
+        <div class="done-box">
+          <p><b>¿Listo para empezar la sesión real?</b> Pega este mensaje en Claude: lleva tu palabra, la velocidad y el siguiente proyecto.</p>
+          <button class="btn copy-msg" type="button">Copiar mensaje para Claude</button>
+          <textarea class="msg-fallback" readonly hidden aria-label="Mensaje para Claude (selecciónalo y cópialo)"></textarea>
+        </div>
+      </div>
+      <aside class="progress" aria-label="Avance de la sesión">
         <span class="eyebrow">Avance</span>
-        <div class="big-num" id="progNum">0 / 12</div>
+        <div class="big-num" id="progNum" aria-live="polite">0 / 12</div>
         <div class="meter"><i id="progBar"></i></div>
-        <p class="sub" id="progSub">0 de 21 min</p>
-        <p class="sub" id="progNext"></p>
-        <div class="timer"><span class="sub" id="timerOut">Cronómetro: sin iniciar</span><button class="btn small" id="timerBtn" type="button">Iniciar cronómetro</button></div>
+        <p class="sub" id="progSub">0 de unos 20 min</p>
+        <p class="sub" id="progNext" aria-live="polite"></p>
+        <div class="timer"><span class="sub" id="timerOut" role="timer" aria-live="off">Cronómetro: arranca con el primer paso</span><button class="btn small" id="timerBtn" type="button">Iniciar ya</button></div>
         <button class="btn ghost small" id="resetChecks" type="button">Borrar marcas</button>
       </aside>
     </div>
@@ -358,7 +401,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
       <button class="chip" type="button" data-f="easy" aria-pressed="false">Fácil</button>
       <button class="chip" type="button" data-f="mid" aria-pressed="false">Media</button>
       <button class="chip" type="button" data-f="hard" aria-pressed="false">Difícil</button>
-      <button class="chip" type="button" data-f="mac" aria-pressed="false">Mac mini como cerebro</button>
+      <button class="chip" type="button" data-f="mac" aria-pressed="false">Usa el Mac mini</button>
     </div>
     <div class="grid" id="grid"></div>
     <p class="empty" id="emptyMsg" hidden>Ningún proyecto con ese filtro.</p>
@@ -380,7 +423,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
   </section>
 
   <footer>
-    <p>Boceto v1 del 2026-09-25, basado en <code>DOSSIER.md</code> (idea «Arduino + Raspberry Pi»). Nada de esto está instalado todavía: la terminal y el programa son ejemplos simulados.</p>
+    <p>Boceto v2 del 2026-09-25, basado en <code>DOSSIER.md</code> (idea «Arduino + Raspberry Pi»). Nada de esto está instalado todavía: la terminal y el programa son ejemplos simulados.</p>
     <p>Herramienta real prevista: <code>arduino-cli</code> (libre, vía Homebrew). Sin cuentas, sin nube de Arduino.</p>
   </footer>
 </div>
@@ -439,6 +482,15 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
   function plainWord(words){ return words.map(function(w){ return w.map(function(l){ return l.ch; }).join(""); }).join(" "); }
 
   var state = {parsed:null, schedule:[], run:0, playing:false};
+  /* pause the blinking while the demo is off screen (it resumes where it was) */
+  var paused = false;
+  try{
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(function(entries){
+        entries.forEach(function(en){ paused = !en.isIntersecting; if(paused) setLed(false); });
+      }).observe(document.querySelector(".demo"));
+    }
+  }catch(e){ paused = false; }
 
   function renderTape(){
     var tape = $("tape"); tape.innerHTML = "";
@@ -449,7 +501,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
       w.forEach(function(l){
         var d = document.createElement("div"); d.className = "letter"; d.dataset.li = li++;
         var syms = Array.from(l.code).map(function(s, si){ return '<i class="sym ' + (s === "." ? "dot" : "dash") + '" data-si="' + si + '"></i>'; }).join("");
-        d.innerHTML = '<span class="ch">' + esc(l.ch) + '</span><span class="syms" aria-label="' + esc(l.code) + '">' + syms + '</span>';
+        d.innerHTML = '<span class="ch">' + esc(l.ch) + '</span><span class="syms" role="img" aria-label="' + esc(l.code.replace(/\./g, "punto ").replace(/-/g, "raya ").trim()) + '">' + syms + '</span>';
         wd.appendChild(d);
       });
       tape.appendChild(wd);
@@ -506,23 +558,34 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
   }
   function letterEl(li){ return document.querySelector('.letter[data-li="' + li + '"]'); }
 
+  function setPlayBtn(on){
+    var b = $("play"); b.textContent = on ? "■ Parar" : "▶ Deletrear"; b.setAttribute("aria-pressed", on ? "true" : "false");
+    b.classList.toggle("ghost", on);
+  }
   function stop(msg){
-    state.run++; state.playing = false; setLed(false); clearMarks();
+    state.run++; state.playing = false; setLed(false); clearMarks(); setPlayBtn(false);
     $("status").textContent = msg || "Parado.";
   }
-  function play(){
+  /* opts.once: play one time only; opts.onEnd: called after that single pass */
+  function play(opts){
+    opts = (opts && typeof opts === "object" && !opts.type) ? opts : {};
     if(!state.schedule.length){ $("status").textContent = "No hay nada que deletrear."; return; }
-    state.run++; var id = state.run; state.playing = true; clearMarks();
+    state.run++; var id = state.run; state.playing = true; clearMarks(); setPlayBtn(true);
     var word = plainWord(state.parsed.words);
     $("status").innerHTML = "Deletreando <b>" + esc(word) + "</b>…";
     var i = 0;
     function step(){
       if(id !== state.run) return;
+      if(paused){ setTimeout(step, 250); return; }
       if(i >= state.schedule.length){
         setLed(false);
         serialHola(word);
-        if($("loop").checked){ clearMarks(); i = 0; setTimeout(step, unitMs() * 7); }
-        else { state.playing = false; $("status").innerHTML = "Listo: el LED dijo <b>" + esc(word) + "</b>."; }
+        if($("loop").checked && !opts.once){ clearMarks(); i = 0; setTimeout(step, unitMs() * 7); }
+        else {
+          state.playing = false; setPlayBtn(false);
+          $("status").innerHTML = "Listo: el LED dijo <b>" + esc(word) + "</b>.";
+          if(opts.onEnd) opts.onEnd();
+        }
         return;
       }
       var s = state.schedule[i++];
@@ -547,16 +610,32 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
   var consoleLines = [];
   function now(){ var d = new Date(); return [d.getHours(), d.getMinutes(), d.getSeconds()].map(function(n){ return String(n).padStart(2, "0"); }).join(":"); }
   function pushLine(html){ consoleLines.push(html); if(consoleLines.length > 40) consoleLines.shift(); var out = $("consoleOut"); out.innerHTML = consoleLines.join("\n"); var box = out.parentNode; box.scrollTop = box.scrollHeight; }
-  function seedConsole(){
+  /* prints the simulated build line by line (~250 ms apart), then calls done() */
+  var seedRun = 0;
+  function seedConsole(done, instant){
+    var my = ++seedRun, word = plainWord(state.parsed.words) || "…";
     consoleLines = [];
-    pushLine('<span class="cmd">$ arduino-cli board list</span>');
-    pushLine('<span class="dim">Port                  Type               Board Name   FQBN</span>');
-    pushLine('/dev/cu.usbmodem1101  Serial Port (USB)  Arduino Uno  arduino:avr:uno');
-    pushLine('<span class="cmd">$ arduino-cli compile --fqbn arduino:avr:uno latido</span>');
-    pushLine('<span class="dim">Sketch uses 2178 bytes (6%) of program storage space.</span>');
-    pushLine('<span class="cmd">$ arduino-cli upload -p /dev/cu.usbmodem1101 --fqbn arduino:avr:uno latido</span>');
-    pushLine('<span class="dim">Upload OK · escuchando lo que dice la placa…</span>');
-    pushLine('<span class="board">Hola, soy tu Arduino. Voy a decir: ' + esc(plainWord(state.parsed.words) || "…") + '</span>');
+    var lines = [
+      '<span class="cmd">$ arduino-cli board list</span>',
+      '<span class="dim">Port                  Type               Board Name   FQBN</span>',
+      '/dev/cu.usbmodem1101  Serial Port (USB)  Arduino Uno  arduino:avr:uno',
+      '<span class="cmd">$ arduino-cli compile --fqbn arduino:avr:uno latido</span>',
+      '<span class="dim">Sketch uses 2178 bytes (6%) of program storage space.</span>',
+      '<span class="cmd">$ arduino-cli upload -p /dev/cu.usbmodem1101 --fqbn arduino:avr:uno latido</span>',
+      '<span class="dim">Upload OK · escuchando lo que dice la placa…</span>',
+      '<span class="board">Hola, soy tu Arduino. Voy a decir: ' + esc(word) + '</span>'
+    ];
+    if(instant){ lines.forEach(pushLine); if(done) done(); return; }
+    $("consoleOut").innerHTML = "";
+    $("status").textContent = "Claude compila y sube tu palabra…";
+    var i = 0;
+    (function next(){
+      if(my !== seedRun) return;
+      if(i >= lines.length){ if(done) done(); return; }
+      if(i === 5){ $("ledTX").classList.add("lit"); setTimeout(function(){ $("ledTX").classList.remove("lit"); }, 400); }
+      pushLine(lines[i++]);
+      setTimeout(next, 250);
+    })();
   }
   function serialHola(word){
     $("ledTX").classList.add("lit");
@@ -598,7 +677,6 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
   }
 
   function refresh(){
-    var was = state.playing;
     stop("Listo para deletrear.");
     state.parsed = parse($("word").value);
     renderTape(); buildSchedule(); updateSpeed(); renderSketch();
@@ -608,25 +686,51 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
     else sk.hidden = true;
     Array.prototype.forEach.call(document.querySelectorAll(".wordref"), function(el){ el.textContent = plainWord(state.parsed.words) || "(sin palabra)"; });
     store("latido-word", $("word").value);
-    return was;
   }
 
-  $("word").addEventListener("input", function(){ refresh(); });
-  $("word").addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); play(); } });
-  $("play").addEventListener("click", play);
-  $("stop").addEventListener("click", function(){ stop("Parado."); });
+  /* typing: refresh right away, rebuild + play once typing pauses for 600 ms */
+  var typeTimer = null;
+  function rebuildAndPlay(){
+    clearTimeout(typeTimer);
+    seedRun++;
+    if(!state.schedule.length) return;
+    seedConsole(function(){ play(); });
+  }
+  $("word").addEventListener("input", function(){
+    refresh(); seedRun++;
+    clearTimeout(typeTimer); typeTimer = setTimeout(rebuildAndPlay, 600);
+  });
+  $("word").addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); clearTimeout(typeTimer); seedRun++; play(); } });
+  $("play").addEventListener("click", function(){ seedRun++; if(state.playing) stop("Parado."); else play(); });
   $("wpm").addEventListener("input", function(){ updateSpeed(); renderSketch(); });
   $("sound").addEventListener("change", function(){ if(this.checked){ ensureAudio(); try{ audio && audio.ctx.resume(); }catch(e){} } else tone(false); });
   Array.prototype.forEach.call(document.querySelectorAll(".chips [data-w]"), function(b){
-    b.addEventListener("click", function(){ $("word").value = b.dataset.w; refresh(); play(); });
+    b.addEventListener("click", function(){ $("word").value = b.dataset.w; refresh(); rebuildAndPlay(); });
   });
-  $("copyMorse").addEventListener("click", function(){
-    var t = $("morseText").textContent, btn = this;
-    function done(ok){ btn.textContent = ok ? "Copiado" : "Selecciona y copia"; setTimeout(function(){ btn.textContent = "Copiar"; }, 1600); }
-    try{
-      navigator.clipboard.writeText(t).then(function(){ done(true); }, function(){ selectText(); done(false); });
-    }catch(e){ selectText(); done(false); }
-    function selectText(){ try{ var r = document.createRange(); r.selectNodeContents($("morseText")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }catch(e){} }
+
+  /* ---------- handoff: a ready-to-paste message for the real session ---------- */
+  function claudeMessage(){
+    var word = plainWord(state.parsed.words) || "HOLA";
+    var p = PROJECTS.filter(function(x){ return x.n === picked; })[0];
+    return "Claude: es la noche de Latido (etapa 1 de DOSSIER.md, idea Arduino + Raspberry Pi). " +
+      "Mi palabra: «" + word + "», velocidad " + $("wpm").value + " palabras/min. " +
+      "Placa: por identificar (te mando fotos). " +
+      "Siguiente proyecto: " + (p ? p.n + ". " + p.name : "sin elegir todavía") + ". " +
+      "Sigue la lista de la primera sesión, paso a paso, y pídeme OK antes de instalar nada.";
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".copy-msg"), function(btn){
+    var label = btn.textContent, box = btn.parentNode.querySelector(".msg-fallback");
+    btn.addEventListener("click", function(){
+      var t = claudeMessage();
+      function done(ok){
+        btn.textContent = ok ? "Copiado: pégalo en Claude" : "Selecciónalo abajo y cópialo";
+        setTimeout(function(){ btn.textContent = label; }, 2200);
+      }
+      function fallback(){ try{ box.value = t; box.hidden = false; box.focus(); box.select(); }catch(e){} done(false); }
+      try{
+        navigator.clipboard.writeText(t).then(function(){ box.hidden = true; done(true); }, fallback);
+      }catch(e){ fallback(); }
+    });
   });
 
   /* ---------- checklist ---------- */
@@ -634,11 +738,11 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
     {name:"Preparar", steps:[
       {who:"cl", min:2, t:"Antes de empezar, con tu OK: instalar <code>arduino-cli</code> con Homebrew y actualizar su lista de placas.", x:"Normalmente no pide tu contraseña."},
       {who:"tu", min:1, t:"Despeja una mesa de madera o plástico; la bebida lejos. Todavía no enchufes nada."},
-      {who:"tu", min:2, t:"Fotografía la placa (por arriba y por abajo), su conector USB y la caja. Mándale las fotos a Claude."}
+      {who:"tu", min:2, t:"Fotografía la placa (por arriba y por abajo), su conector USB y la caja. Arrastra las fotos a la ventana de Claude."}
     ]},
     {name:"Conectar e identificar", steps:[
       {who:"tu", min:1, t:"Conecta la placa al Mac mini con el cable USB del kit. Debe encenderse una lucecita «ON».", x:"Usa un cable de <b>datos</b>: algunos cables solo cargan."},
-      {who:"cl", min:2, t:"Claude corre <code>arduino-cli board list</code>: puerto y nombre de la placa (o «Unknown»: entonces decide la foto).", clues:true},
+      {who:"cl", min:2, t:"Claude ejecuta <code>arduino-cli board list</code>: puerto y nombre de la placa (o «Unknown»: entonces decide la foto).", clues:true},
       {who:"cl", min:3, t:"Claude instala el soporte solo para esa familia de placas (una sola, para ahorrar disco)."}
     ]},
     {name:"Tu palabra en morse", steps:[
@@ -697,39 +801,61 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
         var li = cb.closest(".step"), k = li.dataset.n;
         if(cb.checked) checks[k] = true; else delete checks[k];
         li.classList.toggle("checked", cb.checked);
-        store("latido-checks", checks); updateProgress();
+        store("latido-checks", checks);
+        if(cb.checked && !t0 && !tEnd){ t0 = Date.now(); store("latido-t0", t0); }
+        if(!cb.checked && tEnd){ tEnd = null; store("latido-tend", null); }
+        var wasDone = countDone() === TOTAL_STEPS;
+        if(wasDone && t0 && !tEnd){ tEnd = Date.now(); store("latido-tend", tEnd); finale(); }
+        updateProgress(); tick();
       });
     });
     updateProgress();
+  }
+  function countDone(){ var c = 0; for(var i = 0; i < TOTAL_STEPS; i++) if(checks[i]) c++; return c; }
+  /* one-time celebration: the board LED spells LISTO, then the user's word comes back */
+  function finale(){
+    var reduceNow = false; try{ reduceNow = window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+    if(reduceNow) return;
+    seedRun++;
+    state.parsed = parse("LISTO"); renderTape(); buildSchedule();
+    pushLine('<span class="board">Sesión completa. Voy a decir: LISTO</span>');
+    play({once:true, onEnd:function(){ refresh(); $("status").innerHTML = "Sesión completa: la placa dijo <b>LISTO</b>."; }});
   }
   function updateProgress(){
     var done = 0, mins = 0, n = 0, next = null;
     PHASES.forEach(function(p){ p.steps.forEach(function(s){ if(checks[n]){ done++; mins += s.min; } else if(next === null){ next = {n:n, s:s}; } n++; }); });
     $("progNum").textContent = done + " / " + TOTAL_STEPS;
     $("progBar").style.width = (done / TOTAL_STEPS * 100) + "%";
-    $("progSub").textContent = mins + " de " + TOTAL_MIN + " min (2 de preparación + 19 de sesión)";
+    $("progSub").textContent = done === TOTAL_STEPS ? "Todo hecho · unos 20 min previstos" : (mins ? "Llevas unos " + mins + " de unos 20 min previstos" : "Unos 20 min previstos");
     if(next){
       var tmp = document.createElement("div"); tmp.innerHTML = next.s.t;
       $("progNext").innerHTML = "Sigue: <b>paso " + (next.n + 1) + "</b> · " + (next.s.who === "tu" ? "tú" : "Claude") + ". " + esc(tmp.textContent);
     } else {
-      $("progNext").innerHTML = "<b>Sesión completa.</b> Tu Arduino ya dijo hola.";
+      $("progNext").innerHTML = "<b>Sesión completa.</b> Tu Arduino ya dijo hola. Sube al tablero: la placa dice LISTO.";
     }
   }
-  var t0 = store("latido-t0");
+  /* timer: starts with the first ticked step, stops at 12/12; a start older than 3 h is thrown away */
+  var MAX_AGE = 3 * 3600 * 1000;
+  var t0 = store("latido-t0"), tEnd = store("latido-tend");
+  if(typeof t0 !== "number" || Date.now() - t0 > MAX_AGE || t0 > Date.now()){ t0 = null; tEnd = null; store("latido-t0", null); store("latido-tend", null); }
+  if(typeof tEnd !== "number") tEnd = null;
+  function fmt(ms){ var sec = Math.max(0, Math.floor(ms / 1000)); return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0"); }
   function tick(){
     var out = $("timerOut"), btn = $("timerBtn");
-    if(!t0){ out.textContent = "Cronómetro: sin iniciar"; btn.textContent = "Iniciar cronómetro"; return; }
-    var sec = Math.max(0, Math.floor((Date.now() - t0) / 1000)), mm = Math.floor(sec / 60), ss = sec % 60;
-    out.innerHTML = "Llevas <b>" + mm + ":" + String(ss).padStart(2, "0") + "</b> de 20:00" + (mm >= 20 ? ' <span class="late">· hora de cerrar</span>' : "");
-    btn.textContent = "Detener";
+    if(t0 && !tEnd && Date.now() - t0 > MAX_AGE){ t0 = null; store("latido-t0", null); }
+    if(!t0){ out.textContent = "Cronómetro: arranca con el primer paso"; btn.textContent = "Iniciar ya"; btn.hidden = false; return; }
+    if(tEnd){ out.innerHTML = "Lo lograste en <b>" + fmt(tEnd - t0) + "</b>"; btn.hidden = true; return; }
+    var ms = Date.now() - t0, mm = Math.floor(ms / 60000);
+    out.innerHTML = "Llevas <b>" + fmt(ms) + "</b> de unos 20 min" + (mm >= 20 ? ' <span class="late">· hora de cerrar</span>' : "");
+    btn.textContent = "Detener"; btn.hidden = false;
   }
-  $("timerBtn").addEventListener("click", function(){ t0 = t0 ? null : Date.now(); store("latido-t0", t0); tick(); });
+  $("timerBtn").addEventListener("click", function(){ t0 = t0 ? null : Date.now(); tEnd = null; store("latido-t0", t0); store("latido-tend", null); tick(); });
   setInterval(tick, 1000);
   var resetArmed = false;
   $("resetChecks").addEventListener("click", function(){
     var b = this;
     if(!resetArmed){ resetArmed = true; b.textContent = "¿Seguro? Toca otra vez"; setTimeout(function(){ resetArmed = false; b.textContent = "Borrar marcas"; }, 3000); return; }
-    resetArmed = false; b.textContent = "Borrar marcas"; checks = {}; store("latido-checks", checks); t0 = null; store("latido-t0", null); tick(); renderChecklist(); refreshRefs();
+    resetArmed = false; b.textContent = "Borrar marcas"; checks = {}; store("latido-checks", checks); t0 = null; tEnd = null; store("latido-t0", null); store("latido-tend", null); tick(); renderChecklist(); refreshRefs();
   });
 
   /* ---------- projects ---------- */
@@ -742,7 +868,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
     {n:6, name:"El péndulo", what:"Mide la gravedad g y el amortiguamiento con un péndulo casero.", lvl:4, kit:"Sensor ultrasónico HC-SR04 (o LED + fotorresistencia)", extra:"Hilo, una pesa, regla, cinta", hook:"Ajustar T² contra L; el error del ángulo pequeño; decaimiento exponencial.", ses:"2–3 sesiones", nowire:false, mac:true},
     {n:7, name:"Estación del clima", what:"Temperatura y humedad en la pantalla LCD y guardadas en un CSV en el Mac.", lvl:3, kit:"DHT11, pantalla LCD 16 × 2", extra:"Opcional: BME280 para presión (unos pocos dólares)", hook:"La fórmula del punto de rocío; ciclos diarios.", ses:"2 sesiones", nowire:false, mac:true},
     {n:8, name:"El oráculo", what:"Aprietas un botón y la pantalla muestra un aforismo escrito por el modelo local del Mac mini.", lvl:4, kit:"Pantalla LCD 16 × 2, botón", extra:"Nada", hook:"Escribir bajo restricción: 32 caracteres.", ses:"2 sesiones", nowire:false, mac:true},
-    {n:9, name:"Botón ListoLista", what:"Botones en la cocina que agregan huevos, leche o café a la lista compartida.", lvl:5, kit:"2 a 4 botones con etiqueta", extra:"Nada; ListoLista debe estar en línea primero", hook:"El «papel cuántico» recibe una entrada física.", ses:"3–4 sesiones", nowire:false, mac:true},
+    {n:9, name:"Botón ListoLista", what:"Botones en la cocina que agregan huevos, leche o café a la lista compartida.", lvl:5, kit:"2 a 4 botones con etiqueta", extra:"Nada; ListoLista debe estar en línea primero", hook:"Tu lista de compras recibe un botón físico.", ses:"3–4 sesiones", nowire:false, mac:true},
     {n:10, name:"Lissajous", what:"Un brazo de dos servos dibuja curvas con una pluma.", lvl:5, kit:"1 microservo, módulo de alimentación", extra:"2.º microservo, cartón, cinta, una pluma", hook:"Curvas paramétricas; cinemática inversa de 2 eslabones.", ses:"3–4 sesiones", nowire:false, mac:false}
   ];
   function band(l){ return l <= 2 ? "easy" : (l === 3 ? "mid" : "hard"); }
@@ -759,27 +885,34 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
     PROJECTS.forEach(function(p){
       var b = band(p.lvl), pips = "";
       for(var i = 1; i <= 5; i++) pips += '<i class="' + (i <= p.lvl ? "f" : "") + '"></i>';
-      var tags = (p.mvp ? '<span class="tag mvp">MVP · esta noche</span>' : "") + (p.nowire ? '<span class="tag">sin cables</span>' : "") + (p.mac ? '<span class="tag">Mac mini como cerebro</span>' : "");
+      var tags = (p.mvp ? '<span class="tag mvp">Esta noche</span>' : "") + (p.nowire ? '<span class="tag">sin cables</span>' : "");
       var isPicked = picked === p.n;
+      var action = p.mvp ? '<span class="badge-tonight">Esta noche</span>' :
+        '<button class="btn ' + (isPicked ? "" : "ghost ") + 'small pick" type="button" aria-pressed="' + isPicked + '">' + (isPicked ? "★ Siguiente" : "Elegir como siguiente") + '</button>';
       html += '<article class="card' + (isPicked ? " picked" : "") + '" data-n="' + p.n + '" data-band="' + b + '" data-nowire="' + p.nowire + '" data-mac="' + p.mac + '">' +
         '<div class="top"><div><span class="num">Proyecto ' + p.n + '</span><h3>' + esc(p.name) + '</h3></div>' +
-        '<div class="lvl"><div class="pips" aria-label="Dificultad ' + p.lvl + ' de 5">' + pips + '</div>' + BAND_LABEL[b] + '</div></div>' +
+        '<div class="lvl"><div class="pips" role="img" aria-label="Dificultad ' + p.lvl + ' de 5">' + pips + '</div>' + BAND_LABEL[b] + '</div></div>' +
         '<div class="card-morse" aria-hidden="true" title="' + esc(p.name) + ' en morse">' + miniMorse(p.name) + '</div>' +
         '<div style="display:grid;gap:10px;align-content:start"><p class="what">' + esc(p.what) + '</p>' +
-        '<dl class="parts"><dt>Del kit</dt><dd>' + esc(p.kit) + '</dd><dt>Extra</dt><dd>' + esc(p.extra) + '</dd><dt>Gancho</dt><dd>' + esc(p.hook) + '</dd></dl>' +
+        '<details class="need"' + (narrow() ? '' : ' open') + '><summary>Qué necesitas</summary>' +
+        '<dl class="parts"><dt>Del kit</dt><dd>' + esc(p.kit) + '</dd><dt>Extra</dt><dd>' + esc(p.extra) + '</dd><dt>Para pensar</dt><dd>' + esc(p.hook) + '</dd></dl></details>' +
         (tags ? '<div class="tags">' + tags + '</div>' : '') + '</div>' +
-        '<div class="foot"><span class="ses">' + p.ses + '</span><button class="btn ' + (isPicked ? "" : "ghost ") + 'small pick" type="button" aria-pressed="' + isPicked + '">' + (isPicked ? "★ Siguiente" : "Elegir como siguiente") + '</button></div>' +
+        '<div class="foot"><span class="ses">' + p.ses + '</span>' + action +
+        (isPicked && justPicked === p.n ? '<p class="pick-ok" role="status">Guardado: aparece en el <a href="#sesion">paso 12</a>.</p>' : '') + '</div>' +
         '</article>';
     });
     $("grid").innerHTML = html;
     Array.prototype.forEach.call(document.querySelectorAll(".card .pick"), function(btn){
       btn.addEventListener("click", function(){
         var n = Number(btn.closest(".card").dataset.n);
-        picked = (picked === n) ? null : n; store("latido-next", picked); renderGrid(); refreshRefs();
+        picked = (picked === n) ? null : n; justPicked = picked; store("latido-next", picked); renderGrid(); refreshRefs();
+        var again = document.querySelector('.card[data-n="' + n + '"] .pick'); if(again) again.focus();
       });
     });
     applyFilter();
   }
+  var justPicked = null;
+  function narrow(){ try{ return window.matchMedia("(max-width:820px)").matches; }catch(e){ return false; } }
   function applyFilter(){
     var shown = 0;
     Array.prototype.forEach.call(document.querySelectorAll(".card"), function(c){
@@ -806,12 +939,12 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
   var savedWord = store("latido-word");
   if(typeof savedWord === "string" && savedWord.trim()) $("word").value = savedWord;
   refresh();
-  seedConsole();
   renderChecklist();
   renderGrid();
   refreshRefs();
   tick();
   var reduce = false; try{ reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
-  if(!reduce) setTimeout(play, 700);
+  if(reduce) seedConsole(null, true);
+  else setTimeout(function(){ seedConsole(function(){ play(); }); }, 400);
 })();
 </script>
