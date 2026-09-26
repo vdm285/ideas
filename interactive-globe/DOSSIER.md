@@ -282,3 +282,42 @@ browser at 400 px (phone) and 1280 px (desktop, dark theme); inline script passe
 appear. A real "Casa" location (ask the city). Hoy content for more countries. Offline use (fonts and
 d3 come from CDNs). The flag emoji show as letters on Windows. The Wikipedia links use the browser's
 country name, so a few land on disambiguation pages.
+
+### Sketch changelog (round 2, 25 sep 2026)
+
+What changed, following the round-2 critique (in its order):
+- **Every country now has a "¿Sabías que…?":** the opposite point on Earth ("Si cavaras un túnel recto por
+  el centro de la Tierra, saldrías en…"), computed from the map, with a **"Cava el túnel"** button that
+  flies the globe to that spot, draws a ripple and opens the country there (or names the ocean). Plus the
+  season there today (by hemisphere; "temporada de lluvias/secas" in the tropics, approximate) and a size
+  rank ("entre los 10 más grandes del mapa").
+- **★ on the globe** marks the 4 countries with full cards; the hover tip says "★ ficha completa".
+- **Phones:** search and a Sorpréndeme dice button sit in a sticky bar at the top of the bottom sheet
+  (visible in all three sheet states; collapsed height raised to 128 px). First load opens the sheet
+  collapsed so the globe fills the screen. Messages ("Eso es el océano…", "No encontré…") show as a 3 s
+  toast over the globe. The "Giro automático" button is gone on phones; the globe resumes spinning after
+  30 s without touches.
+- **Shareable links:** the address keeps `#JP/comida/ninos` (country/tab/kids); opening such a link lands on
+  that card. A **Compartir** button next to Léemelo uses the phone's share sheet, or copies the link
+  ("Enlace copiado"). Note: inside the private preview page the link is the preview's own address; it only
+  becomes truly shareable once the sketch is hosted.
+- **Names and links:** Costa de Marfil, Birmania (Myanmar), Timor Oriental and República del Congo replace
+  the browser's odd names; their Wikipedia links (and RD Congo's) use fixed slugs. Flags are hidden on
+  Windows (they showed as letters). Copy: "Tu casa: Ciudad de México", "cabe unas N veces en México", and
+  in Modo niños "México es N veces más grande".
+- **"¿Dónde está…?" game:** 5 rounds ("Encuentra Japón (1 de 5)"); a right tap flashes green, a wrong tap
+  says "Eso es China; Japón está aquí" and flies there. Modo niños uses only large countries and says the
+  target out loud. In Modo niños every tapped country's name is also spoken.
+- **"¿Sabías que…?" shows once** as the card's opening hook (no longer repeated on every tab, and Léemelo no
+  longer reads it on every tab).
+- **Swipeable sheet:** swiping the handle up opens the sheet; down steps open → half → collapsed. Tap still
+  toggles.
+- **Small things:** the mouse wheel zooms only after clicking the globe or with Ctrl/⌘ (a one-time hint
+  says so), so the page scrolls normally; the animation timer stops when the globe isn't spinning
+  (battery); after a neighbour chip is clicked, keyboard focus moves to the country name.
+
+**Still pending:** the optional hand-written line + capital for the ~15 largest countries (item 1c);
+Palestina vs "Territorios Palestinos" naming (question 8, Victor's call) and the Georgia Wikipedia slug;
+the sketch was checked for syntax and missing references only, not yet clicked through on a real phone;
+plus everything in the round-1 pending list (real texts, finer map on zoom, real "Casa", offline use).
+

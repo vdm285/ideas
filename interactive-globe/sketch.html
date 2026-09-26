@@ -80,9 +80,20 @@ a{color:var(--accent)}
 #globe .lbl{font-family:var(--display);font-weight:800;font-size:17px;fill:var(--ink);stroke:var(--surface);stroke-width:4.5px;stroke-linejoin:round;paint-order:stroke;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 .kids #globe .lbl{font-size:21px}
 #globe .ripple{fill:none;stroke:var(--pick);stroke-width:3;pointer-events:none}
+#globe .star{font-size:15px;fill:var(--ink);stroke:var(--surface);stroke-width:3px;paint-order:stroke;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.toast.good{background:#1E7A3C;color:#fff}
+.hook{display:flex;flex-direction:column;gap:8px}
+.hook .fact{margin:0}
+.dig{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.dig p{margin:0;flex:1 1 220px}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.sheettop{display:contents}
+.sbar{display:none}
 .tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-weight:700;font-size:.9rem;padding:3px 9px;border-radius:6px;white-space:nowrap;transform:translate(-50%,-140%)}
 .pill{position:absolute;left:50%;top:7%;transform:translateX(-50%);background:var(--ink);color:var(--bg);font-weight:700;padding:7px 16px;border-radius:999px;pointer-events:none;white-space:nowrap;box-shadow:0 4px 14px var(--shadow);animation:pulse 1.8s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.08)}}
+.pill{width:max-content;max-width:92%;white-space:normal;text-align:center}
+.toast{animation:none;font-size:.95rem}
 .cross{position:absolute;left:50%;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;pointer-events:none;display:none;color:var(--ink)}
 .cross svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round}
 #globe:focus-visible ~ .cross{display:block}
@@ -147,8 +158,14 @@ footer p{margin:0}
   .globe-box{max-width:min(600px,56vh)}
   .panel{position:fixed;left:0;right:0;bottom:0;z-index:20;max-height:42vh;overflow:auto;overscroll-behavior:contain;border-radius:18px 18px 0 0;border-bottom:0;padding:4px 16px 18px;gap:12px;box-shadow:0 -8px 28px var(--shadow);transition:max-height .25s ease}
   .panel.open{max-height:85vh}
-  .panel.mini{max-height:92px;overflow:hidden}
-  .handle{display:flex;position:sticky;top:-4px;background:var(--surface);z-index:1}
+  .panel.mini{max-height:128px;overflow:hidden}
+  .handle{display:flex;touch-action:none}
+  .sheettop{display:flex;flex-direction:column;gap:6px;position:sticky;top:-4px;background:var(--surface);z-index:2;padding-bottom:6px}
+  .sbar{display:block}
+  .sbar .search{max-width:none}
+  .sbar #random{width:44px;padding:0;justify-content:center}
+  .sbar #random .txt{display:none}
+  #spin{display:none!important}
   .panel h2{cursor:pointer}
 }
 @media (max-width:599px){
@@ -179,6 +196,7 @@ footer p{margin:0}
         <svg id="globe" role="img" tabindex="0" aria-label="Globo terráqueo. Arrastra para girar y toca un país para verlo. Con el teclado: flechas para girar, más y menos para acercar, Enter para elegir el país del centro."></svg>
         <div class="tip" id="tip" hidden></div>
         <div class="pill" id="pill" aria-hidden="true">Toca un país</div>
+        <div class="pill toast" id="toast" aria-hidden="true" hidden></div>
         <div class="cross" aria-hidden="true"><svg viewBox="0 0 28 28"><path d="M14 3v8M14 17v8M3 14h8M17 14h8"/></svg></div>
       </div>
       <p class="status" id="status" role="status" aria-live="polite"></p>
@@ -191,7 +209,11 @@ footer p{margin:0}
         </button>
         <button class="btn" id="random" type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
-          Sorpréndeme
+          <span class="txt">Sorpréndeme</span>
+        </button>
+        <button class="btn" id="quiz" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
+          ¿Dónde está…?
         </button>
       </div>
       <form class="search" id="searchForm" autocomplete="off">
@@ -212,18 +234,28 @@ footer p{margin:0}
     </section>
 
     <section class="panel" id="panel" aria-labelledby="cname">
-      <button class="handle" id="handle" type="button" aria-expanded="false" aria-controls="panel">Ver más</button>
+      <div class="sheettop">
+        <button class="handle" id="handle" type="button" aria-expanded="false" aria-controls="panel">Ver más</button>
+        <div class="sbar" id="sbar"></div>
+      </div>
       <div>
         <div class="head">
-          <h2 id="cname">México</h2>
-          <button class="btn" id="speak" type="button" hidden>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>
-            <span id="speakLabel">Léemelo</span>
-          </button>
+          <h2 id="cname" tabindex="-1">México</h2>
+          <div class="acts">
+            <button class="btn" id="speak" type="button" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+              <span id="speakLabel">Léemelo</span>
+            </button>
+            <button class="btn" id="share" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+              Compartir
+            </button>
+          </div>
         </div>
         <p class="facts" id="cfacts"></p>
       </div>
       <div id="cnote" hidden></div>
+      <div class="hook" id="chook"></div>
       <div class="tabs" id="tabs" role="tablist" aria-label="Capas">
         <button class="tab" role="tab" id="t-historia" aria-controls="tabbody" aria-selected="true" data-tab="historia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V10M19 21V10M9.7 21V10M14.3 21V10M2 10l10-6 10 6z"/></svg>Historia</button>
         <button class="tab" role="tab" id="t-comida" aria-controls="tabbody" aria-selected="false" data-tab="comida" type="button" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0z"/><path d="M8 7c0-2 2-2 2-4M13 7c0-2 2-2 2-4"/></svg>Comida</button>
@@ -385,6 +417,10 @@ const ALIAS = {
   suazilandia: "SZ", macedonia: "MK", malvinas: "FK", falkland: "FK", palestina: "PS", gaza: "PS",
   costademarfil: "CI", emiratos: "AE", tibet: "CN", siberia: "RU", sahara: "EH"
 };
+/* Spanish names where the browser's own name reads oddly (and Wikipedia slugs that differ from the name). */
+const NAME_ES = { CI: "Costa de Marfil", MM: "Birmania (Myanmar)", TL: "Timor Oriental", CG: "República del Congo" };
+const WIKI = { CI: "Costa_de_Marfil", MM: "Birmania", TL: "Timor_Oriental", CG: "República_del_Congo", CD: "República_Democrática_del_Congo" };
+const noFlags = /Windows/.test(navigator.userAgent); // Windows shows flag emoji as two letters
 /* Places too small for the 1:110m map (ISO codes; names come from the browser). */
 const SMALL = "AD AG AI AS AW AX BB BH BL BM BQ CC CK CV CW CX DM FM FO GD GG GI GP GU HK IM IO JE KI KM KN KY LC LI MC MF MH MO MP MQ MS MT MU MV NF NR NU PF PM PN PW RE SC SG SH SM ST SX TC TK TO TV VA VC VG VI WF WS YT".split(" ");
 const CDMX = [-99.13, 19.43];
@@ -398,6 +434,7 @@ try { esNames = new Intl.DisplayNames(["es"], { type: "region" }); } catch (e) {
 function nameOf(f) {
   const p = f.properties;
   if (p.es) return p.es;
+  if (p.a && NAME_ES[p.a]) return NAME_ES[p.a];
   if (p.a && esNames) { try { const n = esNames.of(p.a); if (n && n !== p.a) return n; } catch (e) {} }
   return p.n;
 }
@@ -430,7 +467,7 @@ const byCode = {};
 features.forEach(f => { if (f.properties.a) byCode[f.properties.a] = f; });
 const fold = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 function flagOf(a) {
-  if (!a || !/^[A-Z]{2}$/.test(a)) return "";
+  if (noFlags || !a || !/^[A-Z]{2}$/.test(a)) return "";
   return String.fromCodePoint(...[...a].map(ch => 0x1F1A5 + ch.charCodeAt(0)));
 }
 
@@ -439,7 +476,7 @@ const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: 
 const phone = window.matchMedia("(max-width:899px)");
 let rot = [99, -19, 0];
 let zoom = 1, size = 500, base = 240;
-let selected = byCode.MX, tab = "historia", kids = false, hovered = null;
+let selected = byCode.MX, tab = "historia", kids = false, hovered = null, quiz = null, picked = false;
 try { kids = localStorage.getItem("gc-kids") === "1"; } catch (e) {}
 
 const svg = d3.select("#globe");
@@ -459,8 +496,10 @@ const gratEl = svg.append("path").attr("class", "grat");
 const landG = svg.append("g");
 const lands = landG.selectAll("path").data(features).join("path").attr("class", d => "land c" + d.c);
 const shineEl = svg.append("path").attr("class", "shine");
+const starEls = svg.append("g").selectAll("text").data(features.filter(f => SAMPLES[f.properties.a])).join("text").attr("class", "star").text("★");
 const lblEl = svg.append("text").attr("class", "lbl");
 const fxG = svg.append("g");
+const facing = c => d3.geoDistance(c, [-rot[0], -rot[1]]) < 1.4;
 
 function render() {
   proj.rotate(rot).scale(base * zoom);
@@ -468,6 +507,12 @@ function render() {
   sphereEl.attr("d", s); shineEl.attr("d", s);
   gratEl.attr("d", path(grat));
   lands.attr("d", path).classed("sel", d => d === selected).classed("hov", d => d === hovered);
+  /* A small star marks the countries that have full cards (sample texts). */
+  starEls.each(function (d) {
+    const on = d !== selected && facing(d.cen);
+    this.setAttribute("display", on ? "inline" : "none");
+    if (on) { const p = proj(d.cen); this.setAttribute("x", p[0]); this.setAttribute("y", p[1]); }
+  });
   /* The chosen country's name, written on the globe while it faces us. */
   const c = selected && selected.cen;
   if (c && d3.geoDistance(c, [-rot[0], -rot[1]]) < 1.45) {
@@ -500,24 +545,37 @@ function flash(f) {
 }
 
 /* ---------- Spin ---------- */
-let spinning = !reduce, last = null;
-d3.timer(t => {
-  if (!spinning) { last = t; return; }
-  if (last != null) { rot[0] += (t - last) * 0.004; render(); }
-  last = t;
-});
+/* The frame timer only runs while spinning (saves battery on cheap phones). */
+let spinning = false, spinTimer = null, last = null, idleTimer = null;
 function setSpin(on) {
   spinning = on;
   $("spin").setAttribute("aria-pressed", on ? "true" : "false");
+  if (on && !spinTimer) {
+    last = null;
+    spinTimer = d3.timer(t => { if (last != null) { rot[0] += (t - last) * 0.004; render(); } last = t; });
+  } else if (!on && spinTimer) { spinTimer.stop(); spinTimer = null; }
 }
-setSpin(spinning);
 $("spin").onclick = () => setSpin(!spinning);
+/* Phones have no spin button: the globe starts spinning again after 30 s without touches. */
+function idle() {
+  clearTimeout(idleTimer);
+  if (!phone.matches || reduce) return;
+  idleTimer = setTimeout(() => { if (!flight && !quiz && !ptrs.size) setSpin(true); }, 30000);
+}
 
 /* ---------- Zoom ---------- */
 function setZoom(z) { zoom = Math.max(0.9, Math.min(8, z)); render(); }
 $("zin").onclick = () => setZoom(zoom * 1.4);
 $("zout").onclick = () => setZoom(zoom / 1.4);
-svg.node().addEventListener("wheel", e => { e.preventDefault(); setSpin(false); setZoom(zoom * Math.exp(-e.deltaY * 0.0015)); }, { passive: false });
+/* The wheel zooms only after the globe was clicked/focused, or with Ctrl/⌘; otherwise the page scrolls. */
+let wheelHint = false;
+svg.node().addEventListener("wheel", e => {
+  if (!(e.ctrlKey || e.metaKey || document.activeElement === svg.node())) {
+    if (!wheelHint) { wheelHint = true; say("Usa Ctrl + rueda (o haz clic en el globo) para acercar"); }
+    return;
+  }
+  e.preventDefault(); setSpin(false); setZoom(zoom * Math.exp(-e.deltaY * 0.0015));
+}, { passive: false });
 
 /* ---------- Bottom sheet (phones) ---------- */
 const panel = $("panel");
@@ -529,8 +587,26 @@ function sheet(state) { // "mini" | "peek" | "open"
   if (state !== "open") panel.scrollTop = 0;
 }
 function toggleSheet() { sheet(panel.classList.contains("open") ? "peek" : panel.classList.contains("mini") ? "peek" : "open"); }
-$("handle").onclick = toggleSheet;
-$("cname").onclick = () => { if (phone.matches) toggleSheet(); };
+$("cname").onclick = () => { if (sw && sw.done) return; if (phone.matches) toggleSheet(); };
+/* The handle (and the sheet's top) can be swiped: up opens, down steps open → half → collapsed. Tap still toggles. */
+let sw = null;
+function sheetNow() { return panel.classList.contains("open") ? "open" : panel.classList.contains("mini") ? "mini" : "peek"; }
+["handle", "cname"].forEach(id => {
+  const el = $(id);
+  el.addEventListener("pointerdown", e => { if (phone.matches) sw = { y: e.clientY, id: e.pointerId, done: false }; });
+  el.addEventListener("pointermove", e => {
+    if (!sw || sw.id !== e.pointerId || sw.done) return;
+    const dy = e.clientY - sw.y;
+    if (Math.abs(dy) > 30) {
+      sw.done = true;
+      const s = sheetNow();
+      sheet(dy < 0 ? "open" : s === "open" ? "peek" : "mini");
+    }
+  });
+  el.addEventListener("pointerup", () => { setTimeout(() => { sw = null; }, 0); });
+  el.addEventListener("pointercancel", () => { sw = null; });
+});
+$("handle").onclick = () => { if (sw && sw.done) return; toggleSheet(); };
 
 /* ---------- Oceans (rough boxes, enough for "what is this blue?") ---------- */
 function oceanAt(ll) {
@@ -573,10 +649,11 @@ function featureAt(pt) {
 const tip = $("tip");
 svg.on("pointerdown", e => {
   svg.node().setPointerCapture(e.pointerId);
+  if (e.pointerType === "mouse") { try { svg.node().focus({ preventScroll: true }); } catch (err) {} }
   ptrs.set(e.pointerId, [e.clientX, e.clientY]);
-  setSpin(false);
+  setSpin(false); clearTimeout(idleTimer);
   if (flight) { flight.stop(); flight = null; }
-  tip.hidden = true; $("pill").hidden = true;
+  tip.hidden = true; if (!quiz) $("pill").hidden = true;
   if (ptrs.size === 1) { drag = { x: e.clientX, y: e.clientY, rot: rot.slice() }; moved = 0; }
   if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch = { d: Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, z: zoom }; moved = 99; }
   svg.classed("dragging", true);
@@ -588,7 +665,7 @@ svg.on("pointermove", e => {
       if (f !== hovered) { hovered = f || null; render(); }
       if (f) {
         const bx = $("globeBox").getBoundingClientRect();
-        tip.textContent = f.name; tip.hidden = false;
+        tip.textContent = f.name + (SAMPLES[f.properties.a] ? " ★ ficha completa" : ""); tip.hidden = false;
         tip.style.left = (e.clientX - bx.left) + "px"; tip.style.top = (e.clientY - bx.top) + "px";
       } else tip.hidden = true;
     }
@@ -619,10 +696,12 @@ function endPtr(e, cancelled) {
     if (!cancelled && moved < 6) {
       const pt = local(e), f = featureAt(pt);
       if (f !== undefined) ripple(pt);
-      if (f) select(f, true);
+      if (quiz && f !== undefined) quizAnswer(f, pt);
+      else if (f) { select(f, true); if (kids) sayName(f); }
       else if (f === null) say(oceanMsg(proj.invert(pt)));
     }
     drag = null; pinch = null;
+    idle();
   }
 }
 svg.on("pointerup", e => endPtr(e, false));
@@ -630,9 +709,10 @@ svg.on("pointercancel", e => endPtr(e, true));
 svg.on("pointerleave", e => { if (e.pointerType === "mouse" && !ptrs.size) { hovered = null; tip.hidden = true; render(); } });
 
 function pickCenter() {
-  $("pill").hidden = true;
   const pt = [size / 2, size / 2], f = featureAt(pt);
   ripple(pt);
+  if (quiz && f !== undefined) { quizAnswer(f, pt); return; }
+  $("pill").hidden = true;
   if (f) select(f, true); else say(oceanMsg(proj.invert(pt)));
 }
 svg.on("keydown", e => {
@@ -649,22 +729,24 @@ svg.on("keydown", e => {
 
 /* ---------- Fly to a country (roulette = extra full turn, slower, for Sorpréndeme) ---------- */
 let flight = null;
-function flyTo(f, roulette) {
-  const c = f.cen;
+function flyLL(c, z1, dur, extraTurn, done) {
   const target = [-c[0], Math.max(-70, Math.min(70, -c[1])), 0];
   while (target[0] - rot[0] > 180) target[0] -= 360;
   while (target[0] - rot[0] < -180) target[0] += 360;
-  if (roulette && !reduce) target[0] += 360;
-  const z0 = zoom, z1 = f.area < 0.0008 ? Math.max(zoom, 3.5) : f.area < 0.004 ? Math.max(zoom, 2.2) : f.area > 0.1 ? Math.min(zoom, 1.2) : zoom;
+  if (extraTurn && !reduce) target[0] += 360;
+  const z0 = zoom;
   if (flight) flight.stop();
-  if (reduce) { rot = target; zoom = z1; render(); return; }
-  const dur = roulette ? 1800 : 900;
+  if (reduce) { rot = target; zoom = z1; render(); if (done) done(); return; }
   const ir = d3.interpolate(rot.slice(), target);
   flight = d3.timer(t => {
     const u = Math.min(1, t / dur), e = d3.easeCubicInOut(u);
     rot = ir(e); zoom = z0 + (z1 - z0) * e; render();
-    if (u >= 1) { flight.stop(); flight = null; flash(f); }
+    if (u >= 1) { flight.stop(); flight = null; if (done) done(); }
   });
+}
+function flyTo(f, roulette, done) {
+  const z1 = f.area < 0.0008 ? Math.max(zoom, 3.5) : f.area < 0.004 ? Math.max(zoom, 2.2) : f.area > 0.1 ? Math.min(zoom, 1.2) : zoom;
+  flyLL(f.cen, z1, roulette ? 1800 : 900, roulette, () => { flash(f); if (done) done(); });
 }
 
 /* ---------- Read aloud ---------- */
@@ -691,19 +773,94 @@ $("speak").onclick = () => {
   speechSynthesis.speak(u);
 };
 if (canSpeak) { try { speechSynthesis.getVoices(); } catch (e) {} }
+/* Modo niños: say the country's name out loud on every tap (for children who can't read yet). */
+function sayName(f, extra) {
+  if (!canSpeak) return;
+  try {
+    speechSynthesis.cancel(); setSpeakBtn(false);
+    const u = new SpeechSynthesisUtterance((extra || "") + f.name);
+    u.lang = "es-MX"; u.rate = 0.92;
+    const vs = speechSynthesis.getVoices() || [];
+    const v = vs.find(x => /^es[-_]MX/i.test(x.lang)) || vs.find(x => /^es/i.test(x.lang));
+    if (v) u.voice = v;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
 
 /* ---------- Panel ---------- */
-function say(msg) { $("status").textContent = msg; }
+/* Messages go to the live region (screen readers) and, unless quiet, to a toast over the globe (visible on phones). */
+let toastT = null;
+function say(msg, quiet, good) {
+  $("status").textContent = msg;
+  if (quiet) return;
+  const t = $("toast");
+  t.textContent = msg; t.hidden = false; t.classList.toggle("good", !!good);
+  $("pill").hidden = true;
+  clearTimeout(toastT);
+  toastT = setTimeout(() => { t.hidden = true; if (quiz) $("pill").hidden = false; }, 3000);
+}
 function esc(s) { return String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch])); }
 function nice(x) { return x < 3 ? (Math.round(x * 2) / 2).toLocaleString("es-MX") : Math.round(x).toLocaleString("es-MX"); }
 function sizeVsMx(f) {
   const r = f.area / byCode.MX.area;
   if (r >= 1.3) return "unas " + nice(r) + " veces el tamaño de México (aprox.)";
   if (r > 0.77) return "más o menos del tamaño de México (aprox.)";
-  return "cabría unas " + nice(1 / r) + " veces en México (aprox.)";
+  if (kids) return "México es " + nice(1 / r) + " veces más grande (aprox.)";
+  return "cabe unas " + nice(1 / r) + " veces en México (aprox.)";
+}
+/* ---------- Automatic "¿Sabías que…?" for every country (no extra data) ---------- */
+const bySize = features.filter(f => f.properties.a !== "AQ").sort((a, b) => b.area - a.area);
+function antipode(f) {
+  const ll = [f.cen[0] > 0 ? f.cen[0] - 180 : f.cen[0] + 180, -f.cen[1]];
+  const g = features.find(x => d3.geoContains(x, ll)) || null;
+  return { ll, f: g, name: g ? g.name : (oceanAt(ll) || "el mar") };
+}
+function seasonOf(f) {
+  const lat = f.cen[1], d = new Date(), m = d.getMonth(), day = d.getDate();
+  const md = m * 100 + day; // e.g. 25 sep → 825
+  if (Math.abs(lat) < 23.5) {
+    const northRain = m >= 5 && m <= 9; // jun–oct
+    const rain = lat >= 0 ? northRain : !northRain;
+    return (kids ? "Allá casi no hay invierno: " : "En los trópicos el año va más por lluvias que por frío: ") +
+      "ahora " + (rain ? "suele ser temporada de lluvias" : "suele ser temporada de secas") + " (aprox.)";
+  }
+  const north = md >= 220 && md < 521 ? "primavera" : md >= 521 && md < 822 ? "verano" : md >= 822 && md < 1121 ? "otoño" : "invierno";
+  const flip = { primavera: "otoño", verano: "invierno", "otoño": "primavera", invierno: "verano" };
+  const s = lat >= 0 ? north : flip[north];
+  return "Ahora allá es " + s + (lat < 0 ? " (está al sur del ecuador: las estaciones van al revés que en México)" : "");
+}
+function sizeRank(f) {
+  const r = bySize.indexOf(f) + 1;
+  if (!r) return "";
+  if (r <= 10) return "Está entre los 10 más grandes del mapa (lugar " + r + " por tamaño)";
+  if (r <= 30) return "Está entre los 30 más grandes del mapa (lugar " + r + ")";
+  if (r > bySize.length - 25) return "Es de los más pequeños que caben en este mapa";
+  return "";
+}
+function hookFor(f, s) {
+  const a = antipode(f);
+  let h = s ? '<p class="fact"><strong>¿Sabías que…?</strong> ' + esc(s.fact) + "</p>" : "";
+  const lead = kids ? "Si hicieras un hoyo derechito hasta el otro lado de la Tierra" : "Si cavaras un túnel recto por el centro de la Tierra";
+  h += '<div class="fact dig"><p>' + (s ? "" : "<strong>¿Sabías que…?</strong> ") + lead + ", saldrías en <strong>" + esc(a.name) + "</strong>." + "</p>" +
+    '<button class="btn" type="button" id="digBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v14"/><path d="M6 11l6 6 6-6"/><path d="M4 21h16"/></svg>Cava el túnel</button></div>';
+  const extra = [seasonOf(f), sizeRank(f)].filter(Boolean);
+  h += '<p class="facts">' + extra.map(esc).join(" · ") + "</p>";
+  return h;
+}
+function digTunnel() {
+  const from = selected, a = antipode(from);
+  setSpin(false);
+  const z1 = a.f ? (a.f.area < 0.004 ? 2.2 : Math.min(zoom, 1.3)) : Math.min(zoom, 1.3);
+  say(kids ? "¡A cavar! Cruzando por el centro de la Tierra…" : "Cavando por el centro de la Tierra…", false);
+  flyLL(a.ll, z1, 2000, false, () => {
+    const p = proj(a.ll);
+    if (p) { ripple(p); setTimeout(() => ripple(p), 250); }
+    if (a.f) { select(a.f, false); say("Saliste en " + a.f.name + ", del otro lado de " + from.name, false, true); if (kids) sayName(a.f, "Saliste en "); }
+    else say("Saliste en " + a.name + ". ¡Mejor lleva lancha!", false, true);
+  });
 }
 function factLines(f) {
-  if (f === byCode.MX) return ["Aquí es casa: Ciudad de México"];
+  if (f === byCode.MX) return ["Tu casa: Ciudad de México"];
   const km = Math.max(100, Math.round(d3.geoDistance(f.cen, CDMX) * 6371 / 100) * 100);
   return ["A unos " + km.toLocaleString("es-MX") + " km de la Ciudad de México", sizeVsMx(f)];
 }
@@ -722,7 +879,7 @@ function moreFor(f, s) {
       .sort((a, b) => d3.geoDistance(f.cen, a.cen) - d3.geoDistance(f.cen, b.cen)).slice(0, 3);
     h += "<div><h4>Sin frontera terrestre · lo más cercano</h4>" + chipsFor(near) + "</div>";
   }
-  const slug = encodeURIComponent(f.name.replace(/ /g, "_"));
+  const slug = encodeURIComponent(WIKI[f.properties.a] || f.name.replace(/ /g, "_"));
   h += '<div class="links"><a href="https://es.wikipedia.org/wiki/' + slug + '" target="_blank" rel="noopener">Leer en Wikipedia</a>' +
     (kids ? '<a href="https://es.vikidia.org/wiki/' + slug + '" target="_blank" rel="noopener">Leer en Vikidia</a>' : "") + "</div>";
   if (!s) h += '<div class="soon"><p>Aún no hay historia, comida y cultura de este país: prueba México, Japón, Egipto o Brasil.</p>' +
@@ -737,9 +894,10 @@ function textFor(f, s) {
   const parts = [f.name + "."];
   if (!s) {
     factLines(f).forEach(x => parts.push(x.replace(" (aprox.)", "") + "."));
-    parts.push("Aún no hay historia, comida y cultura de este país.");
+    parts.push("¿Sabías que? Si cavaras un túnel por el centro de la Tierra, saldrías en " + antipode(f).name + ".");
+    parts.push(seasonOf(f).replace(" (aprox.)", "") + ".");
   } else if (tab !== "hoy") {
-    parts.push(kids ? s[tab].k : s[tab].a, "¿Sabías que? " + s.fact);
+    parts.push(kids ? s[tab].k : s[tab].a);
   } else {
     parts.push(s.hoy.tema + ".", kids ? s.hoy.k : s.hoy.que);
     if (kids && s.hoy.platica) parts.push("Para platicar en familia: " + s.hoy.platica);
@@ -755,6 +913,7 @@ function renderPanel() {
   const note = p.x ? (DISPUTED[p.a] || DISPUTED._) : "";
   $("cnote").hidden = !note;
   $("cnote").innerHTML = note ? '<p class="note">' + esc(note) + "</p>" : "";
+  $("chook").innerHTML = hookFor(f, s);
   $("tabs").hidden = !s; $("tabbody").hidden = !s;
   document.querySelectorAll(".tab").forEach(b => {
     const on = b.dataset.tab === tab;
@@ -766,11 +925,38 @@ function renderPanel() {
   $("cmore").innerHTML = moreFor(f, s);
   $("src").textContent = s ? srcFor(tab) : "Datos: mapa Natural Earth; tamaños y distancias aproximados.";
   speakText = textFor(f, s);
+  saveHash();
 }
+/* ---------- Shareable links: #JP/comida/ninos ---------- */
+const TABS = ["historia", "comida", "cultura", "hoy"];
+function codeOf(f) { return f.properties.a || "i" + f.i; }
+function saveHash() {
+  if (!picked) return; // no hash until the person picks something, so a plain reload still spins
+  try { history.replaceState(null, "", "#" + codeOf(selected) + "/" + tab + (kids ? "/ninos" : "")); } catch (e) {}
+}
+function readHash() {
+  let h = [];
+  try { h = decodeURIComponent(location.hash.slice(1)).split("/"); } catch (e) { return false; }
+  const f = byCode[h[0]] || (/^i\d+$/.test(h[0] || "") ? features[+h[0].slice(1)] : null);
+  if (TABS.includes(h[1])) tab = h[1];
+  if (h[2] === "ninos") kids = true;
+  if (!f) return false;
+  selected = f; picked = true;
+  rot = [-f.cen[0], Math.max(-70, Math.min(70, -f.cen[1])), 0];
+  return true;
+}
+$("share").onclick = async () => {
+  const url = location.href, name = selected.name;
+  if (navigator.share) {
+    try { await navigator.share({ title: "Globo Curioso", text: name + " en Globo Curioso", url }); return; }
+    catch (e) { if (e && e.name === "AbortError") return; }
+  }
+  try { await navigator.clipboard.writeText(url); say("Enlace copiado: " + name, false, true); }
+  catch (e) { say("No pude copiar el enlace; cópialo de la barra del navegador."); }
+};
 function bodyFor(s) {
   if (tab !== "hoy") {
-    return "<p>" + esc(kids ? s[tab].k : s[tab].a) + "</p>" +
-      '<p class="fact"><strong>¿Sabías que…?</strong> ' + esc(s.fact) + "</p>";
+    return "<p>" + esc(kids ? s[tab].k : s[tab].a) + "</p>";
   }
   const n = s.hoy;
   const top = '<div class="label"><span class="tag">tema de ejemplo · no es la noticia de hoy</span></div>';
@@ -789,16 +975,18 @@ function bodyFor(s) {
     '<div><h4>Distintas miradas</h4><ul class="views">' + views + "</ul></div>" +
     "<div><h4>Lo que aún no se sabe</h4><p>" + esc(n.nosabe) + "</p></div></div>";
 }
-function select(f, fly, roulette) {
-  selected = f; setSpin(false);
-  $("pill").hidden = true;
+function select(f, fly, roulette, focusName) {
+  selected = f; picked = true; setSpin(false);
+  if (!quiz) $("pill").hidden = true;
   if (fly) flyTo(f, roulette); else { render(); flash(f); }
-  say("Elegiste: " + f.name);
+  say("Elegiste: " + f.name, true);
   renderPanel();
-  sheet("peek");
+  sheet(quiz ? "mini" : "peek");
+  if (focusName) $("cname").focus({ preventScroll: phone.matches });
 }
+$("chook").addEventListener("click", e => { if (e.target.closest("#digBtn")) digTunnel(); });
 document.querySelectorAll(".tab").forEach(b => {
-  b.onclick = () => { tab = b.dataset.tab; renderPanel(); };
+  b.onclick = () => { tab = b.dataset.tab; picked = true; renderPanel(); };
   b.onkeydown = e => {
     const order = ["historia", "comida", "cultura", "hoy"];
     let i = order.indexOf(tab);
@@ -808,7 +996,7 @@ document.querySelectorAll(".tab").forEach(b => {
 });
 $("cmore").addEventListener("click", e => {
   const b = e.target.closest("[data-fi]");
-  if (b) select(features[+b.dataset.fi], true);
+  if (b) select(features[+b.dataset.fi], true, false, true);
 });
 
 /* ---------- Kids mode ---------- */
@@ -857,7 +1045,72 @@ $("searchForm").addEventListener("submit", e => {
   else say("No encontré «" + raw + "». Prueba otro nombre o gira el globo.");
 });
 
+/* ---------- "¿Dónde está…?" game: 5 rounds, find the country on the globe ---------- */
+function quizPool() {
+  return features.filter(f => f.properties.a && f.properties.a !== "AQ" && f.area > (kids ? 0.01 : 0.0015));
+}
+function quizNext() {
+  const pool = quizPool().filter(f => !quiz.seen.includes(f));
+  quiz.target = pool[Math.floor(Math.random() * pool.length)];
+  quiz.seen.push(quiz.target);
+  clearTimeout(toastT); $("toast").hidden = true;
+  const p = $("pill");
+  p.textContent = "Encuentra " + quiz.target.name + " (" + (quiz.round + 1) + " de 5)";
+  p.hidden = false;
+  if (kids) sayName(quiz.target, "Encuentra ");
+}
+function quizStart() {
+  if (quiz) { quizEnd(true); return; }
+  quiz = { round: 0, ok: 0, seen: [], target: null, wait: false };
+  $("quiz").setAttribute("aria-pressed", "true");
+  setSpin(false);
+  if (phone.matches) sheet("mini");
+  say("¿Dónde está…? Toca el país que te pido. ¡Son 5!", true);
+  quizNext();
+}
+function quizAnswer(f, pt) {
+  if (quiz.wait) return;
+  const t = quiz.target;
+  quiz.wait = true;
+  if (f === t) {
+    quiz.ok++;
+    select(t, false);
+    say("¡Bien! " + quiz.ok + " de " + (quiz.round + 1), false, true);
+    if (kids) sayName(t, "¡Bien! ");
+  } else {
+    say((f ? "Eso es " + f.name : "Eso es agua") + "; " + t.name + " está aquí");
+    select(t, true);
+  }
+  setTimeout(() => {
+    if (!quiz) return;
+    quiz.wait = false; quiz.round++;
+    if (quiz.round >= 5) quizEnd(false); else quizNext();
+  }, 1800);
+}
+function quizEnd(stopped) {
+  const q = quiz; quiz = null;
+  $("quiz").setAttribute("aria-pressed", "false");
+  $("pill").hidden = true;
+  if (!stopped) say("Terminaste: " + q.ok + " de 5. " + (q.ok >= 4 ? "¡Eres experto en mapas!" : q.ok >= 2 ? "¡Muy bien!" : "¡Otra vez y te sale mejor!"), false, q.ok >= 2);
+  else say("Juego terminado", true);
+}
+$("quiz").setAttribute("aria-pressed", "false");
+$("quiz").onclick = quizStart;
+
+/* ---------- Phones: search + Sorpréndeme live in a sticky bar at the top of the sheet ---------- */
+const searchHome = $("searchForm").parentNode, searchNext = $("searchForm").nextElementSibling, ctrlBox = document.querySelector(".controls");
+function placeSearch() {
+  if (phone.matches) { $("sbar").append($("searchForm")); $("searchForm").append($("random")); $("random").setAttribute("aria-label", "Sorpréndeme"); }
+  else { searchHome.insertBefore($("searchForm"), searchNext); ctrlBox.insertBefore($("random"), $("quiz")); $("random").removeAttribute("aria-label"); }
+}
+if (phone.addEventListener) phone.addEventListener("change", placeSearch);
+placeSearch();
+
 /* ---------- Start ---------- */
+const fromLink = readHash();
 setKids(kids);
 resize();
+if (fromLink) { $("pill").hidden = true; flash(selected); }
+setSpin(!fromLink && !reduce);
+if (phone.matches) sheet(fromLink ? "peek" : "mini");
 </script>
