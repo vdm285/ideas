@@ -1,6 +1,9 @@
 <title>Tabla Viva</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap");
+[hidden] { display: none !important; }
 
 /* ---------- Tokens: light palette on bare :root ---------- */
 :root {
@@ -54,7 +57,7 @@
 }
 
 /* ---------- Base ---------- */
-html.big { font-size: 112.5%; }
+html.big { font-size: 125%; }
 body {
   background: var(--bg);
   color: var(--ink);
@@ -85,9 +88,9 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
 }
 
 /* ---------- Tools ---------- */
-.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.tools { display: flex; gap: 8px; align-items: center; }
 .search {
-  flex: 1 1 280px; min-width: 0; display: flex; align-items: center; gap: 8px;
+  flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 8px;
   background: var(--surface); border: 2px solid var(--line); border-radius: 12px; padding: 0 12px; min-height: 52px;
 }
 .search:focus-within { border-color: var(--accent); }
@@ -104,6 +107,27 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
   background: var(--surface); font-weight: 700; cursor: pointer;
 }
 .tbtn[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tbtn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); min-height: 52px; }
+.tbtn.primary[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.more { position: relative; flex: none; }
+.more > summary { list-style: none; display: flex; align-items: center; min-height: 52px; }
+.more > summary::-webkit-details-marker { display: none; }
+.more[open] > summary { border-color: var(--ink); }
+.more-pop {
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 30; width: max-content; max-width: calc(100vw - 32px);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px; box-shadow: var(--shadow);
+  display: grid; gap: 8px; justify-items: stretch;
+}
+.more-pop .tbtn { text-align: left; }
+.more-pop .lbl { font-size: .8rem; color: var(--muted); }
+body.kiosk .more { display: none; }
+.logo { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: none; }
+.colors { margin-top: 8px; }
+.colors > summary { cursor: pointer; color: var(--muted); font-size: .92rem; min-height: 36px; display: inline-flex; align-items: center; gap: 6px; }
+.colors[open] > summary { color: var(--ink); }
+.colors .legend { margin-top: 6px; }
+.rot-note { display: none; margin: 8px 0 0; font-size: .85rem; color: var(--muted); }
+@media (max-width: 699px) { .rot-note { display: block; } }
 @media (hover: hover) { .tbtn:hover { border-color: var(--muted); } }
 
 .row2 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 12px; }
@@ -128,18 +152,24 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
 
 /* ---------- Reto banner ---------- */
 .reto {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 12px;
+  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 6px); z-index: 25; box-shadow: var(--shadow);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 12px;
   background: var(--ink); color: var(--bg); border-radius: 14px; padding: 10px 14px;
 }
 .reto .ask { font-size: 1.05rem; }
 .reto .target { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; }
 .reto .score { font-family: var(--font-mono); font-variant-numeric: tabular-nums; margin-left: auto; }
-.reto button { min-height: 44px; padding: 0 14px; border-radius: 10px; border: 2px solid currentColor; background: transparent; color: var(--bg); font-weight: 700; cursor: pointer; }
+.reto .seg { border-color: var(--bg); background: transparent; }
+.reto .seg button { color: var(--bg); }
+.reto .seg button + button { border-left-color: var(--bg); }
+.reto .seg button[aria-pressed="true"] { background: var(--bg); color: var(--ink); }
+.reto .end { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; }
+.reto > button { min-height: 44px; padding: 0 14px; border-radius: 10px; border: 2px solid currentColor; background: transparent; color: var(--bg); font-weight: 700; cursor: pointer; }
 
 /* ---------- Stage ---------- */
 .stage { display: grid; gap: 20px; margin-top: 16px; align-items: start; }
 @media (min-width: 1180px) {
-  .stage { grid-template-columns: minmax(0, 1fr) clamp(360px, 28vw, 470px); }
+  .stage { grid-template-columns: minmax(0, 1fr) clamp(340px, 26vw, 470px); }
 }
 
 /* ---------- The table ---------- */
@@ -162,11 +192,18 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
 }
 .pt.norm .cell { aspect-ratio: 1 / 1.1; }
 .pt.trans .cell { min-height: 46px; }
-.cell .z { position: absolute; top: 3px; left: 4px; font-family: var(--font-mono); font-size: clamp(8px, 17cqi, 13px); opacity: .85; }
-.cell .s { font-family: var(--font-display); font-weight: 800; font-size: clamp(13px, 36cqi, 34px); margin-top: 8%; }
-.cell .n, .cell .m { display: none; max-width: 92%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: clamp(8px, 12.5cqi, 12px); }
-@container (min-width: 60px) { .cell .n { display: block; margin-top: 3px; } }
-@container (min-width: 84px) { .cell .m { display: block; margin-top: 2px; font-family: var(--font-mono); opacity: .8; } }
+.cell .z { position: absolute; top: 3px; left: 4px; font-family: var(--font-mono); font-size: max(.5rem, min(17cqi, 13px)); opacity: .85; }
+.cell .s { font-family: var(--font-display); font-weight: 800; font-size: max(.8rem, min(34cqi, 34px)); margin-top: 8%; }
+.cell .n { display: none; max-width: 94%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: max(.53rem, min(13cqi, 12px)); }
+@container (min-width: 44px) { .cell .n { display: block; margin-top: 2px; } }
+.pt.hard .cell .n { display: none !important; }
+.pt.hinting .cell:not(.lite) { opacity: .3; }
+.cell.lite { box-shadow: inset 0 0 0 3px var(--ink); }
+.cell.hit::before {
+  content: ""; position: absolute; inset: -4px; border-radius: 10px; border: 4px solid var(--good); pointer-events: none;
+  animation: burst .7s ease-out forwards;
+}
+@keyframes burst { from { transform: scale(.6); opacity: 1; } to { transform: scale(1.9); opacity: 0; } }
 .cell.has::after {
   content: ""; position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; border-radius: 50%;
   background: var(--tile-ink); opacity: .75;
@@ -215,6 +252,7 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
 
 /* ---------- Detail panel ---------- */
 .panel {
+  box-sizing: border-box;
   background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 18px 22px;
   box-shadow: var(--shadow); min-width: 0;
 }
@@ -226,7 +264,7 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
   .panel {
     position: fixed; z-index: 40; top: 0; right: 0; bottom: 0; width: min(500px, 100%); overflow: auto;
     border-radius: 18px 0 0 18px; border-right: 0;
-    padding-top: calc(env(safe-area-inset-top, 0px) + 12px); padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
+    padding-top: calc(env(safe-area-inset-top, 0px) + 12px); padding-bottom: 0;
     transform: translateX(105%); visibility: hidden; transition: transform .25s ease, visibility .25s;
   }
   body.sheet-open .panel { transform: none; visibility: visible; }
@@ -235,6 +273,7 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
 @media (max-width: 520px) { .panel { border-radius: 0; border-left: 0; } }
 .scrim { position: fixed; inset: 0; z-index: 39; background: var(--scrim); }
 .p-top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; display: flex; justify-content: flex-end; margin: -4px 0 6px; padding-block: 4px; background: var(--surface); }
+@media (min-width: 1180px) { .panel .p-top { display: none; } }
 .close {
   min-height: 44px; padding: 0 16px; border-radius: 10px; border: 2px solid var(--line);
   background: var(--surface); font-weight: 700; cursor: pointer;
@@ -307,7 +346,30 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
 .todo .src { font-size: .85rem; color: var(--muted); }
 .todo .samples { margin-top: 8px; }
 .p-nav { display: flex; justify-content: space-between; gap: 8px; margin-top: 22px; }
-.p-nav .sbtn { max-width: 48%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.p-nav .sbtn { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.p-nav .close-b { flex: none; }
+@media (min-width: 1180px) { .p-nav .close-b { display: none; } }
+@media (max-width: 1179.98px) {
+  .p-nav {
+    position: sticky; bottom: 0; z-index: 2; margin-inline: -18px;
+    padding: 10px 18px calc(env(safe-area-inset-bottom, 0px) + 12px); background: var(--surface); border-top: 1px solid var(--line);
+  }
+}
+.wow { margin: 0; font-weight: 700; color: var(--accent); text-align: center; max-width: 36ch; }
+.tech { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 6px; }
+.tech > summary { cursor: pointer; font-family: var(--font-display); font-weight: 800; font-size: 1.12rem; min-height: 44px; display: flex; align-items: center; }
+.kid { margin: 12px 0 0; padding-left: 1.2em; display: grid; gap: 6px; font-size: 1.05rem; }
+.fam { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; }
+.fam .chip { min-height: 40px; }
+.soon { margin-top: 16px; background: var(--surface-2); border-radius: 12px; padding: 12px 14px; }
+.soon p { margin: 0 0 8px; }
+.rp h2 { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; margin: 0; }
+.rp .rt { font-family: var(--font-display); font-weight: 800; font-size: 2.6rem; line-height: 1.05; margin: 8px 0; }
+.dots { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; padding: 0; list-style: none; }
+.dots li { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); }
+.dots li.ok { background: var(--good); border-color: var(--good); }
+.dots li.no { background: var(--bad); border-color: var(--bad); }
+.dots li.now { border-color: var(--ink); }
 
 /* ---------- Attract mode ---------- */
 .attract {
@@ -340,14 +402,14 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; }
-  #bohr .orb, .tap-ring, .cell.glow, .cell.hint, .cell.miss { animation: none !important; }
+  #bohr .orb, .tap-ring, .cell.glow, .cell.hint, .cell.miss, .cell.hit::before { animation: none !important; }
 }
 </style>
 
 <div class="wrap">
   <header class="top">
     <div class="brand">
-      <div class="logo" aria-hidden="true"><small>118</small>Tv</div>
+      <div class="logo" id="logo" aria-hidden="true"><small>118</small>Tv</div>
       <div>
         <h1>Tabla Viva</h1>
         <p class="sub">Toca cualquier elemento para ver su ficha.</p>
@@ -363,34 +425,45 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
       <input id="q" type="search" placeholder="Busca: oro, Fe, 26, gas noble…" autocomplete="off" spellcheck="false" enterkeyhint="search">
       <span class="count" id="count" aria-live="polite"></span>
     </div>
-    <div class="modes">
-      <button class="tbtn" id="btn-reto" type="button" aria-pressed="false">Reto</button>
-      <button class="tbtn" id="btn-vitrina" type="button" aria-pressed="false">Modo vitrina</button>
-      <button class="tbtn" id="btn-full" type="button" aria-pressed="false">Pantalla completa</button>
-      <button class="tbtn" id="btn-big" type="button" aria-pressed="false">Letra grande</button>
-    </div>
+    <button class="tbtn primary" id="btn-reto" type="button" aria-pressed="false">Reto</button>
+    <details class="more" id="more">
+      <summary class="tbtn">Más</summary>
+      <div class="more-pop">
+        <span class="lbl">Colorear la tabla por</span>
+        <div class="seg" role="group" aria-label="Colorear la tabla por">
+          <button type="button" data-color="cat" aria-pressed="true">Familia</button>
+          <button type="button" data-color="st" aria-pressed="false">Estado a 25 °C</button>
+        </div>
+        <button class="tbtn" id="btn-big" type="button" aria-pressed="false">Letra grande</button>
+        <button class="tbtn" id="btn-full" type="button" aria-pressed="false">Pantalla completa</button>
+        <button class="tbtn" id="btn-vitrina" type="button" aria-pressed="false">Modo exhibición</button>
+      </div>
+    </details>
   </div>
 
-  <div class="row2">
-    <div class="samples" id="samples"><span>Fichas completas de muestra:</span></div>
-    <div class="seg" role="group" aria-label="Colorear la tabla por">
-      <button type="button" data-color="cat" aria-pressed="true">Familia</button>
-      <button type="button" data-color="st" aria-pressed="false">Estado a 25 °C</button>
+  <details class="colors" id="colors">
+    <summary>¿Qué significan los colores?</summary>
+    <div class="legend">
+      <span class="legend-label">Toca un color para filtrar:</span>
+      <span id="chips" style="display:contents"></span>
+      <span class="dot-note">● = ficha completa de muestra</span>
     </div>
-  </div>
-  <div class="legend">
-    <span class="legend-label">Filtrar:</span>
-    <span id="chips" style="display:contents"></span>
-    <span class="dot-note">● = ficha de muestra</span>
-  </div>
+  </details>
 
   <div class="reto" id="reto" hidden>
-    <span class="ask">Reto · Encuentra</span>
-    <span class="target" id="reto-name">Hierro</span>
-    <span class="score" id="reto-score">Aciertos: 0</span>
-    <button type="button" id="reto-skip">Otro</button>
-    <button type="button" id="reto-exit">Salir del reto</button>
+    <span class="ask" id="reto-ask">Busca</span>
+    <span class="target" id="reto-name"></span>
+    <span class="end" id="reto-end" hidden></span>
+    <span class="score" id="reto-score"></span>
+    <div class="seg" role="group" aria-label="Nivel del reto">
+      <button type="button" data-rlv="easy" aria-pressed="true">Fácil</button>
+      <button type="button" data-rlv="hard" aria-pressed="false">Difícil</button>
+    </div>
+    <button type="button" id="reto-skip">Saltar</button>
+    <button type="button" id="reto-again" hidden>Otra ronda</button>
+    <button type="button" id="reto-exit">Salir</button>
   </div>
+  <p class="rot-note">En el celular la tabla está girada; gira el teléfono para verla completa.</p>
 
   <main class="stage">
     <div class="pt norm" id="pt" role="group" aria-label="Tabla periódica: 118 elementos"></div>
@@ -398,9 +471,9 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
   </main>
 
   <footer class="foot">
-    <p><strong>Boceto de concepto para Victor, 25 de septiembre de 2026.</strong> Todo va dentro de este archivo: no se conecta a internet.</p>
+    <p><strong>Boceto de concepto para Victor, 25 de septiembre de 2026.</strong> Todos los datos van dentro de este archivo; solo las tipografías se descargan de Google Fonts (sin internet, usa las del sistema).</p>
     <p>Las 118 casillas usan masas atómicas redondeadas (IUPAC; entre corchetes, el isótopo más estable) y nombres en español como se usan en México. Las capas de electrones se calculan con la regla de llenado más sus excepciones conocidas; de Rf (104) en adelante son predicciones.</p>
-    <p>Sólo 6 fichas tienen textos, y son de muestra. En la versión real los datos vendrían de PubChem (dominio público) y Wikidata (CC0), y los textos los redactaría la IA local en 3 niveles, con revisión humana.</p>
+    <p>Solo 6 fichas tienen textos, y son de muestra. En la versión real los datos vendrían de PubChem (dominio público) y Wikidata (CC0), y los textos los redactaría la IA local en 3 niveles, con revisión humana.</p>
   </footer>
 </div>
 
@@ -411,7 +484,6 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem
     <svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true"><circle cx="27" cy="27" r="9" fill="currentColor"/><circle class="tap-ring" cx="27" cy="27" r="16"/></svg>
     <p class="big-call">Toca cualquier elemento</p>
     <p class="fact" id="attract-fact"></p>
-    <p class="small">Modo vitrina: si nadie toca la pantalla en 45 s, vuelve esta pantalla.</p>
   </div>
 </div>
 
@@ -540,7 +612,7 @@ const SAMPLE = {
     lv: [
       "Es el elemento más ligero y el más común del universo. El Sol brilla porque en su centro junta átomos de hidrógeno. Y hay hidrógeno en cada gota de agua: H₂O quiere decir dos hidrógenos y un oxígeno.",
       "Tiene un solo protón y un solo electrón: es el átomo más sencillo que existe. Forma cerca de tres cuartas partes de la materia normal del universo. En la Tierra casi nunca anda suelto: vive combinado, sobre todo en el agua y en los seres vivos.",
-      "Su isótopo común, el protio, no tiene neutrones. La fusión de hidrógeno en helio alimenta a las estrellas. Hoy se estudia como combustible limpio: en una celda de combustible reacciona con oxígeno y sólo deja agua, aunque producirlo sin contaminar todavía es caro."
+      "Su isótopo común, el protio, no tiene neutrones. La fusión de hidrógeno en helio alimenta a las estrellas. Hoy se estudia como combustible limpio: en una celda de combustible reacciona con oxígeno y solo deja agua, aunque producirlo sin contaminar todavía es caro."
     ],
     uses: ["Fabricar amoniaco para fertilizantes", "Refinar petróleo", "Celdas de combustible en autobuses y camiones", "Combustible de cohetes (hidrógeno líquido)"],
     where: "En el agua de mares, ríos y nubes; en el gas natural y el petróleo; en el Sol y en todas las estrellas.",
@@ -574,7 +646,7 @@ const SAMPLE = {
   },
   6: {
     lv: [
-      "Es el elemento de la vida: está en tu cuerpo, en las plantas y en la comida. La punta de tu lápiz y un diamante están hechos del mismo carbono, sólo que acomodado de otra forma.",
+      "Es el elemento de la vida: está en tu cuerpo, en las plantas y en la comida. La punta de tu lápiz y un diamante están hechos del mismo carbono, solo que acomodado de otra forma.",
       "Sus átomos se unen en cadenas y anillos casi sin límite; por eso existen millones de compuestos de carbono, y la química que los estudia se llama química orgánica. En el grafito forma capas que se deslizan; en el diamante, una red rígida y durísima.",
       "El carbono-14, radiactivo, se forma en la atmósfera y sirve para fechar restos de hasta unos 50 mil años. En 2004 se aisló el grafeno, una capa de grafito de un átomo de grosor; el hallazgo ganó el Nobel de Física de 2010."
     ],
@@ -601,10 +673,10 @@ const SAMPLE = {
     hist: "Lo descubrieron por separado Carl Wilhelm Scheele, en Suecia (hacia 1772), y Joseph Priestley, en Inglaterra (1774). Lavoisier explicó su papel en la combustión y le dio nombre.",
     iso: [["Oxígeno-16", "99.76 %", "Estable"], ["Oxígeno-18", "0.20 %", "Estable"], ["Oxígeno-17", "0.04 %", "Estable"]],
     exp: {
-      t: "La vela que se apaga",
+      t: "La vela que se apaga", fire: true,
       need: "vela pequeña, plato hondo con agua, vaso de vidrio, cerillos (los usa un adulto).",
       steps: ["Fija la vela en el centro del plato y pon 1 cm de agua.", "Un adulto enciende la vela.", "Tapa la vela con el vaso boca abajo.", "Mira: la vela se apaga y el agua sube dentro del vaso."],
-      note: "Ojo científico: el agua sube sobre todo porque el aire caliente del vaso se enfría y se encoge, no sólo porque se gastó el oxígeno.",
+      note: "Ojo científico: el agua sube sobre todo porque el aire caliente del vaso se enfría y se encoge, no solo porque se gastó el oxígeno.",
       safe: "siempre con un adulto y lejos de cortinas."
     },
     quiz: { q: "¿Qué parte del aire es oxígeno?", o: ["Casi la mitad", "Más o menos una quinta parte", "Todo"], a: 1, why: "Cerca del 21 %. Casi todo lo demás es nitrógeno (78 %)." }
@@ -653,7 +725,7 @@ const FACTS = [
   "El oxígeno es casi la mitad de la masa de las rocas de la corteza terrestre.",
   "Tu sangre es roja gracias al hierro de la hemoglobina.",
   "El litio es tan ligero que flotaría en aceite.",
-  "Sólo dos elementos son líquidos a 25 °C: el bromo y el mercurio."
+  "Solo dos elementos son líquidos a 25 °C: el bromo y el mercurio."
 ];
 </script>
 
@@ -671,9 +743,9 @@ const FACTS = [
 
   /* ---- toast ---- */
   let toastT = 0;
-  function toast(msg) {
+  function toast(msg, ms = 3200) {
     toastEl.textContent = msg; toastEl.hidden = false;
-    clearTimeout(toastT); toastT = setTimeout(() => { toastEl.hidden = true; }, 3200);
+    clearTimeout(toastT); toastT = setTimeout(() => { toastEl.hidden = true; }, Math.max(ms, 1800 + msg.length * 45));
   }
 
   /* ---- build the table ---- */
@@ -682,8 +754,8 @@ const FACTS = [
     b.type = "button";
     b.className = "cell" + (SAMPLE[e.z] ? " has" : "");
     b.dataset.z = e.z;
-    b.setAttribute("aria-label", `${e.z}, ${e.name}, ${e.s}${SAMPLE[e.z] ? ", ficha de muestra" : ""}`);
-    b.innerHTML = `<span class="z">${e.z}</span><span class="s">${e.s}</span><span class="n">${e.name}</span><span class="m">${e.mass}</span>`;
+    b.setAttribute("aria-label", `${e.z}, ${e.name}, ${e.s}${SAMPLE[e.z] ? ", ficha completa de muestra" : ""}`);
+    b.innerHTML = `<span class="z">${e.z}</span><span class="s">${e.s}</span><span class="n">${e.name}</span>`;
     pt.appendChild(b);
     return b;
   });
@@ -701,14 +773,14 @@ const FACTS = [
   const lupa = document.createElement("div");
   lupa.className = "lupa";
   lupa.setAttribute("aria-hidden", "true");
-  lupa.innerHTML = `<div class="lt"><span class="z"></span><span class="s"></span><span class="n"></span><span class="m"></span></div>
-    <ul class="key"><li class="t">Así se lee una casilla</li><li><b data-k="z"></b> número atómico</li><li><b data-k="s"></b> símbolo</li><li><b data-k="n"></b> nombre</li><li><b data-k="m"></b> masa atómica</li></ul>`;
+  lupa.innerHTML = `<div class="lt"><span class="z"></span><span class="s"></span><span class="n"></span></div>
+    <ul class="key"><li class="t">Así se lee una casilla</li><li><b data-k="z"></b> número atómico</li><li><b data-k="s"></b> símbolo</li><li><b data-k="n"></b> nombre</li></ul>`;
   pt.appendChild(lupa);
 
   function place(el, r, c) { el.style.gridRow = String(r); el.style.gridColumn = String(c); }
   function layout() {
     const T = mqT.matches;
-    pt.className = "pt " + (T ? "trans" : "norm");
+    pt.classList.toggle("trans", T); pt.classList.toggle("norm", !T);
     EL.forEach((e, i) => {
       const c = cells[i];
       if (e.f) { const fr = e.f === "lan" ? 0 : 1; T ? place(c, e.i + 4, 10 + fr) : place(c, 10 + fr, e.i + 4); }
@@ -723,23 +795,19 @@ const FACTS = [
 
   function recolor() { EL.forEach((e, i) => cells[i].style.setProperty("--cat", colorVar(e))); }
   function lupaShow(e) {
+    const nm = reto.on ? "?" : e.name;
     lupa.querySelector(".lt").style.setProperty("--cat", colorVar(e));
     lupa.querySelector(".lt .z").textContent = e.z;
     lupa.querySelector(".lt .s").textContent = e.s;
-    lupa.querySelector(".lt .n").textContent = e.name;
-    lupa.querySelector(".lt .m").textContent = e.mass;
-    lupa.querySelectorAll("[data-k]").forEach(b => { b.textContent = { z: e.z, s: e.s, n: e.name, m: e.mass }[b.dataset.k]; });
+    lupa.querySelector(".lt .n").textContent = nm;
+    lupa.querySelectorAll("[data-k]").forEach(b => { b.textContent = { z: e.z, s: e.s, n: nm }[b.dataset.k]; });
   }
 
-  /* ---- sample shortcuts ---- */
+  /* ---- sample shortcuts (inside cards) ---- */
   const samplesHTML = () => Object.keys(SAMPLE).map(z => {
     const e = EL[z - 1];
     return `<button type="button" class="mini" data-open="${z}" style="--cat:${colorVar(e)}" aria-label="Abrir ${e.name}">${e.s}</button>`;
   }).join("");
-  function renderSamples() {
-    const box = $("#samples");
-    box.innerHTML = `<span>Fichas completas de muestra:</span>${samplesHTML()}`;
-  }
 
   /* ---- legend / filter ---- */
   function renderLegend() {
@@ -757,10 +825,16 @@ const FACTS = [
     if (q.length >= 3 && norm(CAT[e.cat].many + " " + CAT[e.cat].one).includes(q)) return 3;
     return -1;
   }
+  /* mid-name matches ("oro" in "Boro") only count when no name starts with the query */
+  function ranks(q) {
+    const r = EL.map(e => rank(e, q));
+    return r.some(x => x === 0 || x === 1) ? r.map(x => x === 2 ? -1 : x) : r;
+  }
   function applyFilter() {
     const q = norm(state.q); let n = 0;
+    const r = q ? ranks(q) : null;
     EL.forEach((e, i) => {
-      const okQ = !q || rank(e, q) >= 0;
+      const okQ = !q || r[i] >= 0;
       const okC = !state.cat || state.cat === (state.colorBy === "cat" ? e.cat : e.st);
       cells[i].classList.toggle("dim", !(okQ && okC));
       if (okQ && okC) n++;
@@ -769,7 +843,8 @@ const FACTS = [
   }
   function bestMatch() {
     const q = norm(state.q); if (!q) return null;
-    const hits = EL.map(e => [rank(e, q), e]).filter(([r]) => r >= 0).sort((a, b) => a[0] - b[0] || a[1].z - b[1].z);
+    const r = ranks(q);
+    const hits = EL.map((e, i) => [r[i], e]).filter(([x]) => x >= 0).sort((a, b) => a[0] - b[0] || a[1].z - b[1].z);
     return hits.length ? hits[0][1] : null;
   }
   function clearFilters() {
@@ -793,14 +868,21 @@ const FACTS = [
     return `<svg id="bohr" viewBox="0 0 320 320" role="img" aria-label="Modelo de Bohr de ${e.name}: ${sh.join(", ")} electrones por capa">${rings}${orbs}<circle class="nuc" cx="160" cy="160" r="30"/><text class="nuc-s" x="160" y="161" text-anchor="middle" dominant-baseline="central">${e.s}</text></svg>`;
   }
   const restLabel = e => `${e.z} ${e.z === 1 ? "electrón" : "electrones"} en ${e.shells.length} ${e.shells.length === 1 ? "capa" : "capas"}`;
+  const fillText = (sub, i, n) => state.level < 2
+    ? `Electrón ${i} de ${n} · capa ${sub[0]}`
+    : `Llenando ${sub} · ${i} de ${n} (capa ${sub[0]})`;
   let fillT = 0;
+  const seenFill = new Set();
   function runFill(e) {
     clearTimeout(fillT);
-    const svg = $("#bohr"), label = $("#fill-label");
+    const svg = $("#bohr"), label = $("#fill-label"), wow = $("#wow");
     if (!svg) return;
     const es = Array.from(svg.querySelectorAll(".e")).sort((a, b) => a.dataset.o - b.dataset.o);
     es.forEach(x => x.classList.remove("on"));
     svg.classList.add("filling");
+    if (wow) wow.hidden = true;
+    const placed = e.shells.map(() => 0);
+    let wowShown = false;
     const dt = Math.max(40, Math.min(260, 3600 / es.length));
     let i = 0;
     const tick = () => {
@@ -808,117 +890,211 @@ const FACTS = [
         label.textContent = `Listo: ${restLabel(e)}. Capas: ${e.shells.join(" · ")}`;
         svg.classList.remove("filling"); return;
       }
-      es[i].classList.add("on");
-      label.textContent = `Llenando ${es[i].dataset.sub} · ${i + 1} de ${es.length}`;
+      const sub = es[i].dataset.sub, sh = +sub[0] - 1;
+      es[i].classList.add("on"); placed[sh]++;
+      if (!wowShown && wow) {
+        const k = placed.findIndex((p, j) => j < sh && p < e.shells[j]);
+        if (k >= 0) {
+          wowShown = true; wow.hidden = false;
+          wow.textContent = `¿Viste? La capa ${sh + 1} empezó antes de llenar la ${k + 1}.` +
+            (state.level === 2 ? ` El ${sub} tiene menos energía que los orbitales que le faltan a la capa ${k + 1}.` : " No es un error: así se acomodan de verdad.");
+        }
+      }
+      label.textContent = fillText(sub, i + 1, es.length);
       i++; fillT = setTimeout(tick, dt);
     };
     tick();
   }
 
-  /* ---- detail panel ---- */
-  function panelHTML(e) {
+  /* ---- kid-friendly text for elements without a full card (built from the table data) ---- */
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const numMass = e => parseFloat(e.mass.replace(/[[\]]/g, ""));
+  const isRadio = e => e.z === 43 || e.z === 61 || e.z >= 84;
+  const KIDCAT = {
+    alk: "un metal alcalino: blando y muy reactivo", ale: "un metal alcalinotérreo", tra: "un metal de transición",
+    pos: "de los llamados «otros metales», más blandos que los de transición", met: "un metaloide: a medio camino entre metal y no metal",
+    non: "un no metal", hal: "un halógeno: reacciona con mucha facilidad y forma sales", nob: "un gas noble: casi nunca se combina con nada",
+    lan: "un lantánido, parte de las llamadas «tierras raras»", act: "un actínido: todos los actínidos son radiactivos",
+    unk: "un superpesado: solo se han fabricado unos pocos átomos en laboratorio y casi nada se ha podido medir"
+  };
+  const KIDST = { gas: "un gas", liq: "un líquido", sol: "un sólido" };
+  function kidLines(e) {
+    const L = [], n = e.shells.length;
+    L.push(`Tiene ${e.z} ${e.z === 1 ? "protón" : "protones"} y ${e.z} ${e.z === 1 ? "electrón" : "electrones"}, repartidos en ${n} ${n === 1 ? "capa" : "capas"}.`);
+    L.push(`Es ${KIDCAT[e.cat]}.`);
+    if (e.st === "unk") { if (e.cat !== "unk") L.push("Nadie ha juntado suficientes átomos para saber si es sólido, líquido o gas."); }
+    else L.push(`A 25 °C, la temperatura de un día templado, es ${KIDST[e.st]}.`);
+    if (e.z > 1) L.push(`Cada átomo pesa unas ${Math.round(numMass(e) / 1.008)} veces lo que uno de hidrógeno.`);
+    if (isRadio(e) && e.cat !== "act") L.push("Es radiactivo: sus átomos se transforman solos en otros elementos con el tiempo.");
+    if (e.st === "liq") L.push(`Es uno de los 2 únicos elementos líquidos a 25 °C; el otro es el ${e.z === 35 ? "mercurio" : "bromo"}.`);
+    return L;
+  }
+  function funFact(e) {
     const smp = SAMPLE[e.z];
+    if (smp) { const m = smp.lv[0].match(/^.*?[.!](?=\s|$)/); return m ? m[0] : smp.lv[0]; }
+    if (e.st === "liq") return `Es uno de los 2 únicos elementos líquidos a 25 °C.`;
+    if (isRadio(e)) return "Es radiactivo: con el tiempo sus átomos se transforman en otros.";
+    if (e.cat === "nob") return "Es un gas noble: casi nunca se combina con nada.";
+    return `Cada átomo de ${e.name} pesa unas ${Math.round(numMass(e) / 1.008)} veces lo que uno de hidrógeno.`;
+  }
+  function famOf(e) {
+    const all = e.f ? EL.filter(x => x.f === e.f) : EL.filter(x => !x.f && x.g === e.g);
+    return all.filter(x => x.z !== e.z).sort((a, b) => Math.abs(a.z - e.z) - Math.abs(b.z - e.z)).slice(0, 6).sort((a, b) => a.z - b.z);
+  }
+  function suggestFor(e) {
+    const ks = Object.keys(SAMPLE).map(Number);
+    const byDist = a => a.sort((x, y) => Math.abs(x - e.z) - Math.abs(y - e.z));
+    const same = byDist(ks.filter(k => !e.f && !EL[k - 1].f && EL[k - 1].g === e.g));
+    return EL[(same[0] || byDist(ks.slice())[0]) - 1];
+  }
+
+  /* ---- detail panel: story first, technical data last ---- */
+  function panelHTML(e) {
+    const smp = SAMPLE[e.z], lvl = state.level;
     const prev = EL[(e.z + 116) % 118], next = EL[e.z % 118];
     const radio = e.mass.startsWith("[");
     let h = `
       <div class="p-top"><button class="close" id="p-close" type="button">Cerrar</button></div>
       <div class="p-head" style="--cat:${colorVar(e)}">
-        <div class="big-tile" aria-hidden="true"><span class="z">${e.z}</span><span class="s">${e.s}</span><span class="m">${e.mass}</span></div>
+        <div class="big-tile" aria-hidden="true"><span class="z">${e.z}</span><span class="s">${e.s}</span></div>
         <div><h2>${e.name}</h2><p class="kind">${CAT[e.cat].one}${smp ? ' <span class="tag">Ficha de muestra</span>' : ""}</p></div>
+      </div>`;
+    if (smp) {
+      h += `
+      <div class="lv-row"><span class="lv-label" id="lv-lab">Explícamelo para</span>
+        <div class="seg" role="group" aria-labelledby="lv-lab">${LEVELS.map((l, i) => `<button type="button" data-lv="${i}" aria-pressed="${i === lvl}">${l}</button>`).join("")}</div>
       </div>
-      <dl class="facts">
-        <div><dt>Número atómico</dt><dd>${e.z}</dd></div>
-        <div><dt>Masa atómica</dt><dd>${radio ? e.mass + " <small>isótopo más estable</small>" : e.mass + " u"}</dd></div>
-        <div><dt>Estado a 25 °C</dt><dd>${STATE[e.st]}</dd></div>
-        <div><dt>Periodo</dt><dd>${e.p}</dd></div>
-        <div><dt>Grupo</dt><dd>${e.f ? "— <small>fila f</small>" : e.g}</dd></div>
-        <div><dt>Bloque</dt><dd>${blockOf(e)}</dd></div>
-        <div class="wide"><dt>Configuración electrónica${e.z >= 104 ? " (predicha)" : ""}</dt><dd>${confText(e.conf, e.z)}</dd></div>
-      </dl>
+      <p class="story" id="story">${smp.lv[lvl]}</p>
+      <p class="ai-note">Texto de muestra escrito para el boceto. En la versión real lo redactaría la IA local en 3 niveles y una persona lo revisaría.</p>`;
+    } else {
+      h += `
+      <ul class="kid">${kidLines(e).map(l => `<li>${l}</li>`).join("")}</ul>
+      <p class="ai-note">Armado en automático con los datos de la tabla.</p>`;
+    }
+    h += `
       <div class="bohr" style="--cat:${colorVar(e)}">
         ${bohrSVG(e)}
         <p class="fill-label" id="fill-label" aria-live="polite">${restLabel(e)}: ${e.shells.join(" · ")}</p>
+        <p class="wow" id="wow" hidden></p>
         <div class="bohr-ctl">
-          <button class="sbtn" id="b-fill" type="button">Ver cómo se llenan</button>
+          <button class="sbtn" id="b-fill" type="button">Ver cómo se llenan las capas</button>
           <button class="sbtn" id="b-spin" type="button" aria-pressed="false">Pausar giro</button>
         </div>
         <p class="caption">Modelo de Bohr simplificado. Los electrones no giran como planetas: es un dibujo para contar cuántos hay en cada capa.</p>
       </div>`;
     if (smp) {
+      const fireHidden = smp.exp.fire && lvl === 0;
+      const ord = shuffle(smp.quiz.o.map((_, i) => i));
       h += `
       <section class="learn">
-        <div class="lv-row"><span class="lv-label" id="lv-lab">Explícamelo para</span>
-          <div class="seg" role="group" aria-labelledby="lv-lab">${LEVELS.map((l, i) => `<button type="button" data-lv="${i}" aria-pressed="${i === state.level}">${l}</button>`).join("")}</div>
-        </div>
-        <p class="story" id="story">${smp.lv[state.level]}</p>
-        <p class="ai-note">Texto de muestra escrito para el boceto. En la versión real lo redactaría la IA local en 3 niveles y una persona lo revisaría.</p>
         <h3>Para qué sirve</h3>
         <ul class="uses">${smp.uses.map(u => `<li>${u}</li>`).join("")}</ul>
         <h3>Dónde se encuentra</h3><p>${smp.where}</p>
         <h3>Historia</h3><p>${smp.hist}</p>
-        <h3>Isótopos en la naturaleza</h3>
-        <div class="iso-wrap"><table class="iso"><thead><tr><th>Isótopo</th><th>Abundancia</th><th>Tipo</th></tr></thead>
-          <tbody>${smp.iso.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div>
-        <h3>Mini-experimento: ${smp.exp.t}</h3>
+        ${fireHidden
+          ? `<h3>Mini-experimento</h3><div class="exp"><p class="note">El experimento de ${e.name} usa fuego, así que no aparece en el nivel de 8 años. Pueden verlo juntos con un adulto en el nivel de 12 años.</p></div>`
+          : `<h3>Mini-experimento: ${smp.exp.t}</h3>
         <div class="exp">
           <p><strong>Necesitas:</strong> ${smp.exp.need}</p>
           <ol>${smp.exp.steps.map(s => `<li>${s}</li>`).join("")}</ol>
           ${smp.exp.note ? `<p class="note">${smp.exp.note}</p>` : ""}
           <p class="safe"><strong>Seguridad:</strong> ${smp.exp.safe}</p>
-        </div>
+        </div>`}
         <h3>Pregunta rápida</h3>
         <div class="quiz">
           <p class="q">${smp.quiz.q}</p>
-          <div class="opts">${smp.quiz.o.map((o, i) => `<button type="button" class="opt" data-opt="${i}">${o}</button>`).join("")}</div>
+          <div class="opts">${ord.map(i => `<button type="button" class="opt" data-opt="${i}">${smp.quiz.o[i]}</button>`).join("")}</div>
           <p class="why" id="why" hidden></p>
           <p class="ai-note">Pregunta de muestra: así se verían las preguntas que prepara la IA.</p>
         </div>
       </section>`;
     } else {
+      const fam = famOf(e), sug = suggestFor(e);
       h += `
-      <section class="todo">
-        <h3>Ficha en construcción</h3>
-        <p>En este boceto sólo 6 elementos tienen ficha completa. En la versión real, ${e.name} tendría para qué sirve, dónde se encuentra, historia, isótopos y un mini-experimento seguro, explicados en 3 niveles de lectura.</p>
-        <p class="src">Datos: PubChem (dominio público) y Wikidata (CC0). Textos: IA local con revisión humana.</p>
-        <div class="samples"><span>Prueba con:</span>${samplesHTML()}</div>
-      </section>`;
+      <section class="learn">
+        <h3>${e.f ? "Sus vecinos de fila" : "Su familia (misma columna)"}</h3>
+        <div class="fam">${fam.map(x => `<button type="button" class="chip" data-open="${x.z}"><i style="background:${colorVar(x)}"></i>${x.name}</button>`).join("")}</div>
+      </section>
+      <div class="soon">
+        <p><strong>Pronto su historia completa.</strong> Mientras, prueba ${sug.name}:</p>
+        <div class="samples"><button type="button" class="sbtn" data-open="${sug.z}">Abrir ${sug.name}</button>${samplesHTML()}</div>
+      </div>`;
     }
     h += `
+      <details class="tech"${lvl === 2 ? " open" : ""}>
+        <summary>Datos técnicos</summary>
+        <dl class="facts">
+          <div><dt>Número atómico</dt><dd>${e.z}</dd></div>
+          <div><dt>Masa atómica</dt><dd>${radio ? e.mass + " <small>isótopo más estable</small>" : e.mass + " u"}</dd></div>
+          <div><dt>Estado a 25 °C</dt><dd>${STATE[e.st]}</dd></div>
+          <div><dt>Periodo</dt><dd>${e.p}</dd></div>
+          <div><dt>Grupo</dt><dd>${e.f ? "— <small>fila f</small>" : e.g}</dd></div>
+          <div><dt>Bloque</dt><dd>${blockOf(e)}</dd></div>
+          <div class="wide"><dt>Configuración electrónica${e.z >= 104 ? " (predicha)" : ""}</dt><dd>${confText(e.conf, e.z)}</dd></div>
+        </dl>
+        ${smp ? `<div class="learn"><h3>Isótopos en la naturaleza</h3>
+        <div class="iso-wrap"><table class="iso"><thead><tr><th>Isótopo</th><th>Abundancia</th><th>Tipo</th></tr></thead>
+          <tbody>${smp.iso.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div></div>`
+        : `<p class="caption" style="text-align:left;margin-top:10px">Datos de la versión real: PubChem (dominio público) y Wikidata (CC0). Textos: IA local con revisión humana.</p>`}
+      </details>
       <nav class="p-nav" aria-label="Elemento anterior y siguiente">
-        <button class="sbtn" type="button" data-open="${prev.z}">‹ ${prev.z} ${prev.name}</button>
-        <button class="sbtn" type="button" data-open="${next.z}">${next.z} ${next.name} ›</button>
+        <button class="sbtn" type="button" data-open="${prev.z}" aria-label="Anterior: ${prev.name}">‹ ${prev.name}</button>
+        <button class="sbtn close-b" type="button" data-close>Cerrar</button>
+        <button class="sbtn" type="button" data-open="${next.z}" aria-label="Siguiente: ${next.name}">${next.name} ›</button>
       </nav>`;
     return h;
   }
 
+  /* ---- phone sheet: Back gesture closes it, swipe right closes it ---- */
+  const sheetOpen = () => document.body.classList.contains("sheet-open");
   function openSheet() {
     if (mqDock.matches) return;
+    if (!sheetOpen()) { try { history.pushState({ tvSheet: 1 }, ""); } catch (_) { /* history blocked */ } }
     document.body.classList.add("sheet-open");
     $("#scrim").hidden = false;
     setTimeout(() => { const c = $("#p-close"); if (c) c.focus({ preventScroll: true }); }, 60);
   }
-  function closeSheet() {
-    if (!document.body.classList.contains("sheet-open")) return;
+  function closeSheet(fromPop) {
+    if (!sheetOpen()) return;
     document.body.classList.remove("sheet-open");
     $("#scrim").hidden = true;
-    if (state.sel) cells[state.sel - 1].focus({ preventScroll: true });
+    if (state.sel && !reto.on) cells[state.sel - 1].focus({ preventScroll: true });
+    if (fromPop !== true) { try { if (history.state && history.state.tvSheet) history.back(); } catch (_) { /* history blocked */ } }
   }
+  window.addEventListener("popstate", () => { if (sheetOpen()) closeSheet(true); });
+  let sx = null, sy = 0;
+  panel.addEventListener("touchstart", ev => {
+    if (ev.touches.length !== 1 || ev.target.closest(".iso-wrap")) { sx = null; return; }
+    sx = ev.touches[0].clientX; sy = ev.touches[0].clientY;
+  }, { passive: true });
+  panel.addEventListener("touchend", ev => {
+    if (sx === null || mqDock.matches) return;
+    const t = ev.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy; sx = null;
+    if (dx > 80 && Math.abs(dy) < 60) closeSheet();
+  }, { passive: true });
+
+  function renderPanel(e) { clearTimeout(fillT); panel.innerHTML = panelHTML(e); }
   function open(z, show = true) {
-    clearTimeout(fillT);
     const e = EL[z - 1];
     if (state.sel) cells[state.sel - 1].classList.remove("sel");
     state.sel = z;
     cells[z - 1].classList.add("sel");
-    panel.innerHTML = panelHTML(e);
+    renderPanel(e);
     panel.scrollTop = 0;
     lupaShow(e);
     if (show) openSheet();
+    if ((show || mqDock.matches) && !seenFill.has(z) && !reduced()) {
+      seenFill.add(z);
+      setTimeout(() => { if (state.sel === z && !reto.on) runFill(e); }, mqDock.matches ? 80 : 320);
+    }
   }
 
   panel.addEventListener("click", ev => {
     const t = ev.target;
+    const rb = t.closest("[data-reto]");
+    if (rb) { rb.dataset.reto === "again" ? retoStart() : retoStop(); return; }
     const e = EL[state.sel - 1];
-    if (t.closest("#p-close")) return closeSheet();
+    if (t.closest("#p-close, [data-close]")) return closeSheet();
     const go = t.closest("[data-open]");
     if (go) return open(+go.dataset.open, !mqDock.matches);
     if (t.closest("#b-fill")) return runFill(e);
@@ -930,8 +1106,9 @@ const FACTS = [
     const lv = t.closest("[data-lv]");
     if (lv) {
       state.level = +lv.dataset.lv;
-      panel.querySelectorAll("[data-lv]").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.lv === state.level)));
-      $("#story").textContent = SAMPLE[e.z].lv[state.level]; return;
+      const top = panel.scrollTop; renderPanel(e); panel.scrollTop = top;
+      const b = panel.querySelector(`[data-lv="${state.level}"]`); if (b) b.focus({ preventScroll: true });
+      return;
     }
     const opt = t.closest("[data-opt]");
     if (opt) {
@@ -943,48 +1120,110 @@ const FACTS = [
     }
   });
 
-  /* ---- reto (find the element) ---- */
+  /* ---- reto: rounds of 10, visual hints, best score ---- */
   const POOL = [1, 2, 3, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 26, 29, 30, 47, 50, 53, 79, 80, 82, 92];
-  const reto = { on: false, target: 0, score: 0, miss: 0, lock: false };
-  function retoScore() { $("#reto-score").textContent = `Aciertos: ${reto.score}`; }
+  const ROUND = 10;
+  const reto = { on: false, lv: "easy", q: [], i: 0, score: 0, res: [], target: 0, miss: 0, lock: false, done: false };
+  const bestKey = () => "tv-best-" + reto.lv;
+  function getBest() { try { return +(localStorage.getItem(bestKey()) || 0); } catch (_) { return 0; } }
+  function setBest(n) { try { localStorage.setItem(bestKey(), String(n)); } catch (_) { /* storage blocked */ } }
+  const targetLabel = t => reto.lv === "easy" ? t.s : t.name;
+  function endText() {
+    const s = reto.score;
+    return s === ROUND ? `¡${s} de ${ROUND}! Perfecto.` : s >= 7 ? `¡${s} de ${ROUND}! Muy bien.` : `${s} de ${ROUND}. ¡Otra ronda y lo superas!`;
+  }
+  function clearHints() {
+    pt.classList.remove("hinting");
+    document.querySelectorAll(".cell.hit, .cell.hint, .cell.miss, .cell.lite").forEach(c => c.classList.remove("hit", "hint", "miss", "lite"));
+  }
+  function retoPanelHTML() {
+    const t = EL[reto.target - 1];
+    const dots = Array.from({ length: ROUND }, (_, k) =>
+      `<li class="${reto.res[k] === true ? "ok" : reto.res[k] === false ? "no" : (k === reto.i && !reto.done ? "now" : "")}"></li>`).join("");
+    return `<div class="rp">
+      <h2>Reto ${reto.lv === "easy" ? "fácil" : "difícil"}</h2>
+      ${reto.done
+        ? `<p class="rt">${endText()}</p><p>Tu mejor ronda: ${getBest()} de ${ROUND}.</p>
+           <div class="bohr-ctl" style="justify-content:flex-start"><button class="sbtn" type="button" data-reto="again">Otra ronda</button><button class="sbtn" type="button" data-reto="exit">Salir del reto</button></div>`
+        : `<p>Pregunta ${reto.i + 1} de ${ROUND}. Busca en la tabla:</p><p class="rt">${targetLabel(t)}</p>
+           <p class="caption" style="text-align:left">${reto.lv === "easy" ? "Fácil: busca la casilla con este símbolo." : "Difícil: los nombres se ocultan; tienes que saber su símbolo."} Si fallas, primero se marca su fila y luego su columna.</p>`}
+      <ul class="dots" aria-label="Resultados de la ronda">${dots}</ul>
+      <p class="caption" style="text-align:left">Tu mejor puntuación se guarda solo en este navegador.</p>
+    </div>`;
+  }
+  function retoRender() {
+    const t = EL[reto.target - 1];
+    $("#reto-ask").hidden = reto.done; $("#reto-name").hidden = reto.done; $("#reto-skip").hidden = reto.done;
+    $("#reto-end").hidden = !reto.done; $("#reto-again").hidden = !reto.done;
+    if (reto.done) $("#reto-end").textContent = endText();
+    else $("#reto-name").textContent = targetLabel(t);
+    $("#reto-score").textContent = reto.done ? `Mejor: ${getBest()}/${ROUND}` : `${reto.i + 1}/${ROUND} · Aciertos: ${reto.score}`;
+    document.querySelectorAll("[data-rlv]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.rlv === reto.lv)));
+    pt.classList.toggle("hard", reto.on && reto.lv === "hard");
+    panel.innerHTML = retoPanelHTML();
+  }
   function retoNext() {
-    document.querySelectorAll(".cell.hit, .cell.hint, .cell.miss").forEach(c => c.classList.remove("hit", "hint", "miss"));
-    let t; do { t = POOL[Math.floor(Math.random() * POOL.length)]; } while (t === reto.target);
-    reto.target = t; reto.miss = 0; reto.lock = false;
-    $("#reto-name").textContent = EL[t - 1].name;
+    clearHints();
+    if (reto.i >= ROUND) return retoEnd();
+    reto.target = reto.q[reto.i]; reto.miss = 0; reto.lock = false;
+    retoRender();
+  }
+  function retoAdvance(ok) { reto.res[reto.i] = ok; reto.i++; retoNext(); }
+  function retoEnd() {
+    reto.done = true; reto.lock = true;
+    if (reto.score > getBest()) { setBest(reto.score); toast(`¡Nuevo récord: ${reto.score} de ${ROUND}!`); }
+    retoRender();
   }
   function retoStart() {
-    stopAttract(); closeSheet(); clearFilters();
-    reto.on = true; reto.score = 0; retoScore();
+    stopAttract(); closeSheet(); clearFilters(); clearTimeout(fillT);
+    Object.assign(reto, { on: true, q: shuffle(POOL.slice()).slice(0, ROUND), i: 0, score: 0, res: [], done: false });
     $("#reto").hidden = false; $("#btn-reto").setAttribute("aria-pressed", "true");
+    if (state.sel) { cells[state.sel - 1].classList.remove("sel"); lupaShow(EL[state.sel - 1]); }
     retoNext();
-    toast("Toca la casilla del elemento que se pide.");
+    toast(reto.lv === "easy" ? "Toca la casilla con el símbolo que se pide." : "Toca la casilla del elemento que se pide.");
   }
   function retoStop() {
-    reto.on = false; $("#reto").hidden = true; $("#btn-reto").setAttribute("aria-pressed", "false");
-    document.querySelectorAll(".cell.hit, .cell.hint, .cell.miss").forEach(c => c.classList.remove("hit", "hint", "miss"));
+    if (!reto.on) return;
+    reto.on = false; reto.done = false; $("#reto").hidden = true; $("#btn-reto").setAttribute("aria-pressed", "false");
+    clearHints(); pt.classList.remove("hard");
+    if (state.sel) open(state.sel, false);
   }
   function retoPick(z) {
     if (reto.lock) return;
     const t = EL[reto.target - 1], c = cells[z - 1];
     if (z === reto.target) {
-      reto.lock = true; reto.score++; retoScore();
-      c.classList.add("hit"); toast(`¡Correcto! ${t.name} es ${t.s}.`);
-      setTimeout(retoNext, 1200);
+      const ok = reto.miss < 3;
+      if (ok) reto.score++;
+      reto.lock = true; clearHints();
+      void c.offsetWidth; c.classList.add("hit");
+      $("#reto-score").textContent = `${reto.i + 1}/${ROUND} · Aciertos: ${reto.score}`;
+      toast(ok ? `¡Correcto! ${t.name} es ${t.s}. ¿Sabías que…? ${funFact(t)}` : `Ahí está: ${t.name} es ${t.s}. Esta no cuenta, pero ya la conoces.`);
+      setTimeout(() => { if (reto.on && !reto.done) retoAdvance(ok); }, 2000);
       return;
     }
     reto.miss++;
     c.classList.remove("miss"); void c.offsetWidth; c.classList.add("miss");
     const e = EL[z - 1];
-    if (reto.miss === 1) toast(`Esa casilla es ${e.name} (${e.s}). Pista: busca en el periodo ${t.p}.`);
-    else if (reto.miss === 2) toast(`Pista: periodo ${t.p}, ${t.f ? "en la fila de abajo" : "grupo " + t.g}.`);
-    else { cells[t.z - 1].classList.add("hint"); toast(`Mira la casilla que parpadea: ${t.s}.`); }
+    const inRow = x => t.f ? x.f === t.f : (!x.f && x.p === t.p);
+    const inCol = x => t.f ? (!!x.f && x.i === t.i) : (!x.f && x.g === t.g);
+    if (reto.miss === 1) {
+      pt.classList.add("hinting"); EL.forEach((x, k) => { if (inRow(x)) cells[k].classList.add("lite"); });
+      toast(`Esa es ${e.name} (${e.s}). Pista: está entre las casillas marcadas.`);
+    } else if (reto.miss === 2) {
+      EL.forEach((x, k) => { if (inCol(x)) cells[k].classList.add("lite"); });
+      toast(`Esa es ${e.name}. Pista: está donde se cruzan las marcas.`);
+    } else { cells[t.z - 1].classList.add("hint"); toast(`Mira la casilla que parpadea: ${t.s}.`); }
   }
   $("#btn-reto").addEventListener("click", () => reto.on ? retoStop() : retoStart());
-  $("#reto-skip").addEventListener("click", () => { retoNext(); });
+  $("#reto-skip").addEventListener("click", () => { if (!reto.lock) { reto.lock = true; retoAdvance(false); } });
+  $("#reto-again").addEventListener("click", retoStart);
   $("#reto-exit").addEventListener("click", retoStop);
+  document.querySelectorAll("[data-rlv]").forEach(b => b.addEventListener("click", () => {
+    if (reto.lv === b.dataset.rlv) return;
+    reto.lv = b.dataset.rlv; retoStart();
+  }));
 
-  /* ---- attract mode ---- */
+  /* ---- exhibition (kiosk) mode ---- */
   const attract = { on: false, kiosk: false, wave: 0, fact: 0, col: 0, fi: 0 };
   let lock = null;
   async function wake() {
@@ -1020,23 +1259,32 @@ const FACTS = [
   let idleT = 0;
   function resetIdle() { clearTimeout(idleT); if (attract.kiosk) idleT = setTimeout(startAttract, 45000); }
   document.addEventListener("pointerdown", resetIdle, true);
-  $("#btn-vitrina").addEventListener("click", () => {
-    attract.kiosk = !attract.kiosk;
-    $("#btn-vitrina").setAttribute("aria-pressed", String(attract.kiosk));
-    if (attract.kiosk) startAttract();
-    else { clearTimeout(idleT); toast("Modo vitrina apagado."); }
-  });
+  function setKiosk(on) {
+    attract.kiosk = on;
+    $("#btn-vitrina").setAttribute("aria-pressed", String(on));
+    document.body.classList.toggle("kiosk", on);
+    $("#more").open = false;
+    if (on) { startAttract(); toast("Modo exhibición: si nadie toca la pantalla en 45 s, vuelve la portada. Para salir, mantén presionado el logo 3 segundos.", 7000); }
+    else { clearTimeout(idleT); stopAttract(); toast("Modo exhibición apagado."); }
+  }
+  $("#btn-vitrina").addEventListener("click", () => setKiosk(!attract.kiosk));
+  const logo = $("#logo");
+  let pressT = 0;
+  logo.addEventListener("pointerdown", () => { clearTimeout(pressT); pressT = setTimeout(() => { if (attract.kiosk) setKiosk(false); }, 3000); });
+  ["pointerup", "pointerleave", "pointercancel"].forEach(n => logo.addEventListener(n, () => clearTimeout(pressT)));
+  logo.addEventListener("contextmenu", ev => ev.preventDefault());
   cells.forEach(c => c.addEventListener("animationend", ev => { if (ev.animationName === "glow") c.classList.remove("glow"); }));
 
   /* ---- fullscreen + big text ---- */
   $("#btn-full").addEventListener("click", async () => {
+    $("#more").open = false;
     try {
       if (document.fullscreenElement) { await document.exitFullscreen(); return; }
       if (!document.documentElement.requestFullscreen) throw new Error("no fullscreen");
       await document.documentElement.requestFullscreen();
       wake();
     } catch (_) {
-      toast("Aquí no se puede usar pantalla completa. En el kiosko real se instala como app (en iPad, con Acceso guiado).");
+      toast("Aquí no se puede usar pantalla completa. En el kiosco real se instala como app (en iPad, con Acceso guiado).");
     }
   });
   document.addEventListener("fullscreenchange", () => {
@@ -1063,16 +1311,17 @@ const FACTS = [
   pt.addEventListener("pointerleave", () => lupaShow(EL[(state.sel || 26) - 1]));
 
   document.addEventListener("click", ev => {
-    const s = ev.target.closest("#samples [data-open]");
-    if (s) { if (reto.on) retoStop(); open(+s.dataset.open); }
-    const chip = ev.target.closest(".chip");
+    const more = $("#more");
+    if (more.open && !ev.target.closest("#more")) more.open = false;
+    const chip = ev.target.closest("#chips .chip");
     if (chip) { state.cat = state.cat === chip.dataset.k ? null : chip.dataset.k; renderLegend(); applyFilter(); }
     const col = ev.target.closest("[data-color]");
     if (col) {
       state.colorBy = col.dataset.color; state.cat = null;
       document.querySelectorAll("[data-color]").forEach(b => b.setAttribute("aria-pressed", String(b === col)));
-      recolor(); renderLegend(); renderSamples(); applyFilter();
-      if (state.sel) { const keep = document.body.classList.contains("sheet-open"); open(state.sel, false); if (keep) openSheet(); }
+      recolor(); renderLegend(); applyFilter();
+      if (reto.on) retoRender();
+      else if (state.sel) { const top = panel.scrollTop; renderPanel(EL[state.sel - 1]); panel.scrollTop = top; }
     }
   });
   $("#scrim").addEventListener("click", closeSheet);
@@ -1086,15 +1335,16 @@ const FACTS = [
   document.addEventListener("keydown", ev => {
     if (attract.on) { stopAttract(); return; }
     resetIdle();
-    if (ev.key === "Escape" && document.body.classList.contains("sheet-open")) closeSheet();
+    if (ev.key === "Escape") { $("#more").open = false; if (sheetOpen()) closeSheet(); }
   });
 
   mqT.addEventListener("change", layout);
   mqDock.addEventListener("change", () => { if (mqDock.matches) closeSheet(); });
 
   /* ---- start ---- */
+  document.documentElement.lang = "es";
   try { if (localStorage.getItem("tv-big") === "1") setBig(true); } catch (_) { /* storage blocked */ }
-  recolor(); layout(); renderLegend(); renderSamples(); applyFilter();
+  recolor(); layout(); renderLegend(); applyFilter();
   open(26, false);
 })();
 </script>
