@@ -227,3 +227,66 @@ Each question has a default we'd use if there's no answer.
    *Default: no outreach until checkpoint 2.*
 10. **Name?** "Cámara del tiempo", "Aquí antes", "Ventana al pasado", or yours. *Default: Cámara del
     tiempo.*
+
+---
+
+## Round 1: sketch changelog (2026-09-25)
+
+A critic reviewed `sketch.html` as a first-time phone user. Claude (senior) then made these changes:
+
+**Changed**
+- **Phone first screen:** on phones the header is now one short line and the picture is capped at
+  about half the screen height. The era slider sits right under the picture. The Turn buttons and
+  the hint line are gone. "Hold to see today" is now a round **Hoy** button inside the picture,
+  where your thumb rests. A one-time "↔ Arrastra para girar" hint shows until your first drag.
+  Tapping a place in "Alrededor" scrolls the picture back into view before turning. Added
+  charset and viewport meta tags.
+- **Labels on the picture:** places in frame now get name pills. A caption says what is in front of
+  you and what stands there today ("Enfrente: Templo Mayor · Hoy: zona arqueológica"). Each era has
+  1-2 highlights (mammoths, tram, pterosaur, market...). When one is out of frame, a chip on the
+  picture's edge ("‹ Mamuts", "Tranvía ›") turns you to it. Fixed a bug: the 1910 garden trees at
+  318-330° were hidden behind a building.
+- **"Usar brújula" (phones only):** the phone's compass now turns the view, with smoothing. On
+  iPhone it asks for permission. A drag pauses the compass for 3 s. If the compass is inaccurate
+  you see "Calibra: mueve el celular en 8". If the browser gives no compass reading, you get a
+  clear message.
+- **Speed:** only the copies of the panorama that are in view get drawn, the hidden layer is cleared
+  after the fade, and the AI instruction is only rebuilt while its panel is open.
+- **Time-travel moment:** the page opens on today, then counts 2026 → 1500 in a big number over the
+  picture. Every era change shows the same count ("hace 14,000 años", "hace 100,000,000 años"),
+  counted on a log scale. Skipped when reduced motion is on or the link opens a specific view.
+- **Less disclaimer noise:** one line ("Boceto: cámara y brújula simuladas; textos por verificar"),
+  plus a small "BOCETO" tag in the picture. The "Reconstrucción artística" stamp and its confidence
+  level stay. The storyboard now sits inside "¿Qué es este boceto?". The picture shows
+  "Zócalo · CDMX" instead of raw coordinates. Directions use 8 plain names (norte, noreste...), with
+  degrees in small print. Era names: 1910 is "Porfiriato"; deep time reads "14 mil / 100 mill.
+  años atrás" and "hace 14 mil años" / "hace 100 millones de años". Other wording: "Hace unos 116
+  años", "Más reciente ← → más antiguo". The Hoy button is hidden when you are already on today.
+  "Muy baja" confidence shows half a bar.
+- **Readable outdoors and with a screen reader:** functional text is at least 13 px, the dark plate
+  behind the picture's labels is darker, the caption is 16 px bold, and era subtitles use the main
+  text colour. The heading no longer reads out degrees on every frame. Instead, 0.5 s after you stop
+  turning, a hidden message says "Mirando al noreste. Enfrente: …". The view has a group role and a
+  label that explains drag, the arrow keys and the Hoy button.
+- **Share link:** the address keeps the view (`#1500/026`, updated after you interact). It opens
+  straight into that view and skips the intro. "Compartir esta vista" opens the phone's share
+  sheet, or copies the link ("Enlace copiado").
+- **"Hazlo con tu IA" is now real:** step 1 "Toma la foto" opens the phone camera and shows a
+  thumbnail. Step 2 "Enviar a mi IA" sends the photo plus the instruction through the phone's share
+  sheet (Android), or copies the instruction and says "abre Gemini o ChatGPT, adjunta la foto y
+  pega". The full instruction is folded under "Ver la instrucción".
+
+**Checked:** the script passes `node --check`. A stub-page run in node (load, deep link, slider, drag,
+keys, Hoy, edge chips, share, send, compass) throws no errors. It has **not** been checked in a real
+browser: Chrome and the browser pane could not open local files in this session.
+
+**Still pending**
+- Look at it on a real phone: layout at 375-400 px, how the pills sit, and whether "100 mill." fits
+  its column.
+- Check the compass direction on a real iPhone (`webkitCompassHeading` with the phone upright) and
+  on Android.
+- Share and the hash may not reach the address bar inside the Artifact iframe; it works on GitHub
+  Pages.
+- Landmark pills: up to 3 rows; a place is skipped if it can't fit without overlapping (fine for
+  now, revisit with real pictures).
+- The texts and sources are still sample data to verify.
