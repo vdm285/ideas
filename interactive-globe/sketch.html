@@ -399,6 +399,25 @@ const SAMPLES = {
   }
 };
 
+/* One hand-written line + capital for the largest countries without full cards (sample, unreviewed). */
+const MINI = {
+  RU: { cap: "Moscú", fact: "Es el país más grande del mundo: cruza 11 husos horarios." },
+  CA: { cap: "Ottawa", fact: "Tiene la costa más larga del mundo." },
+  US: { cap: "Washington D. C.", fact: "Tiene 50 estados; Alaska y Hawái no tocan a los otros 48." },
+  CN: { cap: "Pekín", fact: "Junto con la India, es uno de los dos países con más habitantes del mundo." },
+  AU: { cap: "Canberra", fact: "Es a la vez un país y casi todo un continente; ahí viven canguros y koalas." },
+  IN: { cap: "Nueva Delhi", fact: "Desde 2023 es el país con más habitantes del mundo, según la ONU." },
+  AR: { cap: "Buenos Aires", fact: "El Aconcagua, en sus Andes, es la montaña más alta de América." },
+  KZ: { cap: "Astaná", fact: "Es el país sin salida al mar más grande del mundo." },
+  DZ: { cap: "Argel", fact: "Es el país más grande de África, y casi todo es desierto del Sahara." },
+  CD: { cap: "Kinsasa", fact: "El río Congo, que lo cruza, es el río más profundo del mundo." },
+  SA: { cap: "Riad", fact: "Es de los países más grandes del mundo sin un solo río permanente." },
+  ID: { cap: "Yakarta", fact: "Está formado por más de 17,000 islas." },
+  GL: { cap: "Nuuk", fact: "Es la isla más grande del mundo y pertenece al Reino de Dinamarca." },
+  CO: { cap: "Bogotá", fact: "Es el único país de Sudamérica con costas en el Pacífico y en el Caribe." },
+  PE: { cap: "Lima", fact: "Ahí está Machu Picchu, una ciudad inca construida en lo alto de los Andes." }
+};
+
 const SOURCES = {
   historia: "Fuente: Wikipedia en español · revisado el 25 sep 2026 (ejemplo)",
   comida: "Fuente: Wikipedia en español y Wikidata · revisado el 25 sep 2026 (ejemplo)",
@@ -838,10 +857,10 @@ function sizeRank(f) {
   return "";
 }
 function hookFor(f, s) {
-  const a = antipode(f);
-  let h = s ? '<p class="fact"><strong>¿Sabías que…?</strong> ' + esc(s.fact) + "</p>" : "";
+  const a = antipode(f), mini = MINI[f.properties.a], lead1 = s ? s.fact : mini ? mini.fact : "";
+  let h = lead1 ? '<p class="fact"><strong>¿Sabías que…?</strong> ' + esc(lead1) + "</p>" : "";
   const lead = kids ? "Si hicieras un hoyo derechito hasta el otro lado de la Tierra" : "Si cavaras un túnel recto por el centro de la Tierra";
-  h += '<div class="fact dig"><p>' + (s ? "" : "<strong>¿Sabías que…?</strong> ") + lead + ", saldrías en <strong>" + esc(a.name) + "</strong>." + "</p>" +
+  h += '<div class="fact dig"><p>' + (lead1 ? "" : "<strong>¿Sabías que…?</strong> ") + lead + ", saldrías en <strong>" + esc(a.name) + "</strong>." + "</p>" +
     '<button class="btn" type="button" id="digBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v14"/><path d="M6 11l6 6 6-6"/><path d="M4 21h16"/></svg>Cava el túnel</button></div>';
   const extra = [seasonOf(f), sizeRank(f)].filter(Boolean);
   h += '<p class="facts">' + extra.map(esc).join(" · ") + "</p>";
@@ -861,8 +880,9 @@ function digTunnel() {
 }
 function factLines(f) {
   if (f === byCode.MX) return ["Tu casa: Ciudad de México"];
+  const cap = MINI[f.properties.a] ? ["Capital: " + MINI[f.properties.a].cap] : [];
   const km = Math.max(100, Math.round(d3.geoDistance(f.cen, CDMX) * 6371 / 100) * 100);
-  return ["A unos " + km.toLocaleString("es-MX") + " km de la Ciudad de México", sizeVsMx(f)];
+  return cap.concat(["A unos " + km.toLocaleString("es-MX") + " km de la Ciudad de México", sizeVsMx(f)]);
 }
 function chipsFor(list) {
   return '<div class="chips">' + list.map(g => {
@@ -894,7 +914,8 @@ function textFor(f, s) {
   const parts = [f.name + "."];
   if (!s) {
     factLines(f).forEach(x => parts.push(x.replace(" (aprox.)", "") + "."));
-    parts.push("¿Sabías que? Si cavaras un túnel por el centro de la Tierra, saldrías en " + antipode(f).name + ".");
+    if (MINI[f.properties.a]) parts.push("¿Sabías que? " + MINI[f.properties.a].fact);
+    parts.push("Si cavaras un túnel por el centro de la Tierra, saldrías en " + antipode(f).name + ".");
     parts.push(seasonOf(f).replace(" (aprox.)", "") + ".");
   } else if (tab !== "hoy") {
     parts.push(kids ? s[tab].k : s[tab].a);

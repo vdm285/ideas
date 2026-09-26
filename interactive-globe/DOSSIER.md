@@ -292,7 +292,10 @@ What changed, following the round-2 critique (in its order):
   season there today (by hemisphere; "temporada de lluvias/secas" in the tropics, approximate) and a size
   rank ("entre los 10 más grandes del mapa").
 - **★ on the globe** marks the 4 countries with full cards; the hover tip says "★ ficha completa".
-- **Phones:** search and a Sorpréndeme dice button sit in a sticky bar at the top of the bottom sheet
+- **15 large countries get a capital and one hand-written line** (sample, unreviewed): Rusia, Canadá,
+  EE. UU., China, Australia, India, Argentina, Kazajistán, Argelia, RD Congo, Arabia Saudita, Indonesia,
+  Groenlandia, Colombia, Perú. The line leads the card; the capital joins the distance/size line.
+- **Phones:** search, a Sorpréndeme dice button and the game button sit in a sticky bar at the top of the bottom sheet
   (visible in all three sheet states; collapsed height raised to 128 px). First load opens the sheet
   collapsed so the globe fills the screen. Messages ("Eso es el océano…", "No encontré…") show as a 3 s
   toast over the globe. The "Giro automático" button is gone on phones; the globe resumes spinning after
@@ -316,8 +319,7 @@ What changed, following the round-2 critique (in its order):
   says so), so the page scrolls normally; the animation timer stops when the globe isn't spinning
   (battery); after a neighbour chip is clicked, keyboard focus moves to the country name.
 
-**Still pending:** the optional hand-written line + capital for the ~15 largest countries (item 1c);
-Palestina vs "Territorios Palestinos" naming (question 8, Victor's call) and the Georgia Wikipedia slug;
+**Still pending:** fact-checking the 15 hand-written lines; Palestina vs "Territorios Palestinos" naming (question 8, Victor's call) and the Georgia Wikipedia slug;
 the sketch was checked for syntax and missing references only, not yet clicked through on a real phone;
 plus everything in the round-1 pending list (real texts, finer map on zoom, real "Casa", offline use).
 
