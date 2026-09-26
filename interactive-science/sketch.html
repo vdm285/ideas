@@ -1,8 +1,10 @@
 <title>Tabla Viva</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" media="print" onload="this.media='all'">
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap");
 [hidden] { display: none !important; }
 
 /* ---------- Tokens: light palette on bare :root ---------- */
@@ -31,7 +33,7 @@
   --s-gas: #BFE3FF; --s-liq: #7FD1C7; --s-sol: #E9DCC4; --s-unk: #D5DBE2;
   --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -196,6 +198,10 @@ body.kiosk .more { display: none; }
 .cell .s { font-family: var(--font-display); font-weight: 800; font-size: max(.8rem, min(34cqi, 34px)); margin-top: 8%; }
 .cell .n { display: none; max-width: 94%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: max(.53rem, min(13cqi, 12px)); }
 @container (min-width: 44px) { .cell .n { display: block; margin-top: 2px; } }
+html.big .cell .s { font-size: max(1rem, min(44cqi, 44px)); }
+html.big .cell .z { font-size: max(.6rem, min(20cqi, 15px)); }
+html.big .cell .n { font-size: max(.6rem, min(15cqi, 14px)); }
+@container (min-width: 40px) { html.big .cell .n { display: block; margin-top: 2px; } }
 .pt.hard .cell .n { display: none !important; }
 .pt.hinting .cell:not(.lite) { opacity: .3; }
 .cell.lite { box-shadow: inset 0 0 0 3px var(--ink); }
@@ -205,9 +211,10 @@ body.kiosk .more { display: none; }
 }
 @keyframes burst { from { transform: scale(.6); opacity: 1; } to { transform: scale(1.9); opacity: 0; } }
 .cell.has::after {
-  content: ""; position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; border-radius: 50%;
-  background: var(--tile-ink); opacity: .75;
+  content: "★"; position: absolute; top: 2px; right: 3px; line-height: 1;
+  font-size: max(12px, min(22cqi, 18px)); color: var(--tile-ink); opacity: .9;
 }
+.pt.trans .cell.has::after { font-size: 12px; }
 @media (hover: hover) { .cell:hover { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(0, 0, 0, .2); z-index: 2; } }
 .cell:focus-visible { z-index: 3; }
 .cell.sel { outline: 3px solid var(--ink); outline-offset: 1px; z-index: 2; }
@@ -322,6 +329,19 @@ body.kiosk .more { display: none; }
 .lv-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 18px; }
 .lv-label { font-weight: 700; }
 .story { font-size: 1.12rem; line-height: 1.55; margin: 12px 0 6px !important; }
+.hitbtn {
+  flex: none; max-width: 52%; min-height: 38px; padding: 0 10px; border-radius: 9px; border: 0; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: .92rem;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+@media (max-width: 520px) { .hitbtn .hn { display: none; } .hitbtn { min-width: 52px; } }
+.reto .rfact { flex-basis: 100%; font-size: .98rem; line-height: 1.35; }
+.next-story { margin-top: 18px; }
+.next-story .sbtn { width: 100%; background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.hook { margin-top: 16px !important; }
+.about > summary { cursor: pointer; min-height: 40px; display: flex; align-items: center; font-weight: 700; }
+.about p { margin: 6px 0 0; max-width: 44ch; font-size: .85rem; color: var(--muted); }
+body.kiosk .ai-note, body.kiosk .badge, body.kiosk .foot { display: none; }
 .ai-note { font-family: var(--font-mono); font-size: .74rem; color: var(--muted); }
 .uses { margin: 0; padding-left: 1.2em; display: grid; gap: 3px; }
 .iso-wrap { overflow-x: auto; }
@@ -424,6 +444,7 @@ body.kiosk .more { display: none; }
       <label for="q" class="sr">Buscar elemento por nombre, símbolo o número</label>
       <input id="q" type="search" placeholder="Busca: oro, Fe, 26, gas noble…" autocomplete="off" spellcheck="false" enterkeyhint="search">
       <span class="count" id="count" aria-live="polite"></span>
+      <button class="hitbtn" id="hit" type="button" hidden></button>
     </div>
     <button class="tbtn primary" id="btn-reto" type="button" aria-pressed="false">Reto</button>
     <details class="more" id="more">
@@ -436,7 +457,15 @@ body.kiosk .more { display: none; }
         </div>
         <button class="tbtn" id="btn-big" type="button" aria-pressed="false">Letra grande</button>
         <button class="tbtn" id="btn-full" type="button" aria-pressed="false">Pantalla completa</button>
+        <button class="tbtn" id="btn-sound" type="button" aria-pressed="true">Sonido: sí</button>
         <button class="tbtn" id="btn-vitrina" type="button" aria-pressed="false">Modo exhibición</button>
+        <details class="about">
+          <summary>Acerca de este boceto</summary>
+          <p><strong>Boceto de concepto para Victor, 25 de septiembre de 2026.</strong> Todos los datos van dentro de este archivo; solo las tipografías se descargan de Google Fonts (sin internet, usa las del sistema).</p>
+          <p>Las 118 casillas usan masas atómicas redondeadas (IUPAC; entre corchetes, el isótopo más estable) y nombres en español como se usan en México. Las capas de electrones se calculan con la regla de llenado más sus excepciones conocidas; de Rf (104) en adelante son predicciones.</p>
+          <p>Las 6 historias completas (★), las frases de unos 25 elementos famosos y las preguntas son texto de muestra escrito para el boceto. Las demás fichas se arman en automático con los datos de la tabla. En la versión real los datos vendrían de PubChem (dominio público) y Wikidata (CC0), y los textos los redactaría la IA local en 3 niveles, con revisión humana.</p>
+          <p>«Escuchar» usa las voces que ya trae el teléfono o la computadora; si no hay voz en español, el botón no aparece.</p>
+        </details>
       </div>
     </details>
   </div>
@@ -446,13 +475,14 @@ body.kiosk .more { display: none; }
     <div class="legend">
       <span class="legend-label">Toca un color para filtrar:</span>
       <span id="chips" style="display:contents"></span>
-      <span class="dot-note">● = ficha completa de muestra</span>
+      <span class="dot-note">★ = historia completa</span>
     </div>
   </details>
 
   <div class="reto" id="reto" hidden>
     <span class="ask" id="reto-ask">Busca</span>
     <span class="target" id="reto-name"></span>
+    <span class="rfact" id="reto-fact" hidden></span>
     <span class="end" id="reto-end" hidden></span>
     <span class="score" id="reto-score"></span>
     <div class="seg" role="group" aria-label="Nivel del reto">
@@ -463,7 +493,7 @@ body.kiosk .more { display: none; }
     <button type="button" id="reto-again" hidden>Otra ronda</button>
     <button type="button" id="reto-exit">Salir</button>
   </div>
-  <p class="rot-note">En el celular la tabla está girada; gira el teléfono para verla completa.</p>
+  <p class="rot-note">En el celular la tabla va de lado. Si giras el teléfono, la ves como en tu libro.</p>
 
   <main class="stage">
     <div class="pt norm" id="pt" role="group" aria-label="Tabla periódica: 118 elementos"></div>
@@ -471,9 +501,7 @@ body.kiosk .more { display: none; }
   </main>
 
   <footer class="foot">
-    <p><strong>Boceto de concepto para Victor, 25 de septiembre de 2026.</strong> Todos los datos van dentro de este archivo; solo las tipografías se descargan de Google Fonts (sin internet, usa las del sistema).</p>
-    <p>Las 118 casillas usan masas atómicas redondeadas (IUPAC; entre corchetes, el isótopo más estable) y nombres en español como se usan en México. Las capas de electrones se calculan con la regla de llenado más sus excepciones conocidas; de Rf (104) en adelante son predicciones.</p>
-    <p>Solo 6 fichas tienen textos, y son de muestra. En la versión real los datos vendrían de PubChem (dominio público) y Wikidata (CC0), y los textos los redactaría la IA local en 3 niveles, con revisión humana.</p>
+    <p>Boceto de concepto con datos y textos de muestra. Detalles en <strong>Más › Acerca de este boceto</strong>.</p>
   </footer>
 </div>
 
@@ -727,6 +755,35 @@ const FACTS = [
   "El litio es tan ligero que flotaría en aceite.",
   "Solo dos elementos son líquidos a 25 °C: el bromo y el mercurio."
 ];
+/* One-line hooks for famous elements (texto de muestra). No numbers here, so the table data stays the only source of figures. */
+const HOOK = {
+  2: "Es el gas de los globos que flotan: pesa menos que el aire.",
+  7: "Casi todo el aire que respiras es nitrógeno, y las plantas lo necesitan para crecer.",
+  9: "Está en la pasta de dientes y ayuda a protegerlos de las caries.",
+  10: "Brilla rojo anaranjado dentro de los letreros luminosos que llamamos «de neón».",
+  11: "La sal de tu mesa es sodio unido a cloro.",
+  12: "Está en el centro de la clorofila, lo verde que usan las plantas para atrapar la luz del Sol.",
+  13: "Las latas de refresco son de aluminio.",
+  14: "Está en la arena de la playa, en el vidrio y en los chips de las computadoras.",
+  15: "Tus huesos tienen fósforo, y la tira donde se raspan los cerillos también.",
+  16: "Los volcanes lo sueltan, y unido al hidrógeno huele a huevo podrido.",
+  17: "Limpia el agua de las albercas y de la llave.",
+  18: "Llena por dentro muchos focos para que el filamento no se queme.",
+  19: "El plátano es famoso por su potasio.",
+  20: "Tus huesos y dientes tienen mucho calcio.",
+  22: "Es fuerte y ligero: se usa en aviones y en tornillos para arreglar huesos.",
+  28: "Muchas monedas llevan níquel, y ayuda a que el acero inoxidable no se oxide.",
+  29: "Los cables de tu casa son de cobre.",
+  30: "Cubre clavos y láminas de acero para que no se oxiden.",
+  50: "Las latas de comida son de acero cubierto con una capa delgada de estaño.",
+  53: "Se le agrega a la sal de mesa porque tu cuerpo lo necesita.",
+  74: "Es el metal que aguanta más calor sin derretirse; brillaba dentro de los focos antiguos.",
+  78: "Es un metal precioso más escaso que el oro, y ayuda a limpiar el humo de los autos.",
+  79: "Nunca se oxida, y es tan blando que se aplasta en hojas más delgadas que un papel.",
+  80: "Es un metal líquido; antes iba en los termómetros, pero es tóxico.",
+  82: "Antes se usaba en tuberías y pinturas, hasta que se supo que es tóxico.",
+  92: "Es el combustible de las plantas nucleares que producen electricidad."
+};
 </script>
 
 <script>
@@ -754,7 +811,7 @@ const FACTS = [
     b.type = "button";
     b.className = "cell" + (SAMPLE[e.z] ? " has" : "");
     b.dataset.z = e.z;
-    b.setAttribute("aria-label", `${e.z}, ${e.name}, ${e.s}${SAMPLE[e.z] ? ", ficha completa de muestra" : ""}`);
+    b.setAttribute("aria-label", `${e.z}, ${e.name}, ${e.s}${SAMPLE[e.z] ? ", historia completa" : ""}`);
     b.innerHTML = `<span class="z">${e.z}</span><span class="s">${e.s}</span><span class="n">${e.name}</span>`;
     pt.appendChild(b);
     return b;
@@ -774,7 +831,7 @@ const FACTS = [
   lupa.className = "lupa";
   lupa.setAttribute("aria-hidden", "true");
   lupa.innerHTML = `<div class="lt"><span class="z"></span><span class="s"></span><span class="n"></span></div>
-    <ul class="key"><li class="t">Así se lee una casilla</li><li><b data-k="z"></b> número atómico</li><li><b data-k="s"></b> símbolo</li><li><b data-k="n"></b> nombre</li></ul>`;
+    <ul class="key"><li class="t">Así se lee una casilla</li><li><b data-k="z"></b> número atómico</li><li><b data-k="s"></b> símbolo</li><li><b data-k="n"></b> nombre</li><li><b>★</b> historia completa</li></ul>`;
   pt.appendChild(lupa);
 
   function place(el, r, c) { el.style.gridRow = String(r); el.style.gridColumn = String(c); }
@@ -840,6 +897,15 @@ const FACTS = [
       if (okQ && okC) n++;
     });
     $("#count").textContent = (q || state.cat) ? (n ? `${n} ${n === 1 ? "elemento" : "elementos"}` : "Sin resultados") : "";
+    /* when a query is typed, the best match becomes a button within thumb reach */
+    const hit = $("#hit"), m = q ? bestMatch() : null;
+    if (m && !cells[m.z - 1].classList.contains("dim")) {
+      hit.hidden = false; hit.dataset.z = m.z;
+      hit.innerHTML = `${m.s}<span class="hn"> · ${m.name}</span> ›`;
+      hit.setAttribute("aria-label", `Abrir ${m.name}`);
+      $("#count").textContent = n > 1 ? `y ${n - 1} más` : "";
+    } else { hit.hidden = true; }
+    return n;
   }
   function bestMatch() {
     const q = norm(state.q); if (!q) return null;
@@ -911,11 +977,11 @@ const FACTS = [
   const numMass = e => parseFloat(e.mass.replace(/[[\]]/g, ""));
   const isRadio = e => e.z === 43 || e.z === 61 || e.z >= 84;
   const KIDCAT = {
-    alk: "un metal alcalino: blando y muy reactivo", ale: "un metal alcalinotérreo", tra: "un metal de transición",
+    alk: "un metal alcalino: blando y muy reactivo", ale: "un metal alcalinotérreo", tra: "un metal de transición: la familia más grande de metales, en el centro de la tabla",
     pos: "de los llamados «otros metales», más blandos que los de transición", met: "un metaloide: a medio camino entre metal y no metal",
     non: "un no metal", hal: "un halógeno: reacciona con mucha facilidad y forma sales", nob: "un gas noble: casi nunca se combina con nada",
     lan: "un lantánido, parte de las llamadas «tierras raras»", act: "un actínido: todos los actínidos son radiactivos",
-    unk: "un superpesado: solo se han fabricado unos pocos átomos en laboratorio y casi nada se ha podido medir"
+    unk: "un elemento superpesado: solo se han fabricado unos pocos átomos en laboratorio y casi nada se ha podido medir"
   };
   const KIDST = { gas: "un gas", liq: "un líquido", sol: "un sólido" };
   function kidLines(e) {
@@ -932,6 +998,7 @@ const FACTS = [
   function funFact(e) {
     const smp = SAMPLE[e.z];
     if (smp) { const m = smp.lv[0].match(/^.*?[.!](?=\s|$)/); return m ? m[0] : smp.lv[0]; }
+    if (HOOK[e.z]) return HOOK[e.z];
     if (e.st === "liq") return `Es uno de los 2 únicos elementos líquidos a 25 °C.`;
     if (isRadio(e)) return "Es radiactivo: con el tiempo sus átomos se transforman en otros.";
     if (e.cat === "nob") return "Es un gas noble: casi nunca se combina con nada.";
@@ -947,6 +1014,62 @@ const FACTS = [
     const same = byDist(ks.filter(k => !e.f && !EL[k - 1].f && EL[k - 1].g === e.g));
     return EL[(same[0] || byDist(ks.slice())[0]) - 1];
   }
+  const STORY = Object.keys(SAMPLE).map(Number);
+  const nextStory = z => STORY[(STORY.indexOf(z) + 1) % STORY.length];
+
+  /* ---- read aloud (built-in phone/computer voices; hidden when there is no Spanish voice) ---- */
+  const tts = { ok: false, voice: null };
+  const hasTTS = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+  function pickVoice() {
+    if (!hasTTS) return;
+    let vs = [];
+    try { vs = speechSynthesis.getVoices() || []; } catch (_) { /* no voices */ }
+    tts.voice = vs.find(v => /^es[-_]MX/i.test(v.lang)) || vs.find(v => /^es/i.test(v.lang)) || null;
+    tts.ok = !!tts.voice;
+    document.querySelectorAll("#b-say").forEach(b => { b.hidden = !tts.ok; });
+  }
+  if (hasTTS) { pickVoice(); try { speechSynthesis.onvoiceschanged = pickVoice; } catch (_) { /* old browser */ } }
+  const SAY_ICON = `<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="vertical-align:-3px;margin-right:6px"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+  const sayBtn = () => `<button class="sbtn" id="b-say" type="button"${tts.ok ? "" : " hidden"}>${SAY_ICON}Escuchar</button>`;
+  function stopSay() {
+    try { if (hasTTS) speechSynthesis.cancel(); } catch (_) { /* ignore */ }
+    const b = document.getElementById("b-say"); if (b) b.innerHTML = SAY_ICON + "Escuchar";
+  }
+  function say(text, btn) {
+    if (!tts.ok) return;
+    stopSay();
+    try {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "es-MX"; u.rate = 0.95; u.voice = tts.voice;
+      if (btn) { btn.innerHTML = SAY_ICON + "Detener"; u.onend = u.onerror = () => { if (btn.isConnected) btn.innerHTML = SAY_ICON + "Escuchar"; }; }
+      speechSynthesis.speak(u);
+    } catch (_) { /* speech unavailable */ }
+  }
+  function sayText(e) {
+    const smp = SAMPLE[e.z];
+    if (smp) return e.name + ". " + smp.lv[state.level];
+    return [e.name + ".", HOOK[e.z] || ""].concat(kidLines(e)).join(" ");
+  }
+
+  /* ---- sound (tiny WebAudio chimes; switch in Más) ---- */
+  let actx = null, soundOn = true;
+  try { soundOn = localStorage.getItem("tv-sound") !== "0"; } catch (_) { /* storage blocked */ }
+  function chime(notes) {
+    if (!soundOn) return;
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      actx = actx || new AC(); if (actx.state === "suspended") actx.resume();
+      notes.forEach(([f, t0, d, v]) => {
+        const o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime + t0;
+        o.type = "sine"; o.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v || 0.16, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+        o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + d + 0.05);
+      });
+    } catch (_) { /* audio unavailable */ }
+  }
+  const chimeOk = () => chime([[660, 0, 0.18], [880, 0.13, 0.32]]);
+  const chimeMiss = () => chime([[196, 0, 0.3, 0.1]]);
+  const chimeWin = () => chime([[523, 0, 0.2], [659, 0.12, 0.2], [784, 0.24, 0.2], [1047, 0.36, 0.5]]);
 
   /* ---- detail panel: story first, technical data last ---- */
   function panelHTML(e) {
@@ -957,19 +1080,20 @@ const FACTS = [
       <div class="p-top"><button class="close" id="p-close" type="button">Cerrar</button></div>
       <div class="p-head" style="--cat:${colorVar(e)}">
         <div class="big-tile" aria-hidden="true"><span class="z">${e.z}</span><span class="s">${e.s}</span></div>
-        <div><h2>${e.name}</h2><p class="kind">${CAT[e.cat].one}${smp ? ' <span class="tag">Ficha de muestra</span>' : ""}</p></div>
+        <div><h2>${e.name}</h2><p class="kind">${CAT[e.cat].one}${smp ? ' <span class="tag">★ Historia completa</span>' : ""}</p></div>
       </div>`;
     if (smp) {
       h += `
-      <div class="lv-row"><span class="lv-label" id="lv-lab">Explícamelo para</span>
+      <div class="lv-row"><span class="lv-label" id="lv-lab">Cuéntamelo como para:</span>
         <div class="seg" role="group" aria-labelledby="lv-lab">${LEVELS.map((l, i) => `<button type="button" data-lv="${i}" aria-pressed="${i === lvl}">${l}</button>`).join("")}</div>
+        ${sayBtn()}
       </div>
-      <p class="story" id="story">${smp.lv[lvl]}</p>
-      <p class="ai-note">Texto de muestra escrito para el boceto. En la versión real lo redactaría la IA local en 3 niveles y una persona lo revisaría.</p>`;
+      <p class="story" id="story">${smp.lv[lvl]}</p>`;
     } else {
       h += `
+      ${HOOK[e.z] ? `<p class="story hook"><strong>${HOOK[e.z]}</strong></p>` : ""}
       <ul class="kid">${kidLines(e).map(l => `<li>${l}</li>`).join("")}</ul>
-      <p class="ai-note">Armado en automático con los datos de la tabla.</p>`;
+      <div class="lv-row">${sayBtn()}</div>`;
     }
     h += `
       <div class="bohr" style="--cat:${colorVar(e)}">
@@ -1005,8 +1129,8 @@ const FACTS = [
           <p class="q">${smp.quiz.q}</p>
           <div class="opts">${ord.map(i => `<button type="button" class="opt" data-opt="${i}">${smp.quiz.o[i]}</button>`).join("")}</div>
           <p class="why" id="why" hidden></p>
-          <p class="ai-note">Pregunta de muestra: así se verían las preguntas que prepara la IA.</p>
         </div>
+        <div class="next-story"><button class="sbtn primary-s" type="button" data-open="${nextStory(e.z)}">Siguiente historia: ${EL[nextStory(e.z) - 1].name} ›</button></div>
       </section>`;
     } else {
       const fam = famOf(e), sug = suggestFor(e);
@@ -1016,8 +1140,8 @@ const FACTS = [
         <div class="fam">${fam.map(x => `<button type="button" class="chip" data-open="${x.z}"><i style="background:${colorVar(x)}"></i>${x.name}</button>`).join("")}</div>
       </section>
       <div class="soon">
-        <p><strong>Pronto su historia completa.</strong> Mientras, prueba ${sug.name}:</p>
-        <div class="samples"><button type="button" class="sbtn" data-open="${sug.z}">Abrir ${sug.name}</button>${samplesHTML()}</div>
+        <p><strong>Pronto su historia completa.</strong> Mientras, prueba ${sug.name} u otra historia lista.</p>
+        <div class="samples"><span>Historias listas:</span>${samplesHTML()}</div>
       </div>`;
     }
     h += `
@@ -1056,6 +1180,7 @@ const FACTS = [
   }
   function closeSheet(fromPop) {
     if (!sheetOpen()) return;
+    stopSay();
     document.body.classList.remove("sheet-open");
     $("#scrim").hidden = true;
     if (state.sel && !reto.on) cells[state.sel - 1].focus({ preventScroll: true });
@@ -1073,7 +1198,7 @@ const FACTS = [
     if (dx > 80 && Math.abs(dy) < 60) closeSheet();
   }, { passive: true });
 
-  function renderPanel(e) { clearTimeout(fillT); panel.innerHTML = panelHTML(e); }
+  function renderPanel(e) { clearTimeout(fillT); stopSay(); panel.innerHTML = panelHTML(e); }
   function open(z, show = true) {
     const e = EL[z - 1];
     if (state.sel) cells[state.sel - 1].classList.remove("sel");
@@ -1098,6 +1223,9 @@ const FACTS = [
     const go = t.closest("[data-open]");
     if (go) return open(+go.dataset.open, !mqDock.matches);
     if (t.closest("#b-fill")) return runFill(e);
+    const sb = t.closest("#b-say");
+    if (sb) { if (hasTTS && speechSynthesis.speaking) return stopSay(); return say(sayText(e), sb); }
+    if (t.closest(".big-tile")) return say(e.name);
     const spin = t.closest("#b-spin");
     if (spin) {
       const svg = $("#bohr"); const paused = svg.classList.toggle("paused");
@@ -1123,7 +1251,7 @@ const FACTS = [
   /* ---- reto: rounds of 10, visual hints, best score ---- */
   const POOL = [1, 2, 3, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 26, 29, 30, 47, 50, 53, 79, 80, 82, 92];
   const ROUND = 10;
-  const reto = { on: false, lv: "easy", q: [], i: 0, score: 0, res: [], target: 0, miss: 0, lock: false, done: false };
+  const reto = { on: false, lv: "easy", q: [], i: 0, score: 0, res: [], target: 0, miss: 0, lock: false, done: false, t: 0, w: 0, round: 0, fact: "" };
   const bestKey = () => "tv-best-" + reto.lv;
   function getBest() { try { return +(localStorage.getItem(bestKey()) || 0); } catch (_) { return 0; } }
   function setBest(n) { try { localStorage.setItem(bestKey(), String(n)); } catch (_) { /* storage blocked */ } }
@@ -1148,12 +1276,15 @@ const FACTS = [
         : `<p>Pregunta ${reto.i + 1} de ${ROUND}. Busca en la tabla:</p><p class="rt">${targetLabel(t)}</p>
            <p class="caption" style="text-align:left">${reto.lv === "easy" ? "Fácil: busca la casilla con este símbolo." : "Difícil: los nombres se ocultan; tienes que saber su símbolo."} Si fallas, primero se marca su fila y luego su columna.</p>`}
       <ul class="dots" aria-label="Resultados de la ronda">${dots}</ul>
+      ${reto.fact ? `<p class="story"><strong>¿Sabías que…?</strong> ${reto.fact}</p>` : ""}
       <p class="caption" style="text-align:left">Tu mejor puntuación se guarda solo en este navegador.</p>
     </div>`;
   }
   function retoRender() {
     const t = EL[reto.target - 1];
     $("#reto-ask").hidden = reto.done; $("#reto-name").hidden = reto.done; $("#reto-skip").hidden = reto.done;
+    $("#reto-ask").textContent = "Busca"; $("#reto-fact").hidden = true;
+    $("#reto .seg").hidden = !(reto.done || reto.i === 0);
     $("#reto-end").hidden = !reto.done; $("#reto-again").hidden = !reto.done;
     if (reto.done) $("#reto-end").textContent = endText();
     else $("#reto-name").textContent = targetLabel(t);
@@ -1169,14 +1300,27 @@ const FACTS = [
     retoRender();
   }
   function retoAdvance(ok) { reto.res[reto.i] = ok; reto.i++; retoNext(); }
+  function victoryWave() {
+    clearTimeout(reto.w);
+    if (reduced()) return;
+    let col = 0;
+    const step = () => {
+      col++;
+      EL.forEach((e, i) => { if ((e.f ? e.i + 3 : e.g) === col) { const c = cells[i]; c.classList.remove("glow"); void c.offsetWidth; c.classList.add("glow"); } });
+      if (col < 18) reto.w = setTimeout(step, 60);
+    };
+    step();
+  }
   function retoEnd() {
     reto.done = true; reto.lock = true;
     if (reto.score > getBest()) { setBest(reto.score); toast(`¡Nuevo récord: ${reto.score} de ${ROUND}!`); }
     retoRender();
+    if (reto.score >= 5) { victoryWave(); chimeWin(); }
   }
   function retoStart() {
-    stopAttract(); closeSheet(); clearFilters(); clearTimeout(fillT);
-    Object.assign(reto, { on: true, q: shuffle(POOL.slice()).slice(0, ROUND), i: 0, score: 0, res: [], done: false });
+    stopAttract(); closeSheet(); clearFilters(); clearTimeout(fillT); stopSay();
+    clearTimeout(reto.t); clearTimeout(reto.w);
+    Object.assign(reto, { on: true, q: shuffle(POOL.slice()).slice(0, ROUND), i: 0, score: 0, res: [], done: false, round: reto.round + 1, fact: "" });
     $("#reto").hidden = false; $("#btn-reto").setAttribute("aria-pressed", "true");
     if (state.sel) { cells[state.sel - 1].classList.remove("sel"); lupaShow(EL[state.sel - 1]); }
     retoNext();
@@ -1185,6 +1329,7 @@ const FACTS = [
   function retoStop() {
     if (!reto.on) return;
     reto.on = false; reto.done = false; $("#reto").hidden = true; $("#btn-reto").setAttribute("aria-pressed", "false");
+    clearTimeout(reto.t); clearTimeout(reto.w); reto.round++; toastEl.hidden = true;
     clearHints(); pt.classList.remove("hard");
     if (state.sel) open(state.sel, false);
   }
@@ -1197,21 +1342,30 @@ const FACTS = [
       reto.lock = true; clearHints();
       void c.offsetWidth; c.classList.add("hit");
       $("#reto-score").textContent = `${reto.i + 1}/${ROUND} · Aciertos: ${reto.score}`;
-      toast(ok ? `¡Correcto! ${t.name} es ${t.s}. ¿Sabías que…? ${funFact(t)}` : `Ahí está: ${t.name} es ${t.s}. Esta no cuenta, pero ya la conoces.`);
-      setTimeout(() => { if (reto.on && !reto.done) retoAdvance(ok); }, 2000);
+      toastEl.hidden = true;
+      if (ok) { chimeOk(); reto.fact = `${t.name} (${t.s}): ${funFact(t)}`; }
+      $("#reto-ask").textContent = ok ? "¡Correcto!" : "Ahí está:";
+      $("#reto-name").textContent = `${t.name} (${t.s})`;
+      const rf = $("#reto-fact");
+      rf.textContent = ok ? `¿Sabías que…? ${funFact(t)}` : "Esta no cuenta, pero ya la conoces.";
+      rf.hidden = false;
+      const round = reto.round;
+      clearTimeout(reto.t);
+      reto.t = setTimeout(() => { if (reto.on && !reto.done && reto.round === round) retoAdvance(ok); }, ok ? 2600 : 2000);
       return;
     }
     reto.miss++;
+    chimeMiss();
     c.classList.remove("miss"); void c.offsetWidth; c.classList.add("miss");
     const e = EL[z - 1];
     const inRow = x => t.f ? x.f === t.f : (!x.f && x.p === t.p);
     const inCol = x => t.f ? (!!x.f && x.i === t.i) : (!x.f && x.g === t.g);
     if (reto.miss === 1) {
       pt.classList.add("hinting"); EL.forEach((x, k) => { if (inRow(x)) cells[k].classList.add("lite"); });
-      toast(`Esa es ${e.name} (${e.s}). Pista: está entre las casillas marcadas.`);
+      toast(`Tocaste ${e.name} (${e.s}). Pista: está entre las casillas marcadas.`);
     } else if (reto.miss === 2) {
       EL.forEach((x, k) => { if (inCol(x)) cells[k].classList.add("lite"); });
-      toast(`Esa es ${e.name}. Pista: está donde se cruzan las marcas.`);
+      toast(`Tocaste ${e.name} (${e.s}). Pista: está donde se cruzan las marcas.`);
     } else { cells[t.z - 1].classList.add("hint"); toast(`Mira la casilla que parpadea: ${t.s}.`); }
   }
   $("#btn-reto").addEventListener("click", () => reto.on ? retoStop() : retoStart());
@@ -1229,7 +1383,12 @@ const FACTS = [
   async function wake() {
     try { if ("wakeLock" in navigator && !lock) { lock = await navigator.wakeLock.request("screen"); lock.addEventListener("release", () => { lock = null; }); } } catch (_) { /* not allowed here */ }
   }
-  function nextFact() { $("#attract-fact").textContent = "¿Sabías que…? " + FACTS[attract.fi++ % FACTS.length]; }
+  const ATTRACT = shuffle(FACTS.map(t => ({ t })).concat(Object.keys(HOOK).map(z => ({ z: +z, t: `${NAME[z - 1]}: ${HOOK[z]}` }))));
+  function nextFact() {
+    const f = ATTRACT[attract.fi++ % ATTRACT.length];
+    $("#attract-fact").textContent = "¿Sabías que…? " + f.t;
+    if (f.z) lupaShow(EL[f.z - 1]);
+  }
   function waveStep() {
     attract.col = attract.col % 18 + 1;
     EL.forEach((e, i) => { if ((e.f ? e.i + 3 : e.g) === attract.col) cells[i].classList.add("glow"); });
@@ -1237,7 +1396,9 @@ const FACTS = [
   function startAttract() {
     if (attract.on) return;
     if (reto.on) retoStop();
-    closeSheet(); clearFilters();
+    closeSheet(); clearFilters(); stopSay();
+    /* full reset for the next visitor: default level, top of page, Hierro open, shells animation again */
+    seenFill.clear(); state.level = 1; window.scrollTo(0, 0); open(26, false); panel.scrollTop = 0;
     attract.on = true; $("#attract").hidden = false; nextFact();
     if (!reduced()) attract.wave = setInterval(waveStep, 120);
     attract.fact = setInterval(nextFact, 5000);
@@ -1268,6 +1429,13 @@ const FACTS = [
     else { clearTimeout(idleT); stopAttract(); toast("Modo exhibición apagado."); }
   }
   $("#btn-vitrina").addEventListener("click", () => setKiosk(!attract.kiosk));
+  function setSound(on) {
+    soundOn = on;
+    $("#btn-sound").setAttribute("aria-pressed", String(on));
+    $("#btn-sound").textContent = on ? "Sonido: sí" : "Sonido: no";
+    try { localStorage.setItem("tv-sound", on ? "1" : "0"); } catch (_) { /* storage blocked */ }
+  }
+  $("#btn-sound").addEventListener("click", () => { setSound(!soundOn); if (soundOn) chimeOk(); });
   const logo = $("#logo");
   let pressT = 0;
   logo.addEventListener("pointerdown", () => { clearTimeout(pressT); pressT = setTimeout(() => { if (attract.kiosk) setKiosk(false); }, 3000); });
@@ -1327,7 +1495,20 @@ const FACTS = [
   $("#scrim").addEventListener("click", closeSheet);
 
   const qIn = $("#q");
-  qIn.addEventListener("input", () => { state.q = qIn.value; applyFilter(); });
+  qIn.addEventListener("input", () => {
+    state.q = qIn.value;
+    const n = applyFilter();
+    if (state.q.trim() && n && n <= 20 && !reduced()) cells.forEach(c => { if (!c.classList.contains("dim")) { c.classList.remove("glow"); void c.offsetWidth; c.classList.add("glow"); } });
+  });
+  qIn.addEventListener("blur", () => {
+    const m = bestMatch();
+    if (m) cells[m.z - 1].scrollIntoView({ block: "nearest", inline: "nearest", behavior: reduced() ? "auto" : "smooth" });
+  });
+  $("#hit").addEventListener("click", () => {
+    const z = +$("#hit").dataset.z; if (!z) return;
+    if (reto.on) retoStop();
+    open(z);
+  });
   qIn.addEventListener("keydown", ev => {
     if (ev.key === "Enter") { const m = bestMatch(); if (m) { if (reto.on) retoStop(); open(m.z); } else if (state.q) toast("No encontré ese elemento. Prueba con el símbolo (Fe) o el número (26)."); }
     if (ev.key === "Escape") { clearFilters(); }
@@ -1345,6 +1526,9 @@ const FACTS = [
   document.documentElement.lang = "es";
   try { if (localStorage.getItem("tv-big") === "1") setBig(true); } catch (_) { /* storage blocked */ }
   recolor(); layout(); renderLegend(); applyFilter();
+  setSound(soundOn);
   open(26, false);
+  /* point out the 6 full stories once, one after another */
+  if (!reduced()) STORY.forEach((z, k) => setTimeout(() => { const c = cells[z - 1]; c.classList.remove("glow"); void c.offsetWidth; c.classList.add("glow"); }, 700 + k * 250));
 })();
 </script>

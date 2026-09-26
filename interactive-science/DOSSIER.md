@@ -252,3 +252,30 @@ Changes made to `sketch.html` after the round 1 critique, in the critic's order:
 Checked in headless tests at 1366×768 (light and dark) and 390 px: no horizontal scroll, the inline scripts pass `node --check`, and I ran a full Reto round (10/10), the kiosk on/off cycle, the Back button and the level switches.
 
 **Still pending:** on touch screens, the card covers the magnifier as soon as you tap. The tiles on phones (about 35 px) are too narrow for names. Letra grande changes the tiles only a little on wide screens. The Reto end screen is plain text (no confetti or sound). The kid texts for the 112 elements are template sentences, not real stories. There is no keyboard way to leave exhibition mode (by design for a kiosk; to be confirmed).
+
+## Round 2: sketch changelog (2026-09-25, night)
+
+Changes made to `sketch.html` after the round 2 critique, in the critic's order:
+
+1. **Famous elements have a hook.** A new `HOOK` object gives 26 well-known elements one line with no numbers in it, so the table data stays the only source of figures. They include He, N, Ne, Na, Mg, Al, Si, Cl, K, Ca, Cu, Zn, Sn, I, Ti, Ni, W, Pt, Au, Hg, Pb and U. On their cards the hook shows in bold above the auto-built list. The Reto "¿Sabías que…?" fact uses the hook, and the exhibition screen mixes hooks with the general facts (and shows that element in the magnifier).
+2. **Full stories are easier to find.** The 7 px dot became a ★ in the tile corner (at least 12 px). The magnifier key and the color legend both explain it ("★ = historia completa"). On load, the 6 story tiles glow one after another, except when reduced motion is on. The tag now reads "★ Historia completa". Story cards end with a "Siguiente historia: X ›" button that cycles through the 6. In the "Pronto…" box the duplicate "Abrir X" button is gone, and the mini symbols are labeled "Historias listas:".
+3. **"Escuchar" button.** It reads the name and story at the current level aloud, or the hook and kid lines on the other cards. It uses the device's built-in voices: es-MX first, then any Spanish voice, and it follows `voiceschanged`. Tapping it again stops the reading. Tapping the big tile says the element's name. Speech stops when the card changes, the sheet closes or Reto starts. The button is hidden when there is no Spanish voice.
+4. **Search shows its result.** While you type, the best match becomes a button next to the input ("Au · Oro ›", only "Au ›" on phones), with "y N más" beside it when there are several matches. It opens the card. Matching tiles glow (up to 20 matches), and when the input loses focus the best match scrolls into view.
+5. **Reto fixes.**
+   - The 2 s timer bug is fixed: the timer is stored and cleared in `retoStart` and `retoStop`, with a round id as a second guard. Leaving Reto also hides a lingering toast.
+   - A correct answer now shows "¡Correcto! Nombre (Sím)" plus the fact inside the sticky bar instead of a toast. The last fact also stays in the docked panel.
+   - The Fácil/Difícil switch only shows before question 1 advances and on the end screen, which slims the phone bar and stops mid-round wipes.
+   - Celebration: a victory wave across the 18 columns (60 ms apart) and a WebAudio chime at the end when the score is 5 or more. Two notes play on a correct answer and a soft low note on a miss. A "Sonido: sí/no" switch in Más is remembered in the browser.
+6. **Kid and kiosk hygiene.** The gray developer notes left the story cards. The 3-paragraph footer moved into a folded "Acerca de este boceto" inside Más, and a one-line footer label remains. In exhibition mode the badge, footer and notes are hidden. The idle reset now clears `seenFill` (the shells animation plays again), resets the level to 12 años, scrolls to the top, reopens Hierro and stops speech.
+7. **Spanish copy.** New phone note: "En el celular la tabla va de lado. Si giras el teléfono, la ves como en tu libro." Reto hints read "Tocaste Hierro (Fe)." "Es un elemento superpesado". Transition metals get a gloss ("la familia más grande de metales, en el centro de la tabla"). The level label reads "Cuéntamelo como para:".
+8. **Speed and Letra grande.** The blocking `@import` was replaced with `preconnect` plus a non-blocking stylesheet (`media="print" onload`), and the Mono family was dropped (system monospace instead). With Letra grande on, tile symbols, numbers and names grow on wide screens, and names show from about 40 px.
+
+Checked: the inline scripts pass `node --check`. A headless Chrome smoke test ran search "oro" → button → Oro card with its hook, then H → "Siguiente historia: Litio", then Reto: a correct pick → fact in the bar → a level change during the 2 s window (no carry-over). It also cycled exhibition mode with a hook fact. At about 500 px wide there is no horizontal scroll.
+
+**Still pending:**
+- Around 90 elements still get only template sentences.
+- The ★ tiles on phones are about 35 px, so the star is small but visible.
+- The celebration is a wave plus a chime, with no confetti.
+- The "Escuchar" button has not been tried on a real iPhone or Android voice.
+- The card still covers the magnifier on touch screens.
+- There is still no keyboard way to leave exhibition mode.
