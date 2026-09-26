@@ -441,3 +441,48 @@ Gambling harm
   - Open questions for the interview: is this the right "one screen"? Too much for the Notepad
     benchmark (maybe verdict + chart only, the rest behind a tab)? Keep the AI-forecasters league
     (Option D) as extra rows?
+
+- **v2 (2026-09-25, round 2, Claude senior, from the critic's top-8 list):**
+  - **Head tags:** `meta charset` + `viewport` (real phones now get the mobile layout), `lang="es"`
+    on the page containers and set on `<html>` by the script. No `<!doctype>`/`<html>` tags, per
+    the published-page rules.
+  - **One screen per question:** 3 tabs (Veredicto | Esta jornada | Apuestas ficticias). The URL
+    hash (`#veredicto`, `#jornada`, `#apuestas`) and the last tab are remembered. KPI tiles are
+    removed. Calibration moved into "Más análisis". The theme toggle moved to the footer.
+  - **Progress instead of the hedge:** "Aún sin veredicto: vamos al 27% del camino", with a
+    progress bar (0-900 matches, the dossier's 200-800 range hatched, a projection marker) and
+    "81 de ~304 partidos… ≈ fin del Clausura 2027". The projection is n* = n·(half-width/|Δ|)².
+    A "this week" line compares the J1-J8 interval with J1-J9: `bootstrapDelta` gained a `maxJ`
+    parameter.
+  - **Plain-language numbers:** "probabilidad promedio que le dimos a lo que pasó" = exp(−log-loss):
+    market 36.1%, market+news 36.2%, numbers+news 35.7%, numbers only 35.2%, base rates 34.3%. Δ and
+    the interval stay as a small secondary line. The bootstrap is explained in "¿Cómo se calcula?".
+  - **Spanish copy:** "paper trading" → "apuestas simuladas", "commit" → "sello git". The Thursday
+    freeze label uses the jornada's real date. `sg(0)` no longer prints "±".
+  - **Betting rule locked:** the official block is fixed to news model, threshold 1.03, 1 ficha,
+    and shows both models side by side. News: CLV −2.3%, ROI −5.0%. Numbers only: CLV −11.0%, ROI
+    −31.3%. The stake slider and model toggle are gone. The threshold slider lives in "Explorar otra
+    regla (no cuenta para el marcador)", with a counter of thresholds tried and a multiple-tries
+    warning. Profit is shown in neutral grey. Match cards and the log always use the official rule.
+  - **New card "¿Llegamos antes que el mercado?":** the 3 J9 matches where news moved our
+    home-win probability most, set against the market's Thursday→close move, each marked ✓/✗.
+    Season tally 43 of 48 (simulated). It carries the caption "en datos simulados esto ocurre por
+    construcción".
+  - **Sealed upcoming bets:** J10 paper bets show "🔒 Apuesta ficticia sellada · sello git … · se
+    abre con el resultado" in the cards and the log. Market/model probabilities stay visible.
+  - **Polish:**
+    - Chart: "Diferencia vs mercado" is the default. The key line (market+news) is thick and
+      coloured, the others grey. Lines are labelled at their ends and J1-J2 is shaded as "zona de
+      ruido" instead of drawn.
+    - 44 px touch targets; the banner is no longer sticky below 600 px.
+    - Empty states: "Ninguna apuesta supera el umbral".
+  - **Checked:** `node --check` passes and the script runs against a DOM stub. Headless Chrome
+    shows no horizontal overflow at 400 px on any of the 3 tabs. Screenshots were reviewed.
+  - **Still pending:**
+    - The J9 "llegamos antes" top-3 happens to show 2 ✗ against a 43/48 season tally. That is
+      honest, but it may deserve a "this jornada: 1 of 3" line.
+    - The tabs lack a full ARIA tabs pattern (no Home/End keys).
+    - The chart has no keyboard tooltip.
+    - Nothing was tested on a real phone.
+    - The interview questions (is the Veredicto tab the right "one screen"?) are still open for
+      Victor.
