@@ -10,7 +10,7 @@
   --pick:#D4411D; --pick-edge:#13262E; --hover:#FFFFFF;
   --accent:#1D5E78; --accent-soft:#D5E7ED; --accent-ink:#FFFFFF;
   --sample:#7A4F00; --sample-bg:#FDEFC8; --sample-line:#E9CD84;
-  --thread:#D4411D;
+  --thread:#D4411D; --shadow:rgba(19,38,46,.18);
   --display:"Alegreya", Georgia, "Times New Roman", serif;
   --body:"Alegreya Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -25,7 +25,7 @@
     --pick:#FF7449; --pick-edge:#FFE2D6; --hover:#E3ECEE;
     --accent:#7CC2DC; --accent-soft:#1A3947; --accent-ink:#0B1920;
     --sample:#F2C66A; --sample-bg:#342A11; --sample-line:#5E4B1C;
-    --thread:#FF7449;
+    --thread:#FF7449; --shadow:rgba(0,0,0,.5);
   }
 }
 :root[data-theme="dark"]{
@@ -36,23 +36,26 @@
   --pick:#FF7449; --pick-edge:#FFE2D6; --hover:#E3ECEE;
   --accent:#7CC2DC; --accent-soft:#1A3947; --accent-ink:#0B1920;
   --sample:#F2C66A; --sample-bg:#342A11; --sample-line:#5E4B1C;
-  --thread:#FF7449;
+  --thread:#FF7449; --shadow:rgba(0,0,0,.5);
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+html,body{overflow-x:hidden}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:var(--fs);line-height:1.5}
 .kids{--fs:1.25rem}
-.wrap{font-size:var(--fs);max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:14px 36px;display:flex;flex-direction:column;gap:18px}
+.wrap{font-size:var(--fs);max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:10px 36px;display:flex;flex-direction:column;gap:16px}
 button,input{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+a{color:var(--accent)}
 
-/* header */
+/* ribbon + header */
+.ribbon{margin:0;align-self:center;font:500 .78rem/1.3 var(--mono);letter-spacing:.03em;padding:5px 12px;border-radius:999px;background:var(--sample-bg);color:var(--sample);border:1px solid var(--sample-line);text-align:center}
 .top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;flex-direction:column;gap:2px;min-width:0}
 .brand h1{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,4.8vw,2.4rem);line-height:1.05;margin:0;letter-spacing:-.01em;text-wrap:balance}
 .brand p{margin:0;color:var(--muted);font-size:.98rem;max-width:46ch}
 .tag{display:inline-block;font:500 .72rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:5px;background:var(--sample-bg);color:var(--sample);border:1px solid var(--sample-line);vertical-align:middle}
-.switch{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 8px 6px 14px;cursor:pointer;font-weight:700}
+.switch{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 8px 6px 14px;cursor:pointer;font-weight:700;min-height:44px}
 .switch .knob{width:46px;height:26px;border-radius:999px;background:var(--line);position:relative;transition:background .2s}
 .switch .knob::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .2s}
 .switch[aria-checked="true"] .knob{background:var(--pick)}
@@ -71,36 +74,60 @@ button,input{font:inherit;color:inherit}
 #globe .land.c0{fill:var(--l0)} #globe .land.c1{fill:var(--l1)} #globe .land.c2{fill:var(--l2)} #globe .land.c3{fill:var(--l3)} #globe .land.c4{fill:var(--l4)}
 #globe .land.hov{stroke:var(--hover);stroke-width:1.6}
 #globe .land.sel{fill:var(--pick);stroke:var(--pick-edge);stroke-width:1.6}
+#globe .land.sel.flash{animation:flash .9s ease-out}
+@keyframes flash{0%,35%{stroke-width:6}100%{stroke-width:1.6}}
 #globe .shine{fill:url(#shineGrad);pointer-events:none}
+#globe .lbl{font-family:var(--display);font-weight:800;font-size:17px;fill:var(--ink);stroke:var(--surface);stroke-width:4.5px;stroke-linejoin:round;paint-order:stroke;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.kids #globe .lbl{font-size:21px}
+#globe .ripple{fill:none;stroke:var(--pick);stroke-width:3;pointer-events:none}
 .tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-weight:700;font-size:.9rem;padding:3px 9px;border-radius:6px;white-space:nowrap;transform:translate(-50%,-140%)}
-.readout{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 14px;font:400 .78rem/1.4 var(--mono);color:var(--muted);max-width:600px;margin-inline:auto;width:100%}
-.readout b{font-weight:500;color:var(--ink)}
+.pill{position:absolute;left:50%;top:7%;transform:translateX(-50%);background:var(--ink);color:var(--bg);font-weight:700;padding:7px 16px;border-radius:999px;pointer-events:none;white-space:nowrap;box-shadow:0 4px 14px var(--shadow);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.08)}}
+.cross{position:absolute;left:50%;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;pointer-events:none;display:none;color:var(--ink)}
+.cross svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round}
+#globe:focus-visible ~ .cross{display:block}
 .controls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer;min-height:40px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer;min-height:42px}
 .btn:hover{border-color:var(--accent)}
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
 .btn.icon{width:42px;justify-content:center;padding:0;font:500 1.25rem/1 var(--mono)}
-.btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn svg,.chip svg,.tab svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+@media (pointer:coarse){.zoombtn{display:none!important}}
 .chips{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;justify-content:center;font-size:.92rem;color:var(--muted)}
-.chip{border:1px dashed var(--sample-line);background:var(--sample-bg);color:var(--sample);border-radius:999px;padding:4px 12px;font-weight:700;cursor:pointer}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 14px;font-weight:700;cursor:pointer;min-height:40px}
+.chip:hover{border-color:var(--accent)}
 .search{display:flex;gap:8px;max-width:600px;margin-inline:auto;width:100%}
-.search input{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;min-height:40px}
+.search input{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;min-height:42px}
 .status{min-height:1.4em;text-align:center;font-size:.92rem;color:var(--muted);margin:0}
+.kids .tab,.kids .chip,.kids .btn,.kids .search input{min-height:48px}
 
 /* panel */
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
-.panel h2{font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,4.4vw,2.2rem);line-height:1.1;margin:0;text-wrap:balance}
-.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font:400 .76rem/1.4 var(--mono);color:var(--muted)}
-.note{border-left:3px solid var(--accent);background:var(--accent-soft);padding:8px 12px;border-radius:0 8px 8px 0;font-size:.95rem}
+.panel > *{flex-shrink:0}
+.handle{display:none;align-self:center;width:100%;justify-content:center;align-items:center;gap:8px;border:0;background:none;padding:6px 0 2px;cursor:pointer;color:var(--muted);font-size:.8rem;font-weight:700}
+.handle::before{content:"";width:44px;height:5px;border-radius:5px;background:var(--line)}
+.head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.panel h2{font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,4.4vw,2.2rem);line-height:1.1;margin:0;text-wrap:balance;min-width:0}
+.panel h2 .flag{font-size:.85em;margin-right:.25em}
+.facts{margin:4px 0 0;color:var(--muted);font-size:.95rem}
+.note{border-left:3px solid var(--accent);background:var(--accent-soft);padding:8px 12px;border-radius:0 8px 8px 0;font-size:.95rem;margin:0}
 .tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
-.tab{border:0;background:none;padding:10px 12px 9px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+.tab{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:10px 10px 9px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;min-height:44px}
 .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--pick)}
+.kids .tab svg{width:24px;height:24px}
 .tabbody{display:flex;flex-direction:column;gap:12px}
 .tabbody p{margin:0;max-width:65ch}
 .label{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.placeholder{border:1px dashed var(--line);border-radius:10px;padding:12px 14px;color:var(--muted);background:var(--surface-2)}
 .fact{background:var(--sample-bg);border:1px solid var(--sample-line);border-radius:12px;padding:10px 14px}
 .fact strong{font-family:var(--display);font-size:1.05em}
-.src{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.more{display:flex;flex-direction:column;gap:10px}
+.more h4{font:500 .72rem/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.more .chips{justify-content:flex-start}
+.links{display:flex;flex-wrap:wrap;gap:6px 16px;font-weight:700}
+.soon{margin:0;border:1px dashed var(--line);border-radius:10px;padding:10px 14px;background:var(--surface-2);display:flex;flex-direction:column;gap:8px}
+.soon .chips{justify-content:flex-start}
+.soon p{margin:0}
+.src{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin:0}
 .hoy h3{font-family:var(--display);font-size:1.35rem;line-height:1.2;margin:0}
 .hoy h4{font:500 .72rem/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
 .thread{display:grid;grid-template-columns:18px minmax(0,1fr);column-gap:10px}
@@ -113,13 +140,32 @@ button,input{font:inherit;color:inherit}
 .who{font:500 .74rem/1.3 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
 footer{font-size:.85rem;color:var(--muted);max-width:80ch;display:flex;flex-direction:column;gap:6px}
 footer p{margin:0}
-@media (prefers-reduced-motion: reduce){ .switch .knob,.switch .knob::after{transition:none} }
+
+/* phones: the card becomes a bottom sheet */
+@media (max-width:899px){
+  .wrap{padding-bottom:calc(42vh + 28px)}
+  .globe-box{max-width:min(600px,56vh)}
+  .panel{position:fixed;left:0;right:0;bottom:0;z-index:20;max-height:42vh;overflow:auto;overscroll-behavior:contain;border-radius:18px 18px 0 0;border-bottom:0;padding:4px 16px 18px;gap:12px;box-shadow:0 -8px 28px var(--shadow);transition:max-height .25s ease}
+  .panel.open{max-height:85vh}
+  .panel.mini{max-height:92px;overflow:hidden}
+  .handle{display:flex;position:sticky;top:-4px;background:var(--surface);z-index:1}
+  .panel h2{cursor:pointer}
+}
+@media (max-width:599px){
+  .brand p{display:none}
+  .wrap{gap:12px}
+}
+@media (prefers-reduced-motion: reduce){
+  .switch .knob,.switch .knob::after,.panel{transition:none}
+  .pill,#globe .land.sel.flash{animation:none}
+}
 </style>
 
 <div class="wrap" id="app">
+  <p class="ribbon">Boceto: textos de ejemplo, sin revisar</p>
   <header class="top">
     <div class="brand">
-      <h1>Globo Curioso <span class="tag">boceto</span></h1>
+      <h1>Globo Curioso</h1>
       <p>Gira el mundo y toca cualquier país, aunque no sepas su nombre: historia, comida, cultura y lo que pasa hoy.</p>
     </div>
     <button class="switch" id="kids" role="switch" aria-checked="false" type="button">
@@ -130,25 +176,18 @@ footer p{margin:0}
   <main class="stage">
     <section class="globe-col" aria-label="Globo">
       <div class="globe-box" id="globeBox">
-        <svg id="globe" role="img" tabindex="0" aria-label="Globo terráqueo. Arrastra para girar, toca un país para verlo. Con el teclado: flechas para girar, más y menos para acercar."></svg>
+        <svg id="globe" role="img" tabindex="0" aria-label="Globo terráqueo. Arrastra para girar y toca un país para verlo. Con el teclado: flechas para girar, más y menos para acercar, Enter para elegir el país del centro."></svg>
         <div class="tip" id="tip" hidden></div>
+        <div class="pill" id="pill" aria-hidden="true">Toca un país</div>
+        <div class="cross" aria-hidden="true"><svg viewBox="0 0 28 28"><path d="M14 3v8M14 17v8M3 14h8M17 14h8"/></svg></div>
       </div>
-      <div class="readout" aria-hidden="true">
-        <span>centro <b id="center">—</b></span>
-        <span>zoom <b id="zoomOut">1.0×</b></span>
-        <span>mapa: Natural Earth 1:110m</span>
-      </div>
-      <p class="status" id="status" role="status" aria-live="polite">Arrastra para girar · toca un país</p>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
       <div class="controls">
-        <button class="btn icon" id="zin" type="button" aria-label="Acercar">+</button>
-        <button class="btn icon" id="zout" type="button" aria-label="Alejar">−</button>
+        <button class="btn icon zoombtn" id="zin" type="button" aria-label="Acercar">+</button>
+        <button class="btn icon zoombtn" id="zout" type="button" aria-label="Alejar">−</button>
         <button class="btn" id="spin" type="button" aria-pressed="true">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>
-          <span id="spinLabel">Pausar giro</span>
-        </button>
-        <button class="btn" id="home" type="button" title="Tu ubicación es simulada: Ciudad de México">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
-          Casa
+          Giro automático
         </button>
         <button class="btn" id="random" type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
@@ -161,34 +200,45 @@ footer p{margin:0}
         <button class="btn" type="submit">Ir</button>
       </form>
       <div class="chips">
-        <span>Con textos de muestra:</span>
-        <button class="chip" type="button" data-go="MX">México</button>
+        <span>Con fichas completas:</span>
+        <button class="chip" type="button" id="home">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+          Casa (México)
+        </button>
         <button class="chip" type="button" data-go="JP">Japón</button>
         <button class="chip" type="button" data-go="EG">Egipto</button>
         <button class="chip" type="button" data-go="BR">Brasil</button>
       </div>
     </section>
 
-    <section class="panel" id="panel" aria-live="polite">
+    <section class="panel" id="panel" aria-labelledby="cname">
+      <button class="handle" id="handle" type="button" aria-expanded="false" aria-controls="panel">Ver más</button>
       <div>
-        <h2 id="cname">México</h2>
-        <div class="meta" id="cmeta"></div>
+        <div class="head">
+          <h2 id="cname">México</h2>
+          <button class="btn" id="speak" type="button" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+            <span id="speakLabel">Léemelo</span>
+          </button>
+        </div>
+        <p class="facts" id="cfacts"></p>
       </div>
       <div id="cnote" hidden></div>
-      <div class="tabs" role="tablist" aria-label="Capas">
-        <button class="tab" role="tab" id="t-historia" aria-controls="tabbody" aria-selected="true" data-tab="historia" type="button">Historia</button>
-        <button class="tab" role="tab" id="t-comida" aria-controls="tabbody" aria-selected="false" data-tab="comida" type="button" tabindex="-1">Comida</button>
-        <button class="tab" role="tab" id="t-cultura" aria-controls="tabbody" aria-selected="false" data-tab="cultura" type="button" tabindex="-1">Cultura</button>
-        <button class="tab" role="tab" id="t-hoy" aria-controls="tabbody" aria-selected="false" data-tab="hoy" type="button" tabindex="-1">Hoy</button>
+      <div class="tabs" id="tabs" role="tablist" aria-label="Capas">
+        <button class="tab" role="tab" id="t-historia" aria-controls="tabbody" aria-selected="true" data-tab="historia" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V10M19 21V10M9.7 21V10M14.3 21V10M2 10l10-6 10 6z"/></svg>Historia</button>
+        <button class="tab" role="tab" id="t-comida" aria-controls="tabbody" aria-selected="false" data-tab="comida" type="button" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0z"/><path d="M8 7c0-2 2-2 2-4M13 7c0-2 2-2 2-4"/></svg>Comida</button>
+        <button class="tab" role="tab" id="t-cultura" aria-controls="tabbody" aria-selected="false" data-tab="cultura" type="button" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Cultura</button>
+        <button class="tab" role="tab" id="t-hoy" aria-controls="tabbody" aria-selected="false" data-tab="hoy" type="button" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h13v14H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v8a2 2 0 0 1-2 2"/><path d="M8 9h5M8 13h5M8 16h3"/></svg>Hoy</button>
       </div>
       <div class="tabbody" id="tabbody" role="tabpanel" aria-labelledby="t-historia"></div>
+      <div class="more" id="cmore"></div>
       <p class="src" id="src"></p>
     </section>
   </main>
 
   <footer>
-    <p><strong>Esto es un boceto para sentir la idea, no un producto.</strong> Los textos de México, Japón, Egipto y Brasil son de muestra, escritos para este boceto y sin revisión experta. Los temas de «Hoy» son ejemplos del formato, no noticias de este día.</p>
-    <p>Mapa: Natural Earth (dominio público), vía world-atlas 2.0.2. Nombres en español del navegador. Las fronteras en disputa se muestran como las dibuja Natural Earth (control de hecho). Sin cuentas, sin anuncios, sin rastreo.</p>
+    <p><strong>Esto es un boceto para sentir la idea, no un producto.</strong> Los textos de México, Japón, Egipto y Brasil son de muestra, escritos para este boceto y sin revisión experta. Los temas de «Hoy» son ejemplos del formato, no noticias de este día. Tamaños y distancias son aproximados, calculados con el mapa simplificado.</p>
+    <p>«Casa» usa una ubicación fija (Ciudad de México); la versión real podría preguntarte tu ciudad. Mapa: Natural Earth (dominio público), vía world-atlas 2.0.2. Las fronteras en disputa se muestran como las dibuja Natural Earth (control de hecho). Sin cuentas, sin anuncios, sin rastreo.</p>
   </footer>
 </div>
 
@@ -223,6 +273,7 @@ const SAMPLES = {
         ["Vecinos con cortes de agua", "Piden un reparto más justo entre colonias y que las pipas lleguen a tiempo."],
         ["Especialistas en agua", "Proponen captar lluvia y recargar el acuífero, no sólo traer agua de más lejos."]
       ],
+      platica: "¿Cómo cuidan el agua en tu casa? ¿Qué más podrían hacer?",
       nosabe: "Cuánto aguantarán las fuentes actuales si las sequías se repiten.",
       k: "En la Ciudad de México a veces falta agua y otras veces se inunda. ¿Por qué? Porque la ciudad está construida donde antes había un lago. Hoy mucha gente busca ideas para cuidar el agua, como guardar la lluvia."
     }
@@ -251,6 +302,7 @@ const SAMPLES = {
         ["Empresas", "Piden abrir más la puerta a trabajadores de otros países."],
         ["Jóvenes", "Señalan las jornadas largas y el costo de vida como razones para tener menos hijos."]
       ],
+      platica: "¿Qué le preguntarías a tu abuelita o a tu abuelito de cuando eran niños?",
       nosabe: "Si más apoyos a las familias harán que nazcan más bebés.",
       k: "En Japón viven muchas personas mayores y nacen pocos bebés. Por eso inventan robots que ayudan a cuidar a los abuelitos, y el país piensa cómo recibir a gente de otros lugares que quiera trabajar ahí."
     }
@@ -279,6 +331,7 @@ const SAMPLES = {
         ["Gobierno de Etiopía", "Tiene derecho a usar el río para desarrollarse; millones de personas no tienen electricidad."],
         ["Gobierno de Sudán", "La presa puede regular las crecidas, pero le preocupa la seguridad de sus propias presas."]
       ],
+      platica: "Si un río pasara por tu casa y por la de tus vecinos, ¿cómo se pondrían de acuerdo para compartirlo?",
       nosabe: "Cómo se repartirá el agua en una sequía de varios años.",
       k: "El río Nilo pasa por varios países. Etiopía, río arriba, construyó una presa gigante para tener luz eléctrica. Egipto, río abajo, tiene miedo de que le llegue menos agua. Cada país tiene sus razones, y han intentado ponerse de acuerdo muchas veces."
     }
@@ -307,28 +360,35 @@ const SAMPLES = {
         ["Productores del campo", "La soya y la ganadería dan empleos y exportaciones; piden reglas claras para producir."],
         ["Científicos", "Advierten que si se pierde demasiada selva, partes de ella podrían volverse sabana."]
       ],
+      platica: "¿Qué animal de la selva te gustaría conocer? ¿Cómo podemos cuidar su casa?",
       nosabe: "Dónde está exactamente el punto de no retorno de la selva.",
       k: "La selva del Amazonas es enorme y está sobre todo en Brasil. Algunas personas cortan árboles para sembrar o criar vacas, y otras quieren protegerla. Todos la necesitamos: ayuda a que llueva y es casa de muchísimos animales."
     }
   }
 };
 
-const EMPTY = {
-  historia: "Aquí iría un resumen de 4 a 6 frases sobre de dónde viene este país y sus momentos clave, en versión para adultos y para niños.",
-  comida: "Aquí irían 2 o 3 platos típicos y la historia de sus ingredientes.",
-  cultura: "Aquí irían fiestas, lenguas, música y costumbres.",
-  hoy: "Aquí iría el tema de la semana en este país, con su hilo histórico y varias miradas etiquetadas."
-};
 const SOURCES = {
-  historia: "Fuente en la versión real: Wikipedia y Vikidia en español (CC BY-SA), con enlace y fecha de revisión.",
-  comida: "Fuente en la versión real: Wikipedia y Wikidata (platos nacionales), con enlace.",
-  cultura: "Fuente en la versión real: Wikipedia y la lista de patrimonio inmaterial de la UNESCO, con enlace.",
-  hoy: "Fuente en la versión real: resumen semanal de varias fuentes (GDELT, prensa local e internacional), con enlaces a las notas originales y la fecha."
+  historia: "Fuente: Wikipedia en español · revisado el 25 sep 2026 (ejemplo)",
+  comida: "Fuente: Wikipedia en español y Wikidata · revisado el 25 sep 2026 (ejemplo)",
+  cultura: "Fuente: Wikipedia en español y lista de patrimonio de la UNESCO · revisado el 25 sep 2026 (ejemplo)",
+  hoy: "Fuentes: prensa local e internacional, resumen de la semana del 22 sep 2026 (ejemplo)"
 };
 const DISPUTED = {
   FK: "Las administra el Reino Unido y las reclama Argentina. En español se les suele llamar Malvinas; en inglés, Falkland. La versión real explicaría ambas posturas.",
   _: "Territorio con estatus disputado: distintos países lo reconocen de forma distinta. La versión real explicaría cada postura sin tomar partido."
 };
+/* Common names people type that the map spells differently (keys: lower case, letters only). */
+const ALIAS = {
+  eu: "US", eua: "US", eeuu: "US", usa: "US", us: "US", estadosunidosdeamerica: "US", alaska: "US", hawai: "US",
+  inglaterra: "GB", escocia: "GB", gales: "GB", irlandadelnorte: "GB", granbretana: "GB", uk: "GB",
+  holanda: "NL", corea: "KR", coreadelsur: "KR", birmania: "MM", persia: "IR", republicacheca: "CZ",
+  suazilandia: "SZ", macedonia: "MK", malvinas: "FK", falkland: "FK", palestina: "PS", gaza: "PS",
+  costademarfil: "CI", emiratos: "AE", tibet: "CN", siberia: "RU", sahara: "EH"
+};
+/* Places too small for the 1:110m map (ISO codes; names come from the browser). */
+const SMALL = "AD AG AI AS AW AX BB BH BL BM BQ CC CK CV CW CX DM FM FO GD GG GI GP GU HK IM IO JE KI KM KN KY LC LI MC MF MH MO MP MQ MS MT MU MV NF NR NU PF PM PN PW RE SC SG SH SM ST SX TC TK TO TV VA VC VG VI WF WS YT".split(" ");
+const CDMX = [-99.13, 19.43];
+const $ = id => document.getElementById(id);
 
 /* ---------- Geometry ---------- */
 const features = topojson.feature(WORLD, WORLD.objects.countries).features;
@@ -357,13 +417,26 @@ function nameOf(f) {
     features[i].c = c;
   });
 })();
-features.forEach(f => { f.name = nameOf(f); f.area = d3.geoArea(f); });
+/* Centre of the largest piece (so France is not placed in the Atlantic because of French Guiana). */
+function mainCen(f) {
+  const g = f.geometry;
+  if (g.type !== "MultiPolygon") return d3.geoCentroid(f);
+  let best = null, ba = -1;
+  g.coordinates.forEach(c => { const p = { type: "Polygon", coordinates: c }, a = d3.geoArea(p); if (a > ba) { ba = a; best = p; } });
+  return d3.geoCentroid(best);
+}
+features.forEach((f, i) => { f.i = i; f.name = nameOf(f); f.area = d3.geoArea(f); f.cen = mainCen(f); });
 const byCode = {};
 features.forEach(f => { if (f.properties.a) byCode[f.properties.a] = f; });
 const fold = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+function flagOf(a) {
+  if (!a || !/^[A-Z]{2}$/.test(a)) return "";
+  return String.fromCodePoint(...[...a].map(ch => 0x1F1A5 + ch.charCodeAt(0)));
+}
 
 /* ---------- State ---------- */
 const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const phone = window.matchMedia("(max-width:899px)");
 let rot = [99, -19, 0];
 let zoom = 1, size = 500, base = 240;
 let selected = byCode.MX, tab = "historia", kids = false, hovered = null;
@@ -386,6 +459,8 @@ const gratEl = svg.append("path").attr("class", "grat");
 const landG = svg.append("g");
 const lands = landG.selectAll("path").data(features).join("path").attr("class", d => "land c" + d.c);
 const shineEl = svg.append("path").attr("class", "shine");
+const lblEl = svg.append("text").attr("class", "lbl");
+const fxG = svg.append("g");
 
 function render() {
   proj.rotate(rot).scale(base * zoom);
@@ -393,21 +468,36 @@ function render() {
   sphereEl.attr("d", s); shineEl.attr("d", s);
   gratEl.attr("d", path(grat));
   lands.attr("d", path).classed("sel", d => d === selected).classed("hov", d => d === hovered);
-  const lat = -rot[1], lon = ((-rot[0] + 540) % 360) - 180;
-  document.getElementById("center").textContent = fmt(lat, lon);
-  document.getElementById("zoomOut").textContent = zoom.toFixed(1) + "×";
-}
-function fmt(lat, lon) {
-  return Math.abs(lat).toFixed(1) + "° " + (lat >= 0 ? "N" : "S") + " · " + Math.abs(lon).toFixed(1) + "° " + (lon >= 0 ? "E" : "O");
+  /* The chosen country's name, written on the globe while it faces us. */
+  const c = selected && selected.cen;
+  if (c && d3.geoDistance(c, [-rot[0], -rot[1]]) < 1.45) {
+    const p = proj(c), half = selected.name.length * (kids ? 5.6 : 4.6) + 6;
+    const x = Math.max(half, Math.min(size - half, p[0]));
+    lblEl.attr("x", x).attr("y", p[1] - (kids ? 26 : 22)).attr("display", null).text(selected.name);
+  } else lblEl.attr("display", "none");
 }
 function resize() {
-  const w = Math.round(document.getElementById("globeBox").clientWidth) || 400;
+  const w = Math.round($("globeBox").clientWidth) || 400;
   size = w; base = w / 2 - 6;
   svg.attr("viewBox", `0 0 ${w} ${w}`);
   proj.translate([w / 2, w / 2]);
   render();
 }
-new ResizeObserver(resize).observe(document.getElementById("globeBox"));
+new ResizeObserver(resize).observe($("globeBox"));
+
+/* ---------- Feedback: ripple on tap, flash on landing ---------- */
+function ripple(pt) {
+  if (reduce) return;
+  fxG.append("circle").attr("class", "ripple").attr("cx", pt[0]).attr("cy", pt[1]).attr("r", 4).style("opacity", 1)
+    .transition().duration(550).ease(d3.easeCubicOut).attr("r", 40).style("opacity", 0).remove();
+}
+function flash(f) {
+  if (reduce) return;
+  const el = lands.filter(d => d === f).node();
+  if (!el) return;
+  el.classList.remove("flash"); void el.getBoundingClientRect(); el.classList.add("flash");
+  setTimeout(() => el.classList.remove("flash"), 950);
+}
 
 /* ---------- Spin ---------- */
 let spinning = !reduce, last = null;
@@ -418,17 +508,53 @@ d3.timer(t => {
 });
 function setSpin(on) {
   spinning = on;
-  document.getElementById("spin").setAttribute("aria-pressed", on ? "true" : "false");
-  document.getElementById("spinLabel").textContent = on ? "Pausar giro" : "Girar";
+  $("spin").setAttribute("aria-pressed", on ? "true" : "false");
 }
 setSpin(spinning);
-document.getElementById("spin").onclick = () => setSpin(!spinning);
+$("spin").onclick = () => setSpin(!spinning);
 
 /* ---------- Zoom ---------- */
 function setZoom(z) { zoom = Math.max(0.9, Math.min(8, z)); render(); }
-document.getElementById("zin").onclick = () => setZoom(zoom * 1.4);
-document.getElementById("zout").onclick = () => setZoom(zoom / 1.4);
+$("zin").onclick = () => setZoom(zoom * 1.4);
+$("zout").onclick = () => setZoom(zoom / 1.4);
 svg.node().addEventListener("wheel", e => { e.preventDefault(); setSpin(false); setZoom(zoom * Math.exp(-e.deltaY * 0.0015)); }, { passive: false });
+
+/* ---------- Bottom sheet (phones) ---------- */
+const panel = $("panel");
+function sheet(state) { // "mini" | "peek" | "open"
+  panel.classList.toggle("mini", state === "mini");
+  panel.classList.toggle("open", state === "open");
+  $("handle").setAttribute("aria-expanded", state === "open" ? "true" : "false");
+  $("handle").textContent = state === "open" ? "Ver menos" : "Ver más";
+  if (state !== "open") panel.scrollTop = 0;
+}
+function toggleSheet() { sheet(panel.classList.contains("open") ? "peek" : panel.classList.contains("mini") ? "peek" : "open"); }
+$("handle").onclick = toggleSheet;
+$("cname").onclick = () => { if (phone.matches) toggleSheet(); };
+
+/* ---------- Oceans (rough boxes, enough for "what is this blue?") ---------- */
+function oceanAt(ll) {
+  if (!ll) return null;
+  const lon = ((ll[0] + 540) % 360) - 180, lat = ll[1];
+  const box = (a, b, c, d) => lon >= a && lon <= b && lat >= c && lat <= d;
+  if (lat > 66) return "el océano Ártico";
+  if (lat < -60) return "el océano Antártico";
+  if (box(-98, -80, 18, 31)) return "el golfo de México";
+  if (box(-88, -60, 9, 22)) return "el mar Caribe";
+  if (box(-93, -76, 41, 49.5)) return "uno de los Grandes Lagos";
+  if (box(-96, -76, 51, 64)) return "la bahía de Hudson";
+  if (box(27, 42, 40.5, 47.5)) return "el mar Negro";
+  if (box(46, 55, 36, 47.5)) return "el mar Caspio";
+  if (box(-6, 36.5, 30, 46)) return "el mar Mediterráneo";
+  if (box(32, 44, 12, 30)) return "el mar Rojo";
+  if (box(47, 57, 23, 30.5)) return "el golfo Pérsico";
+  if (box(9, 31, 53, 66)) return "el mar Báltico";
+  if ((lon > -70 && lon < 20) || (lat > 8 && lon > -82 && lon <= -70)) return "el océano Atlántico";
+  if (lat < 30 && ((lon >= 20 && lon < 100) || (lon >= 100 && lon < 147 && lat < -8))) return "el océano Índico";
+  if (lon >= 100 || lon <= -70) return "el océano Pacífico";
+  return null;
+}
+function oceanMsg(ll) { const o = oceanAt(ll); return o ? "Eso es " + o + ". Toca un país." : "Eso es agua. Toca un país."; }
 
 /* ---------- Pointer: drag, pinch, tap, hover ---------- */
 const ptrs = new Map();
@@ -444,12 +570,13 @@ function featureAt(pt) {
   if (!ll) return undefined;
   return features.find(f => d3.geoContains(f, ll)) || null; // null = ocean
 }
-const tip = document.getElementById("tip");
+const tip = $("tip");
 svg.on("pointerdown", e => {
   svg.node().setPointerCapture(e.pointerId);
   ptrs.set(e.pointerId, [e.clientX, e.clientY]);
   setSpin(false);
-  tip.hidden = true;
+  if (flight) { flight.stop(); flight = null; }
+  tip.hidden = true; $("pill").hidden = true;
   if (ptrs.size === 1) { drag = { x: e.clientX, y: e.clientY, rot: rot.slice() }; moved = 0; }
   if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch = { d: Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, z: zoom }; moved = 99; }
   svg.classed("dragging", true);
@@ -460,7 +587,7 @@ svg.on("pointermove", e => {
       const pt = local(e), f = featureAt(pt);
       if (f !== hovered) { hovered = f || null; render(); }
       if (f) {
-        const r = svg.node().getBoundingClientRect(), bx = document.getElementById("globeBox").getBoundingClientRect();
+        const bx = $("globeBox").getBoundingClientRect();
         tip.textContent = f.name; tip.hidden = false;
         tip.style.left = (e.clientX - bx.left) + "px"; tip.style.top = (e.clientY - bx.top) + "px";
       } else tip.hidden = true;
@@ -476,6 +603,7 @@ svg.on("pointermove", e => {
   if (drag) {
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
     moved = Math.max(moved, Math.hypot(dx, dy));
+    if (moved > 6 && phone.matches && !panel.classList.contains("mini")) sheet("mini");
     const r = svg.node().getBoundingClientRect();
     const k = (180 / Math.PI) / proj.scale() * (size / r.width);
     rot = [drag.rot[0] + dx * k, Math.max(-85, Math.min(85, drag.rot[1] - dy * k)), 0];
@@ -489,9 +617,10 @@ function endPtr(e, cancelled) {
   if (ptrs.size === 0) {
     svg.classed("dragging", false);
     if (!cancelled && moved < 6) {
-      const f = featureAt(local(e));
+      const pt = local(e), f = featureAt(pt);
+      if (f !== undefined) ripple(pt);
       if (f) select(f, true);
-      else if (f === null) say("Eso es mar. Toca un país.");
+      else if (f === null) say(oceanMsg(proj.invert(pt)));
     }
     drag = null; pinch = null;
   }
@@ -500,9 +629,16 @@ svg.on("pointerup", e => endPtr(e, false));
 svg.on("pointercancel", e => endPtr(e, true));
 svg.on("pointerleave", e => { if (e.pointerType === "mouse" && !ptrs.size) { hovered = null; tip.hidden = true; render(); } });
 
+function pickCenter() {
+  $("pill").hidden = true;
+  const pt = [size / 2, size / 2], f = featureAt(pt);
+  ripple(pt);
+  if (f) select(f, true); else say(oceanMsg(proj.invert(pt)));
+}
 svg.on("keydown", e => {
   const step = 10 / zoom;
   const k = e.key;
+  if (k === "Enter" || k === " ") { e.preventDefault(); setSpin(false); pickCenter(); return; }
   if (k === "ArrowLeft") rot[0] += step; else if (k === "ArrowRight") rot[0] -= step;
   else if (k === "ArrowUp") rot[1] = Math.max(-85, rot[1] - step); else if (k === "ArrowDown") rot[1] = Math.min(85, rot[1] + step);
   else if (k === "+" || k === "=") return setZoom(zoom * 1.25), e.preventDefault();
@@ -511,68 +647,136 @@ svg.on("keydown", e => {
   e.preventDefault(); setSpin(false); render();
 });
 
-/* ---------- Fly to a country ---------- */
+/* ---------- Fly to a country (roulette = extra full turn, slower, for Sorpréndeme) ---------- */
 let flight = null;
-function flyTo(f) {
-  const c = d3.geoCentroid(f);
+function flyTo(f, roulette) {
+  const c = f.cen;
   const target = [-c[0], Math.max(-70, Math.min(70, -c[1])), 0];
   while (target[0] - rot[0] > 180) target[0] -= 360;
   while (target[0] - rot[0] < -180) target[0] += 360;
+  if (roulette && !reduce) target[0] += 360;
   const z0 = zoom, z1 = f.area < 0.0008 ? Math.max(zoom, 3.5) : f.area < 0.004 ? Math.max(zoom, 2.2) : f.area > 0.1 ? Math.min(zoom, 1.2) : zoom;
   if (flight) flight.stop();
   if (reduce) { rot = target; zoom = z1; render(); return; }
+  const dur = roulette ? 1800 : 900;
   const ir = d3.interpolate(rot.slice(), target);
   flight = d3.timer(t => {
-    const u = Math.min(1, t / 900), e = d3.easeCubicInOut(u);
+    const u = Math.min(1, t / dur), e = d3.easeCubicInOut(u);
     rot = ir(e); zoom = z0 + (z1 - z0) * e; render();
-    if (u >= 1) { flight.stop(); flight = null; }
+    if (u >= 1) { flight.stop(); flight = null; flash(f); }
   });
 }
 
+/* ---------- Read aloud ---------- */
+const canSpeak = "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
+let speaking = false, speakText = "";
+function setSpeakBtn(on) { speaking = on; $("speakLabel").textContent = on ? "Detener" : "Léemelo"; }
+function stopSpeak() {
+  if (!canSpeak) return;
+  if (speaking || speechSynthesis.speaking) speechSynthesis.cancel();
+  setSpeakBtn(false);
+}
+$("speak").hidden = !canSpeak;
+$("speak").onclick = () => {
+  if (!canSpeak) return;
+  if (speaking) { stopSpeak(); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(speakText);
+  u.lang = "es-MX"; u.rate = kids ? 0.92 : 1;
+  const vs = speechSynthesis.getVoices() || [];
+  const v = vs.find(x => /^es[-_]MX/i.test(x.lang)) || vs.find(x => /^es/i.test(x.lang));
+  if (v) u.voice = v;
+  u.onend = u.onerror = () => setSpeakBtn(false);
+  setSpeakBtn(true);
+  speechSynthesis.speak(u);
+};
+if (canSpeak) { try { speechSynthesis.getVoices(); } catch (e) {} }
+
 /* ---------- Panel ---------- */
-const $ = id => document.getElementById(id);
 function say(msg) { $("status").textContent = msg; }
 function esc(s) { return String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch])); }
-
-function select(f, fly) {
-  selected = f; setSpin(false);
-  if (fly) flyTo(f); else render();
-  say("Elegiste: " + f.name);
-  renderPanel();
+function nice(x) { return x < 3 ? (Math.round(x * 2) / 2).toLocaleString("es-MX") : Math.round(x).toLocaleString("es-MX"); }
+function sizeVsMx(f) {
+  const r = f.area / byCode.MX.area;
+  if (r >= 1.3) return "unas " + nice(r) + " veces el tamaño de México (aprox.)";
+  if (r > 0.77) return "más o menos del tamaño de México (aprox.)";
+  return "cabría unas " + nice(1 / r) + " veces en México (aprox.)";
+}
+function factLines(f) {
+  if (f === byCode.MX) return ["Aquí es casa: Ciudad de México"];
+  const km = Math.max(100, Math.round(d3.geoDistance(f.cen, CDMX) * 6371 / 100) * 100);
+  return ["A unos " + km.toLocaleString("es-MX") + " km de la Ciudad de México", sizeVsMx(f)];
+}
+function chipsFor(list) {
+  return '<div class="chips">' + list.map(g => {
+    const fl = flagOf(g.properties.a);
+    return '<button class="chip" type="button" data-fi="' + g.i + '">' + (fl ? '<span aria-hidden="true">' + fl + "</span>" : "") + esc(g.name) + "</button>";
+  }).join("") + "</div>";
+}
+function moreFor(f, s) {
+  let h = "";
+  const ns = neigh[f.i].map(i => features[i]).sort((a, b) => a.name.localeCompare(b.name, "es"));
+  if (ns.length) h += "<div><h4>Colinda con</h4>" + chipsFor(ns) + "</div>";
+  else {
+    const near = features.filter(g => g !== f && g.properties.a !== "AQ")
+      .sort((a, b) => d3.geoDistance(f.cen, a.cen) - d3.geoDistance(f.cen, b.cen)).slice(0, 3);
+    h += "<div><h4>Sin frontera terrestre · lo más cercano</h4>" + chipsFor(near) + "</div>";
+  }
+  const slug = encodeURIComponent(f.name.replace(/ /g, "_"));
+  h += '<div class="links"><a href="https://es.wikipedia.org/wiki/' + slug + '" target="_blank" rel="noopener">Leer en Wikipedia</a>' +
+    (kids ? '<a href="https://es.vikidia.org/wiki/' + slug + '" target="_blank" rel="noopener">Leer en Vikidia</a>' : "") + "</div>";
+  if (!s) h += '<div class="soon"><p>Aún no hay historia, comida y cultura de este país: prueba México, Japón, Egipto o Brasil.</p>' +
+    chipsFor(["MX", "JP", "EG", "BR"].map(c => byCode[c])) + "</div>";
+  return h;
+}
+function srcFor(t) {
+  const s = SOURCES[t];
+  return kids && t !== "hoy" ? s.replace("Wikipedia en español", "Vikidia y Wikipedia en español") : s;
+}
+function textFor(f, s) {
+  const parts = [f.name + "."];
+  if (!s) {
+    factLines(f).forEach(x => parts.push(x.replace(" (aprox.)", "") + "."));
+    parts.push("Aún no hay historia, comida y cultura de este país.");
+  } else if (tab !== "hoy") {
+    parts.push(kids ? s[tab].k : s[tab].a, "¿Sabías que? " + s.fact);
+  } else {
+    parts.push(s.hoy.tema + ".", kids ? s.hoy.k : s.hoy.que);
+    if (kids && s.hoy.platica) parts.push("Para platicar en familia: " + s.hoy.platica);
+  }
+  return parts.join(" ");
 }
 function renderPanel() {
+  stopSpeak();
   const f = selected, p = f.properties, s = SAMPLES[p.a];
-  $("cname").textContent = f.name;
-  const c = d3.geoCentroid(f);
-  const bits = [];
-  if (p.a) bits.push("ISO " + p.a);
-  bits.push("centro " + fmt(c[1], c[0]));
-  bits.push(s ? "con textos de muestra" : "sin textos todavía");
-  $("cmeta").innerHTML = bits.map(b => "<span>" + esc(b) + "</span>").join("");
+  const fl = flagOf(p.a);
+  $("cname").innerHTML = (fl ? '<span class="flag" aria-hidden="true">' + fl + "</span>" : "") + esc(f.name);
+  $("cfacts").textContent = factLines(f).join(" · ");
   const note = p.x ? (DISPUTED[p.a] || DISPUTED._) : "";
   $("cnote").hidden = !note;
   $("cnote").innerHTML = note ? '<p class="note">' + esc(note) + "</p>" : "";
+  $("tabs").hidden = !s; $("tabbody").hidden = !s;
   document.querySelectorAll(".tab").forEach(b => {
     const on = b.dataset.tab === tab;
     b.setAttribute("aria-selected", on ? "true" : "false");
     b.tabIndex = on ? 0 : -1;
   });
   $("tabbody").setAttribute("aria-labelledby", "t-" + tab);
-  $("tabbody").innerHTML = s ? bodyFor(s) : '<p class="placeholder">' + esc(EMPTY[tab]) + "</p>";
-  $("src").textContent = SOURCES[tab];
+  $("tabbody").innerHTML = s ? bodyFor(s) : "";
+  $("cmore").innerHTML = moreFor(f, s);
+  $("src").textContent = s ? srcFor(tab) : "Datos: mapa Natural Earth; tamaños y distancias aproximados.";
+  speakText = textFor(f, s);
 }
 function bodyFor(s) {
-  const badge = '<div class="label"><span class="tag">texto de muestra</span>' + (kids ? '<span class="tag">versión niños</span>' : "") + "</div>";
   if (tab !== "hoy") {
-    let h = badge + "<p>" + esc(kids ? s[tab].k : s[tab].a) + "</p>";
-    if (kids) h += '<p class="fact"><strong>¿Sabías que…?</strong> ' + esc(s.fact) + "</p>";
-    return h;
+    return "<p>" + esc(kids ? s[tab].k : s[tab].a) + "</p>" +
+      '<p class="fact"><strong>¿Sabías que…?</strong> ' + esc(s.fact) + "</p>";
   }
   const n = s.hoy;
   const top = '<div class="label"><span class="tag">tema de ejemplo · no es la noticia de hoy</span></div>';
   if (kids) {
     return '<div class="hoy tabbody">' + top + "<h3>" + esc(n.tema) + "</h3><p>" + esc(n.k) + "</p>" +
-      '<p class="fact"><strong>Para platicar en familia:</strong> ¿Qué harías tú si fueras de cada lado?</p></div>';
+      '<p class="fact"><strong>Para platicar en familia:</strong> ' + esc(n.platica || "¿Tú qué opinas?") + "</p></div>";
   }
   const views = n.miradas.map(m => '<li><span class="who">' + esc(m[0]) + "</span><span>" + esc(m[1]) + "</span></li>").join("");
   return '<div class="hoy tabbody">' + top + "<h3>" + esc(n.tema) + "</h3>" +
@@ -582,8 +786,16 @@ function bodyFor(s) {
       '<span class="line" aria-hidden="true"></span><span></span>' +
       '<span class="dot" aria-hidden="true"></span><p class="step"><strong>Hoy.</strong> ' + esc(n.ahora) + "</p>" +
     "</div></div>" +
-    "<div><h4>Distintas miradas (ejemplo)</h4><ul class=\"views\">" + views + "</ul></div>" +
+    '<div><h4>Distintas miradas</h4><ul class="views">' + views + "</ul></div>" +
     "<div><h4>Lo que aún no se sabe</h4><p>" + esc(n.nosabe) + "</p></div></div>";
+}
+function select(f, fly, roulette) {
+  selected = f; setSpin(false);
+  $("pill").hidden = true;
+  if (fly) flyTo(f, roulette); else { render(); flash(f); }
+  say("Elegiste: " + f.name);
+  renderPanel();
+  sheet("peek");
 }
 document.querySelectorAll(".tab").forEach(b => {
   b.onclick = () => { tab = b.dataset.tab; renderPanel(); };
@@ -591,8 +803,12 @@ document.querySelectorAll(".tab").forEach(b => {
     const order = ["historia", "comida", "cultura", "hoy"];
     let i = order.indexOf(tab);
     if (e.key === "ArrowRight") i = (i + 1) % 4; else if (e.key === "ArrowLeft") i = (i + 3) % 4; else return;
-    e.preventDefault(); tab = order[i]; renderPanel(); document.getElementById("t-" + tab).focus();
+    e.preventDefault(); tab = order[i]; renderPanel(); $("t-" + tab).focus();
   };
+});
+$("cmore").addEventListener("click", e => {
+  const b = e.target.closest("[data-fi]");
+  if (b) select(features[+b.dataset.fi], true);
 });
 
 /* ---------- Kids mode ---------- */
@@ -601,22 +817,44 @@ function setKids(on) {
   $("kids").setAttribute("aria-checked", on ? "true" : "false");
   $("app").classList.toggle("kids", on);
   try { localStorage.setItem("gc-kids", on ? "1" : "0"); } catch (e) {}
-  renderPanel();
+  renderPanel(); render();
 }
 $("kids").onclick = () => setKids(!kids);
 
 /* ---------- Buttons, chips, search ---------- */
-$("home").onclick = () => { select(byCode.MX, true); say("Casa: Ciudad de México (ubicación simulada)"); };
-$("random").onclick = () => { const f = features[Math.floor(Math.random() * features.length)]; select(f, true); };
+$("home").onclick = () => { select(byCode.MX, true); say("Casa: Ciudad de México"); };
+let surprises = 0;
+$("random").onclick = () => {
+  const withText = surprises++ % 2 === 0; // every other pick lands on a country with full cards
+  const pool = features.filter(f => f !== selected && f.properties.a !== "AQ" && (withText ? !!SAMPLES[f.properties.a] : !SAMPLES[f.properties.a]));
+  select(pool[Math.floor(Math.random() * pool.length)], true, true);
+};
 document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => select(byCode[b.dataset.go], true));
 const sorted = features.slice().sort((a, b) => a.name.localeCompare(b.name, "es"));
 $("paises").innerHTML = sorted.map(f => '<option value="' + esc(f.name) + '"></option>').join("");
+function smallPlace(q, loose) {
+  if (!esNames) return null;
+  for (const c of SMALL) {
+    let n = null;
+    try { n = esNames.of(c); } catch (e) { continue; }
+    if (!n || n === c) continue;
+    const k = fold(n);
+    if (k === q || (loose && q.length >= 4 && k.startsWith(q))) return n;
+  }
+  return null;
+}
 $("searchForm").addEventListener("submit", e => {
   e.preventDefault();
-  const q = fold($("buscar").value);
+  const raw = $("buscar").value, q = fold(raw);
   if (!q) return;
-  const f = sorted.find(x => fold(x.name) === q) || sorted.find(x => fold(x.name).startsWith(q)) || sorted.find(x => fold(x.name).includes(q) || fold(x.properties.n).includes(q));
-  if (f) { select(f, true); $("buscar").value = ""; } else say("No encontré «" + $("buscar").value + "». Prueba otro nombre.");
+  const key = q.replace(/[^a-z]/g, "");
+  let f = sorted.find(x => fold(x.name) === q) || (ALIAS[key] && byCode[ALIAS[key]]);
+  let tiny = f ? null : smallPlace(q, false);
+  if (!f && !tiny) f = sorted.find(x => fold(x.name).startsWith(q)) || sorted.find(x => fold(x.name).includes(q) || fold(x.properties.n).includes(q));
+  if (!f && !tiny) tiny = smallPlace(q, true);
+  if (f) { select(f, true); $("buscar").value = ""; }
+  else if (tiny) say(tiny + " es un lugar muy pequeño para este mapa; la versión completa lo mostrará al acercar.");
+  else say("No encontré «" + raw + "». Prueba otro nombre o gira el globo.");
 });
 
 /* ---------- Start ---------- */

@@ -241,3 +241,44 @@ Answer in any order; defaults in brackets are what I'd do if you don't mind eith
 - WorldMonitor (AGPL-3.0): github.com/koala73/worldmonitor.
 - Chrome Prompt API requirements (updated 2026-08-26): developer.chrome.com/docs/ai/prompt-api.
 - Local model speed: ~/local-ai/benchmarks/2026-09-23-qwen36-35b-a3b.md and docs/LOG.md.
+
+---
+
+## Sketch changelog
+
+### Round 1 (2026-09-25, after the critic's review)
+All 8 critic items were implemented in `sketch.html` (still one file, no new network access). Checked in a
+browser at 400 px (phone) and 1280 px (desktop, dark theme); inline script passes `node --check`.
+
+- **Phones:** below 900 px the country card is a bottom sheet. It peeks at 42% of the screen, "Ver más"
+  or a tap on the name expands it to 85%, and it shrinks to a name bar while you drag the globe. Each new
+  pick brings it back. The globe is capped at 56% of the screen height, the tagline is hidden under
+  600 px, the +/− buttons are hidden on touch screens (pinch works), and "Casa (México)" moved into the chips.
+- **Every country has a card:** flag, distance from Ciudad de México, size compared with México (approx.),
+  "Colinda con" chips to hop between neighbours (or the 3 nearest when there is no land border), and a
+  "Leer en Wikipedia" link ("Leer en Vikidia" in Modo niños). Countries without texts hide the tabs and
+  offer the 4 sample countries. "Sorpréndeme" alternates between a sample country and any other, never
+  Antarctica.
+- **Fewer disclaimers:** one ribbon ("Boceto: textos de ejemplo, sin revisar") plus the Hoy "tema de
+  ejemplo" tag. Sources read like the real product ("Fuente: Wikipedia en español · revisado el 25 sep
+  2026 (ejemplo)"). The coordinates/zoom readout and the ISO/centre line are gone.
+- **Léemelo:** reads the card aloud in Spanish (prefers an es-MX voice) and turns into "Detener". It stops
+  when the country or tab changes and is hidden if the browser can't speak. "¿Sabías que…?" now shows in
+  adult mode too.
+- **Tap feedback:** the chosen country's name is written on the globe. A pulsing "Toca un país" pill
+  disappears on the first touch. Taps draw a ripple, and the country flashes when the globe lands on it.
+  "Sorpréndeme" spins an extra full turn over 1.8 s. Ocean taps name the water (Pacífico, golfo de México,
+  mar Caribe, Mediterráneo, …). Reduced-motion users get none of the animation.
+- **Modo niños:** the Hoy card has its own family question per country, the tabs have icons, and tabs,
+  chips and buttons are at least 48 px tall.
+- **Accessibility:** `aria-live` removed from the card. Enter or Space on the globe picks the country at
+  the centre, and a crosshair shows while the globe has keyboard focus. The spin button is now a fixed
+  "Giro automático" toggle. Chips are at least 40 px tall. The Casa tooltip was replaced by a footer note.
+- **Search:** aliases (EU, EUA, EE. UU., USA, Inglaterra, Holanda, Corea, Birmania, Malvinas, …). About 70
+  places too small for this map (Malta, Singapur, Andorra, Mónaco, Barbados, …) get "es un lugar muy
+  pequeño para este mapa" instead of "no encontré".
+
+**Still pending:** real texts beyond the 4 samples. The finer 1:50m map on zoom, so small countries
+appear. A real "Casa" location (ask the city). Hoy content for more countries. Offline use (fonts and
+d3 come from CDNs). The flag emoji show as letters on Windows. The Wikipedia links use the browser's
+country name, so a few land on disambiguation pages.
