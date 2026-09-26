@@ -1,4 +1,4 @@
-<title>Cámara del tiempo</title>
+<title>Cámara del tiempo</title><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Apunta al Zócalo y mira ese mismo lugar hoy, en 1910, 1700, en Tenochtitlan, con mamuts y bajo el mar. Reconstrucción artística con nivel de confianza."><meta property="og:title" content="Cámara del tiempo · Zócalo, CDMX"><meta property="og:description" content="Mira el Zócalo como pudo verse en 1500, 1700 y 1910. Reconstrucción artística, con sus fuentes.">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 :root{
@@ -41,10 +41,14 @@ h1{margin:0;font-family:var(--f-display);font-weight:800;font-stretch:118%;font-
 .hud-chip{display:block;margin-top:3px;font-weight:700;letter-spacing:.08em;color:#ffd9cf}
 .hud .rec::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff5a4a;margin-right:6px;vertical-align:0}
 .hud .rec.past::before{background:#f2c14e}
-.reticle{position:absolute;left:50%;top:55%;width:34px;height:34px;margin:-17px 0 0 -17px;pointer-events:none;opacity:.75}
-.stamp{position:absolute;left:12px;bottom:14px;max-width:calc(100% - 104px);pointer-events:none;background:rgba(142,58,43,.94);color:#fff;border:1.5px solid rgba(255,255,255,.8);box-shadow:0 0 0 3px rgba(142,58,43,.94);padding:6px 9px 5px;border-radius:2px;transform:rotate(-2.5deg);transform-origin:left bottom}
-.stamp b{display:block;font:700 13px/1.1 var(--f-mono);letter-spacing:.1em}
-.stamp small{display:block;font:600 13px/1.3 var(--f-body);margin-top:3px}
+.stamp{position:absolute;left:12px;bottom:14px;max-width:calc(100% - 24px);cursor:pointer;background:rgba(142,58,43,.94);color:#fff;border:1.5px solid rgba(255,255,255,.8);box-shadow:0 0 0 3px rgba(142,58,43,.94);padding:5px 8px;border-radius:2px;transform:rotate(-2deg);transform-origin:left bottom;font:700 12px/1.2 var(--f-body);font-stretch:88%;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;touch-action:manipulation}
+.stamp[hidden]{display:none}
+.stamp:focus-visible{outline:2px solid #fff;outline-offset:4px}
+#LH{transition:opacity .2s ease}
+.gira{position:absolute;left:50%;top:44%;transform:translateX(-50%);display:grid;justify-items:center;gap:4px;pointer-events:none}
+.gira button{pointer-events:auto;display:inline-flex;align-items:center;gap:8px;font:700 15px/1 var(--f-body);color:#0b0f0e;background:#fff;border:0;border-radius:999px;padding:0 16px;min-height:44px;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.35);white-space:nowrap;touch-action:manipulation}
+.gira small{font:600 13px/1.2 var(--f-body);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9);white-space:nowrap}
+.gira[hidden]{display:none}
 .strip{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .strip svg{display:block;width:100%;height:auto}
 .strip .fov{position:absolute;top:0;bottom:0;left:25%;width:50%;border-left:1.5px solid var(--accent);border-right:1.5px solid var(--accent);background:transparent;background:color-mix(in srgb,var(--accent) 10%,transparent);pointer-events:none}
@@ -121,18 +125,18 @@ textarea{width:100%;min-height:210px;resize:vertical;font:13px/1.5 var(--f-mono)
 footer{font:500 13px/1.6 var(--f-mono);color:var(--ink-2);border-top:1px solid var(--line);padding-top:14px}
 /* round 1: labels on the picture, edge chips, counter, one-time hint, Hoy button */
 .tags{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.tag{position:absolute;font:700 13px/1.2 var(--f-body);color:#fff;background:rgba(8,12,11,.66);padding:4px 9px;border-radius:999px;white-space:nowrap;max-width:48%;overflow:hidden;text-overflow:ellipsis;box-shadow:0 1px 4px rgba(0,0,0,.25)}
-.cap{margin:0;pointer-events:none;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 10px rgba(0,0,0,.4)}
-.cap span{display:block;font:800 16px/1.2 var(--f-body)}
-.cap small{display:block;font:600 14px/1.3 var(--f-body)}
-.edge{position:absolute;top:56%;font:700 13px/1 var(--f-body);color:#fff;background:rgba(8,12,11,.72);border:1.5px solid rgba(255,255,255,.7);border-radius:999px;padding:0 12px;min-height:40px;cursor:pointer;max-width:44%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;touch-action:manipulation}
+.tag{position:absolute;font:700 13px/1.2 var(--f-body);color:#fff;background:rgba(8,12,11,.66);padding:4px 9px;border-radius:999px;white-space:nowrap;max-width:48%;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.tag i{display:block;font-style:normal;overflow:hidden;text-overflow:ellipsis}
+.tag::before{content:"";position:absolute;left:var(--ax,50%);bottom:100%;width:1px;height:var(--lh,20px);background:rgba(255,255,255,.75);box-shadow:0 0 2px rgba(0,0,0,.6)}
+.cap{margin:0;pointer-events:none;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 10px rgba(0,0,0,.4);font:700 14px/1.3 var(--f-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.edge{position:absolute;top:40%;font:700 13px/1 var(--f-body);color:#fff;background:rgba(8,12,11,.72);border:1.5px solid rgba(255,255,255,.7);border-radius:999px;padding:0 12px;min-height:40px;cursor:pointer;max-width:44%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;touch-action:manipulation}
 .edge.l{left:8px}.edge.r{right:8px}
 .edge:focus-visible,.hoy:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .counter{position:absolute;inset:0;display:grid;place-items:center;padding:0 14px;text-align:center;pointer-events:none;font:800 clamp(30px,10vw,52px)/1.05 var(--f-display);font-stretch:112%;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.7),0 0 2px rgba(0,0,0,.6);font-variant-numeric:tabular-nums;opacity:0;transition:opacity .35s ease}
 .counter.on{opacity:1}
-.coach{position:absolute;left:50%;top:70%;transform:translateX(-50%);font:700 15px/1 var(--f-body);color:#fff;background:rgba(8,12,11,.75);padding:11px 16px;border-radius:999px;pointer-events:none;white-space:nowrap;transition:opacity .4s ease}
+.coach{position:absolute;left:50%;top:48%;transform:translateX(-50%);font:700 15px/1 var(--f-body);color:#fff;background:rgba(8,12,11,.75);padding:11px 16px;border-radius:999px;pointer-events:none;white-space:nowrap;transition:opacity .4s ease}
 .coach.off{opacity:0}
-.hoy{position:absolute;right:12px;bottom:12px;width:66px;height:66px;border-radius:50%;border:2px solid #fff;background:rgba(8,12,11,.66);color:#fff;font:800 16px/1 var(--f-body);cursor:pointer;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.hoy{position:absolute;right:12px;bottom:52px;min-height:44px;padding:0 16px;border-radius:999px;border:2px solid #fff;background:rgba(8,12,11,.72);color:#fff;font:800 15px/1 var(--f-body);white-space:nowrap;cursor:pointer;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;box-shadow:0 2px 10px rgba(0,0,0,.35)}
 .hoy.active{background:#fff;color:#0b0f0e}
 .hoy[hidden],.edge[hidden],.coach[hidden]{display:none}
 .dirline{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 12px;font:500 15px/1.3 var(--f-body);color:var(--ink)}
@@ -154,11 +158,17 @@ label.btn{display:inline-flex;align-items:center;position:relative}
   h1{font-size:22px;line-height:1.1}
   .cam{gap:10px}
   .vf{max-height:52vh;max-height:52svh}
+  .strip,.panel>section.front{display:none}
 }
+.conf>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;font:600 15px/1.3 var(--f-body)}
+.conf>summary::-webkit-details-marker{display:none}
+.conf>summary::after{content:"+";margin-left:auto;font:500 20px/1 var(--f-mono);color:var(--ink-2)}
+.conf[open]>summary::after{content:"\2212"}
+.conf>summary b{color:var(--tez)}
+.conf .lbl{margin-top:12px}
 @media (prefers-reduced-motion:reduce){.layer,.counter,.coach{transition:none}}
 </style>
 
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><defs id="panos"></defs></svg>
 
 <div class="page">
@@ -173,25 +183,25 @@ label.btn{display:inline-flex;align-items:center;position:relative}
 
   <main class="app">
     <section class="cam" aria-label="Cámara">
-      <div class="vf" id="vf" tabindex="0" role="group" aria-label="Vista. Arrastra a los lados o usa las flechas izquierda y derecha del teclado para girar. Mantén presionado el botón Hoy para comparar con el presente.">
+      <div class="vf" id="vf" tabindex="0" role="group" aria-label="Vista. Arrastra a los lados o usa las flechas izquierda y derecha del teclado para girar. El botón Ver hoy compara con el presente.">
         <svg class="scene" id="scene" viewBox="0 0 240 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Vista del Zócalo">
-          <g class="layer" id="L0"></g><g class="layer" id="L1"></g>
+          <g class="layer" id="L0"></g><g class="layer" id="L1"></g><g class="layer" id="LH"></g>
         </svg>
         <div class="tags" id="tags" aria-hidden="true"></div>
         <div class="hudwrap">
-          <div class="hud"><span class="rec" id="rec">EN VIVO</span><span class="gps">Zócalo · CDMX<b class="hud-chip">BOCETO</b></span></div>
-          <p class="cap" id="cap" aria-hidden="true"><span id="capN"></span><small id="capT"></small></p>
+          <div class="hud"><span class="rec" id="rec">HOY · 2026</span><span class="gps" id="gps">Mirando al norte</span></div>
+          <p class="cap" id="cap" aria-hidden="true"></p>
         </div>
-        <svg class="reticle" viewBox="0 0 34 34" aria-hidden="true"><path d="M17 3V12M17 22V31M3 17H12M22 17H31" stroke="#ffffff" stroke-width="1.5" fill="none"/><circle cx="17" cy="17" r="1.6" fill="#ffffff"/></svg>
         <button class="edge l" id="edgeL" type="button" hidden></button>
         <button class="edge r" id="edgeR" type="button" hidden></button>
         <div class="counter" id="counter" aria-hidden="true"></div>
         <div class="coach" id="coach" hidden aria-hidden="true">↔ Arrastra para girar</div>
-        <div class="stamp" id="stamp" hidden><b>RECONSTRUCCIÓN ARTÍSTICA</b><small id="stampConf">Confianza media</small></div>
-        <button class="hoy" id="hold" type="button" aria-label="Mantén presionado para ver hoy" hidden>Hoy</button>
+        <div class="gira" id="gira" hidden><button type="button" id="giraBtn"><svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 3.2 10 8H6Z" fill="#a8382c"/><path d="M8 12.8 6 8H10Z" fill="currentColor"/></svg>Gira con tu celular</button><small>En el Zócalo o desde casa</small></div>
+        <button class="stamp" id="stamp" type="button" hidden>Reconstrucción artística · confianza media</button>
+        <button class="hoy" id="hold" type="button" aria-pressed="false" hidden>Ver hoy</button>
       </div>
       <div class="era">
-        <div class="era-head"><label class="lbl" for="era">Época</label><span class="era-note">Más reciente ← → más antiguo</span></div>
+        <div class="era-head"><label class="lbl" for="era">Época</label><span class="era-note">Desliza → para ir más atrás</span></div>
         <input type="range" id="era" min="0" max="5" step="1" value="3">
         <div class="marks" id="marks"></div>
       </div>
@@ -208,15 +218,25 @@ label.btn{display:inline-flex;align-items:center;position:relative}
     <div class="side">
       <article class="panel" id="panel">
         <section>
-          <p class="eyebrow" id="pEyebrow">Reconstrucción artística · no es una foto</p>
+          <p class="eyebrow" id="pEyebrow">Reconstrucción artística</p>
           <h2 id="pTitle">México-Tenochtitlan, hacia 1500</h2>
           <p class="ago" id="pAgo"></p>
-          <div class="row share"><button class="btn" id="share" type="button">Compartir esta vista</button><span class="msg" id="shareMsg" role="status"></span></div>
+          <div class="row share"><button class="btn primary" id="postal" type="button">Guardar postal</button><button class="btn" id="share" type="button">Compartir esta vista</button><span class="msg" id="shareMsg" role="status"></span></div>
         </section>
         <section>
-          <span class="lbl">Qué tan seguros estamos</span>
-          <div class="meter" id="meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-          <p id="pConf"></p>
+          <span class="lbl">Qué verías</span>
+          <p id="pSee"></p>
+        </section>
+        <section id="confSec">
+          <details class="conf" id="conf">
+            <summary>¿Qué tan seguro es esto? · <b id="confSum">confianza media</b></summary>
+            <div class="meter" id="meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            <p id="pConf"></p>
+            <span class="lbl">En qué se basa</span>
+            <ul class="src" id="pSrc"></ul>
+            <span class="lbl">Lo que no sabemos</span>
+            <p id="pUnk"></p>
+          </details>
         </section>
         <section class="front">
           <span class="lbl">Frente a ti · al <span id="pHead">norte</span></span>
@@ -224,20 +244,8 @@ label.btn{display:inline-flex;align-items:center;position:relative}
           <p id="fNote"></p>
         </section>
         <section>
-          <span class="lbl">Qué verías</span>
-          <p id="pSee"></p>
-        </section>
-        <section>
           <span class="lbl">Alrededor · toca para girar</span>
           <ul class="around" id="around"></ul>
-        </section>
-        <section>
-          <span class="lbl">En qué se basa</span>
-          <ul class="src" id="pSrc"></ul>
-        </section>
-        <section>
-          <span class="lbl">Lo que no sabemos</span>
-          <p id="pUnk"></p>
         </section>
       </article>
 
@@ -245,7 +253,7 @@ label.btn{display:inline-flex;align-items:center;position:relative}
         <summary>Hazlo con tu IA <span class="opt">opcional</span></summary>
         <div class="ai-body">
           <p>Tu IA puede convertir tu propia foto en cómo se veía <span id="aiEra">hacia 1500</span>; nosotros le damos las instrucciones exactas.</p>
-          <div class="row"><label class="btn" for="photo">1. Toma la foto<input type="file" id="photo" class="sr" accept="image/*" capture="environment"></label><img id="thumb" alt="Tu foto" hidden></div>
+          <div class="row"><label class="btn" for="photo">1. Toma la foto<input type="file" id="photo" class="sr" accept="image/*"></label><img id="thumb" alt="Tu foto" hidden></div>
           <div class="row"><button class="btn primary" id="send" type="button">2. Enviar a mi IA</button><span class="msg" id="copyMsg" role="status"></span></div>
           <details class="sub" id="pdet"><summary>Ver la instrucción</summary>
             <textarea id="prompt" readonly aria-label="Instrucción para tu IA"></textarea>
@@ -268,7 +276,7 @@ label.btn{display:inline-flex;align-items:center;position:relative}
       <div class="notes">
         <h3>Qué es real y qué no</h3>
         <ul>
-          <li>La cámara y el GPS están simulados. La brújula funciona en celular si tocas «Usar brújula»; si no, arrastra la vista.</li>
+          <li>La cámara y el GPS están simulados. La brújula funciona en celular si tocas “Usar brújula”; si no, arrastra la vista.</li>
           <li>Los dibujos son esquemas con ángulos a escala: 60° de campo, como un celular en vertical, y montañas a su altura real sobre el horizonte. En la app serían imágenes revisadas para cada dirección.</li>
           <li>Textos, fechas y fuentes son de muestra y hay que verificarlos antes de construir.</li>
         </ul>
@@ -576,22 +584,22 @@ var ERAS=[
  {key:'1700',draw:'y1700',tone:'oil',short:'1700',sub:'Virreinato',ya:326,title:'La Plaza Mayor, hacia 1700',ago:'Hace unos 326 años',conf:3,confWord:'media',confText:'Media: pinturas y planos de la época.',
   see:'Una plaza llena de puestos de mercado con techos de teja. La Catedral seguía en obra: sus torres se terminaron hasta 1791 y el Sagrario aún no existía. Al oriente, el palacio del virrey; al sur, las Casas del Cabildo y un canal con canoas.',
   unknown:'Las pinturas de la época simplifican. La posición de cada puesto es imaginada, y el trazo exacto del canal es aproximado.',
-  src:[['Cristóbal de Villalpando, «Vista de la Plaza Mayor de México» (pintura)','1695'],['Torres de la Catedral terminadas el 14 de mayo de 1791','IMER']],
+  src:[['Cristóbal de Villalpando, “Vista de la Plaza Mayor de México” (pintura)','1695'],['Torres de la Catedral terminadas el 14 de mayo de 1791','IMER']],
   phrase:'hacia 1700, en la época virreinal, cuando era la Plaza Mayor',rules:'La Catedral aún no tenía sus torres completas (se terminaron en 1791) y el Sagrario todavía no existía. La plaza estaba llena de puestos de mercado de madera con techos de teja. Arquitectura virreinal de cantera y tezontle.',
   lm:[{az:-19,n:'Catedral en obra',t:'Sin torres completas; se terminaron en 1791.'},{az:79,n:'Palacio del virrey',hero:true,t:'Hoy: Palacio Nacional.'},{az:182,n:'Casas del Cabildo y canal',s:'Cabildo y canal',t:'Canal con canoas frente al Cabildo (ubicación aproximada). Hoy: Gobierno de la Ciudad.'},{az:225,n:'Puestos del mercado',s:'Mercado',hero:true,t:'Cajones de madera y teja. Hoy la plaza está vacía.'},{az:270,n:'Portal de Mercaderes',t:'Ya existía, más bajo que hoy.'}]},
  {key:'1500',draw:'y1500',short:'1500',sub:'Tenochtitlan',ya:526,title:'México-Tenochtitlan, hacia 1500',ago:'Hace unos 526 años',conf:2,confWord:'media-baja',confText:'Media-baja: crónicas, excavaciones y reconstrucciones de expertos.',
   see:'Una gran plaza de estuco frente al muro del recinto sagrado. Detrás asoma el Templo Mayor con sus dos templos: Tláloc (azul) y Huitzilopochtli (rojo). Al oriente, las Casas Nuevas de Moctezuma. Los volcanes quedan ocultos tras el palacio: se verían desde las azoteas.',
   unknown:'Nadie dibujó la ciudad con exactitud antes de 1521. Los límites del recinto bajo el Zócalo actual son aproximados, y cada reconstrucción es una interpretación.',
-  src:[['Thomas Kole, «A Portrait of Tenochtitlan» (CC BY 4.0; no se usa como insumo de IA)','2023'],['Casas Nuevas de Moctezuma bajo el Palacio Nacional (hallazgo del INAH)','2008'],['Templo de Ehécatl detrás de la Catedral (INAH)','2017']],
+  src:[['Thomas Kole, “A Portrait of Tenochtitlan” (CC BY 4.0; no se usa como insumo de IA)','2023'],['Casas Nuevas de Moctezuma bajo el Palacio Nacional (hallazgo del INAH)','2008'],['Templo de Ehécatl detrás de la Catedral (INAH)','2017']],
   phrase:'hacia 1500, en México-Tenochtitlan, antes de la llegada de los españoles',rules:'Arquitectura mexica: muros de estuco blanco con franjas rojas, azoteas planas, sin arcos, cúpulas ni torres. No hay Catedral ni Palacio Nacional. Sin escenas de sacrificio.',
-  lm:[{az:-20,n:'Muro del recinto sagrado',s:'Recinto sagrado',t:'Hoy: más o menos la línea de la Catedral (aproximado).'},{az:17,n:'Templo de Ehécatl',t:'Templo circular del dios del viento. Hoy: restos detrás de la Catedral.'},{az:26,n:'Templo Mayor',hero:true,t:'Doble templo de Tláloc y Huitzilopochtli. Hoy: zona arqueológica.'},{az:79,n:'Casas Nuevas de Moctezuma',s:'Casas de Moctezuma',hero:true,t:'Palacio de Moctezuma Xocoyotzin. Hoy: Palacio Nacional.'},{az:182,n:'Canal y casas',t:'Hoy: edificios del Gobierno de la Ciudad (aproximado).'},{az:212,n:'Ajusco, a lo lejos',t:'Se asoma sobre las casas bajas.'},{az:300,n:'Palacio de Axayácatl',t:'Donde se alojaron Cortés y los suyos en 1519. Hoy: Monte de Piedad.'},{az:352,n:'Sierra de Guadalupe, a lo lejos',s:'Sierra de Guadalupe',t:'Visible sobre el muro bajo del recinto.'}]},
- {key:'pleisto',draw:'pleisto',short:'14 mil',sub:'años atrás',hud:'hace 14 mil años · Pleistoceno',ya:14000,title:'Hace unos 14,000 años',ago:'Pleistoceno, al final de la última glaciación',conf:1,confWord:'baja',confText:'Baja: sabemos el tipo de paisaje, no la vista exacta.',
+  lm:[{az:-26,n:'Muro del recinto sagrado',s:'Muro del recinto',t:'Hoy: más o menos la línea de la Catedral (aproximado).'},{az:-12,n:'Templos del recinto sagrado',s:'Templos del recinto',hero:true,t:'Hoy: detrás y debajo de la Catedral (aproximado).'},{az:17,n:'Templo de Ehécatl',t:'Templo circular del dios del viento. Hoy: restos detrás de la Catedral.'},{az:26,n:'Templo Mayor',hero:true,t:'Doble templo de Tláloc y Huitzilopochtli. Hoy: zona arqueológica.'},{az:79,n:'Casas Nuevas de Moctezuma',s:'Casas de Moctezuma',hero:true,t:'Palacio de Moctezuma Xocoyotzin. Hoy: Palacio Nacional.'},{az:182,n:'Canal y casas',t:'Hoy: edificios del Gobierno de la Ciudad (aproximado).'},{az:212,n:'Ajusco, a lo lejos',t:'Se asoma sobre las casas bajas.'},{az:300,n:'Palacio de Axayácatl',t:'Donde se alojaron Cortés y los suyos en 1519. Hoy: Monte de Piedad.'},{az:352,n:'Sierra de Guadalupe, a lo lejos',s:'Sierra de Guadalupe',t:'Visible sobre el muro bajo del recinto.'}]},
+ {key:'pleisto',draw:'pleisto',short:'Mamuts',sub:'14 mil años',hud:'hace 14 mil años · Pleistoceno',ya:14000,title:'Hace unos 14,000 años',ago:'Pleistoceno, al final de la última glaciación',conf:1,confWord:'baja',confText:'Baja: sabemos el tipo de paisaje, no la vista exacta.',
   see:'Sin ciudad: un gran lago con orillas de tules. Mamuts en el agua poco profunda. Alrededor, las sierras y los volcanes, con más glaciares que hoy.',
   unknown:'No sabemos si este punto era orilla o lago: el nivel del agua subía y bajaba. Los volcanes tenían formas algo distintas.',
   src:[['Trampas para mamut en Tultepec (INAH)','2019'],['Mamuts hallados en Santa Lucía (INAH)','2020']],
   phrase:'hace unos 14,000 años, al final del Pleistoceno, cuando la cuenca tenía grandes lagos',rules:'Sin edificios, caminos ni personas. Lago somero con tules, pastizales en las orillas, mamuts colombinos a lo lejos. Mantén las montañas del horizonte donde están en la foto.',
   lm:[{az:45,n:'Lago abierto',t:'El gran lago de la cuenca.'},{az:118,n:'Iztaccíhuatl',t:'Ya existía, con más glaciares.'},{az:130,n:'Popocatépetl',s:'Volcanes',hero:true,t:'Ya existía, con otra forma.'},{az:212,n:'Ajusco',t:'La sierra al sur.'},{az:265,n:'Sierra de las Cruces',t:'La sierra al poniente.'},{az:324,n:'Mamuts',hero:true,t:'Mamut colombino.'},{az:352,n:'Sierra de Guadalupe',t:'La sierra al norte.'}]},
- {key:'creta',draw:'creta',short:'100 mill.',sub:'años atrás',hud:'hace 100 millones de años · Cretácico',ya:100000000,title:'Hace unos 100 millones de años',ago:'Cretácico medio',conf:.5,confWord:'muy baja',confText:'Muy baja: solo sabemos el tipo de ambiente.',
+ {key:'creta',draw:'creta',short:'Mar',sub:'100 M años',hud:'hace 100 millones de años · Cretácico',ya:100000000,title:'Hace unos 100 millones de años',ago:'Cretácico medio',conf:.5,confWord:'muy baja',confText:'Muy baja: solo sabemos el tipo de ambiente.',
   see:'Mar. Esta zona estaba bajo un mar cálido y poco profundo, con arrecifes. No hay montañas ni volcanes: nacieron decenas de millones de años después. ¿Dinosaurios? Aquí no: vivían en tierra firme, lejos (por ejemplo, en lo que hoy es Coahuila).',
   unknown:'No sabemos dónde estaba la costa ni la profundidad exacta. El pterosaurio del dibujo es posible, no comprobado.',
   src:[['Calizas marinas en pozos de Tulyehualco y Mixuca (SECTEI CDMX)','2019-11-27'],['Formación Morelos: plataforma marina somera y cálida (Servicio Geológico Mexicano)','consultado 2026-09-25']],
@@ -600,25 +608,26 @@ var ERAS=[
 ];
 
 /* ---------- build the panoramas once ---------- */
-var html='';
-ERAS.forEach(function(e){TONE=e.tone?TONES[e.tone]:null;html+='<g id="pano-'+e.key+'">'+DRAW[e.draw](e.key)+'</g>';});
+var html='',PANO={};
+ERAS.forEach(function(e){TONE=e.tone?TONES[e.tone]:null;PANO[e.key]=DRAW[e.draw](e.key);html+='<g id="pano-'+e.key+'">'+PANO[e.key]+'</g>';});
 TONE=null;
 document.getElementById('panos').innerHTML=G+html;
+document.getElementById('LH').innerHTML=uses('hoy');
 
 /* ---------- UI ---------- */
 function $(id){return document.getElementById(id);}
 var scene=$('scene'),strip=$('strip'),vf=$('vf'),slider=$('era'),hold=$('hold'),tagsEl=$('tags'),edgeL=$('edgeL'),edgeR=$('edgeR'),counter=$('counter'),coach=$('coach'),aiBox=$('ai'),cal=$('cal');
-var layers=[$('L0'),$('L1')],active=0,shown=null,fadeT=0,raf=0,anim=0,drag=null;
+var layers=[$('L0'),$('L1')],LH=$('LH'),active=0,shown=null,fadeT=0,raf=0,anim=0,drag=null;
 var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var st={era:3,h:8,preview:false,dirty:false};
-var DIR8=['norte','noreste','oriente','sureste','sur','suroeste','poniente','noroeste'];
+var st={era:3,h:350,preview:false,dirty:false};
+var DIR8=['norte','nororiente','oriente','suroriente','sur','surponiente','poniente','norponiente'];
 function d8(h){return Math.round(w360(h)/45)%8;}
 function deg3(h){return String(Math.round(w360(h))%360).padStart(3,'0')+'°';}
 function uses(k){return '<use href="#pano-'+k+'" x="-1440"></use><use href="#pano-'+k+'"></use><use href="#pano-'+k+'" x="1440"></use>';}
 function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(_){}return null;}
 
 /* draw only the panorama copies that overlap the view (each copy spans about x -190..1450) */
-function cull(){var vx=st.h*U-120;layers.forEach(function(L){var c=L.children;if(c.length<3)return;c[0].style.display=vx<30?'':'none';c[2].style.display=vx+240>1230?'':'none';});}
+function cull(){var vx=st.h*U-120;layers.concat([LH]).forEach(function(L){var c=L.children;if(c.length<3)return;c[0].style.display=vx<30?'':'none';c[2].style.display=vx+240>1230?'':'none';});}
 
 function showPano(k){
   if(k===shown)return;
@@ -626,7 +635,7 @@ function showPano(k){
   var next=layers[1-active],prev=layers[active];
   clearTimeout(fadeT);
   next.style.transition='none';next.classList.remove('on');
-  next.innerHTML=uses(k);scene.appendChild(next);
+  next.innerHTML=uses(k);scene.insertBefore(next,LH);
   void scene.getBoundingClientRect();next.style.transition='';
   active=1-active;cull();
   if(first||reduce){next.classList.add('on');prev.classList.remove('on');prev.innerHTML='';return;}
@@ -635,7 +644,7 @@ function showPano(k){
 }
 
 /* compass strip: 2 units per degree, 120° visible, the 60° camera field in the middle */
-(function(){var s='',L=['N','NE','E','SE','S','SO','O','NO'];for(var a=-90;a<=450;a+=5){var w=w360(a),mj=w%45===0,md=w%15===0,x=a*2;s+='<line x1="'+x+'" y1="'+(mj?15:md?19:22)+'" x2="'+x+'" y2="27" class="tk'+(mj?' mj':'')+'"/>';if(mj)s+='<text x="'+x+'" y="11" class="tl">'+L[w/45]+'</text>';}$('ticks').innerHTML=s;})();
+(function(){var s='',L=['N','','Ote','','S','','Pte',''];for(var a=-90;a<=450;a+=5){var w=w360(a),mj=w%45===0,md=w%15===0,x=a*2;s+='<line x1="'+x+'" y1="'+(mj?15:md?19:22)+'" x2="'+x+'" y2="27" class="tk'+(mj?' mj':'')+'"/>';if(mj)s+='<text x="'+x+'" y="11" class="tl">'+L[w/45]+'</text>';}$('ticks').innerHTML=s;})();
 
 /* era marks under the slider */
 var marks=ERAS.map(function(e,i){var b=document.createElement('button');b.type='button';b.className='mark';b.innerHTML='<b>'+e.short+'</b><span>'+e.sub+'</span>';b.setAttribute('aria-label',e.title);b.addEventListener('click',function(){st.dirty=true;setEra(i);});$('marks').appendChild(b);return b;});
@@ -650,28 +659,29 @@ function renderEra(){
   var e=ERAS[st.era],past=e.key!=='hoy';
   slider.value=st.era;slider.style.setProperty('--p',(st.era*20)+'%');slider.setAttribute('aria-valuetext',e.title);
   marks.forEach(function(m,i){m.setAttribute('aria-pressed',String(i===st.era));});
-  var eb=$('pEyebrow');eb.textContent=past?'Reconstrucción artística · no es una foto':'Cámara en vivo';eb.className='eyebrow'+(past?'':' live');
+  var eb=$('pEyebrow');eb.textContent=past?'Reconstrucción artística':'Hoy · 2026';eb.className='eyebrow'+(past?'':' live');
   $('pTitle').textContent=e.title;$('pAgo').textContent=e.ago;
   Array.prototype.forEach.call($('meter').children,function(i,n){i.className=n<Math.floor(e.conf)?'on':(n<e.conf?'half':'');});
   $('pConf').textContent=e.confText;$('pSee').textContent=e.see;$('pUnk').textContent=e.unknown;
   var ul=$('pSrc');ul.innerHTML='';e.src.forEach(function(s){var li=document.createElement('li');li.textContent=s[0]+' ';var sp=document.createElement('span');sp.textContent='· '+s[1];li.appendChild(sp);ul.appendChild(li);});
-  $('stampConf').textContent='No es una foto · confianza '+e.confWord;
-  hold.hidden=!past;
+  var stp=$('stamp');stp.textContent='Reconstrucción artística · confianza '+e.confWord;stp.setAttribute('aria-label','Reconstrucción artística, no es una foto. Confianza '+e.confWord+'. Ver en qué se basa.');$('confSum').textContent='confianza '+e.confWord;
+  hold.hidden=!past;LH.classList.toggle('on',st.preview);
   var list=$('around');list.innerHTML='';
   aroundBtns=e.lm.map(function(l){var li=document.createElement('li'),b=document.createElement('button');b.type='button';b.innerHTML=ARROW+'<span></span><em></em>';b.querySelector('span').textContent=l.n;
     b.addEventListener('click',function(){try{vf.scrollIntoView({behavior:reduce?'auto':'smooth',block:'nearest'});}catch(_){}userTurn(l.az);});li.appendChild(b);list.appendChild(li);return {b:b,l:l};});
   var s='';e.lm.forEach(function(l){[-360,0,360].forEach(function(o){s+='<circle cx="'+f1((w360(l.az)+o)*2)+'" cy="31" r="2.3" class="mk"/>';});});$('smarks').innerHTML=s;
   $('aiEra').textContent=past?(e.phrase.split(', ')[0]):'en otra época';
   if(aiBox.open)$('prompt').value=buildPrompt();
-  updateHud();showPano(st.preview?'hoy':e.key);renderView();
+  updateHud();showPano(e.key);renderView();
 }
 function updateHud(){
   var e=ERAS[st.era],past=e.key!=='hoy',rec=$('rec');
-  if(st.preview){rec.textContent='HOY · comparando';rec.className='rec';}
+  if(st.preview){rec.textContent='HOY · 2026 · comparando';rec.className='';}
   else if(past){rec.textContent=hudName(e);rec.className='rec past';}
-  else{rec.textContent='EN VIVO';rec.className='rec';}
+  else{rec.textContent='HOY · 2026';rec.className='';}
   $('stamp').hidden=!(past&&!st.preview);
-  hold.classList.toggle('active',st.preview);
+  hold.classList.toggle('active',st.preview);hold.setAttribute('aria-pressed',String(st.preview));
+  hold.textContent=st.preview?'Volver a '+e.short:'Ver hoy';
 }
 function bestOf(e,h){var best=null,bd=99;e.lm.forEach(function(l){var d=Math.abs(w180(l.az-h));if(d<bd){bd=d;best=l;}});return bd<=22?best:null;}
 function setEdge(b,o,left){
@@ -683,20 +693,20 @@ function renderView(){
   scene.setAttribute('viewBox',f1(h*U-120)+' 0 240 300');
   strip.setAttribute('viewBox',f1(h*2-120)+' 0 240 34');
   cull();
-  $('hdeg').textContent=deg3(h);$('hdir').textContent=DIR8[i8];$('pHead').textContent=DIR8[i8];
+  $('hdeg').textContent=deg3(h);$('hdir').textContent=DIR8[i8];$('pHead').textContent=DIR8[i8];$('gps').textContent='Mirando al '+DIR8[i8];
   var best=bestOf(e,h);
   if(best){$('fName').textContent=best.n;$('fNote').textContent=best.t;}
-  else{$('fName').textContent='Nada destacado justo enfrente';$('fNote').textContent='Gira o toca un punto de la lista «Alrededor».';}
+  else{$('fName').textContent='Nada destacado justo enfrente';$('fNote').textContent='Gira o toca un punto de la lista “Alrededor”.';}
   /* caption and name tags drawn on the picture itself */
   var vb=bestOf(v,h),m=vb&&v.key!=='hoy'?/Hoy:\s*([^.]+)/.exec(vb.t):null;
-  $('capN').textContent=vb?'Enfrente: '+vb.n:'';$('capT').textContent=m?'Hoy: '+m[1]:'';
+  $('cap').textContent=vb?vb.n+(m?' · hoy: '+m[1].replace(/\s*\([^)]*\)/g,'').replace(/^más o menos /,'≈ '):''):'';
   var vis=v.lm.map(function(l){return {l:l,rel:w180(l.az-h)};}).filter(function(o){return Math.abs(o.rel)<=28;}).sort(function(a,b){return a.rel-b.rel;});
   tagsEl.innerHTML='';
   var rows=[-99,-99,-99];
   vis.forEach(function(o){var row=-1;for(var j=0;j<rows.length;j++){if(o.rel-rows[j]>=16){row=j;break;}}if(row<0)return;rows[row]=o.rel;
-    var d=document.createElement('span');d.className='tag';d.textContent=o.l.s||o.l.n;
-    d.style.left='calc(50% + '+(o.rel/60*100).toFixed(2)+'%)';d.style.top=(35+row*9)+'%';
-    d.style.transform='translateX('+(o.rel>16?-88:o.rel<-16?-12:-50)+'%)';tagsEl.appendChild(d);});
+    var d=document.createElement('span'),ti=document.createElement('i'),ax=o.rel>16?88:o.rel<-16?12:50;d.className='tag';ti.textContent=o.l.s||o.l.n;d.appendChild(ti);
+    d.style.left='calc(50% + '+(o.rel/60*100).toFixed(2)+'%)';d.style.top=(60+row*7)+'%';
+    d.style.transform='translateX(-'+ax+'%)';d.style.setProperty('--ax',ax+'%');d.style.setProperty('--lh',Math.round(vf.clientHeight*(8+row*7)/100)+'px');tagsEl.appendChild(d);});
   /* edge chips: the nearest highlight of this era that is out of frame, on each side */
   var L=null,Rt=null;
   v.lm.forEach(function(l){if(!l.hero)return;var rel=w180(l.az-h);if(Math.abs(rel)<=30)return;if(rel<0){if(!L||rel>L.rel)L={l:l,rel:rel};}else if(!Rt||rel<Rt.rel)Rt={l:l,rel:rel};});
@@ -707,10 +717,10 @@ function renderView(){
   settle();
 }
 /* after turning stops: tell screen readers where we look, and keep the link in sync */
-var settleT=0,lastLive='';
+var settleT=0,lastLive='',lastH=null;
 function settle(){clearTimeout(settleT);settleT=setTimeout(function(){
-  var b=bestOf(ERAS[st.era],st.h),txt='Mirando al '+DIR8[d8(st.h)]+'.'+(b?' Enfrente: '+b.n+'.':'');
-  if(txt!==lastLive){lastLive=txt;$('live').textContent=txt;}
+  var hr=Math.round(st.h),b=bestOf(ERAS[st.era],st.h),txt='Mirando al '+DIR8[d8(st.h)]+'.'+(b?' Enfrente: '+b.n+'.':'');
+  if(lastH!==null&&hr!==lastH&&txt!==lastLive){lastLive=txt;$('live').textContent=txt;}lastH=hr;
   if(st.dirty)writeHash();
 },500);}
 function schedule(){if(!raf)raf=requestAnimationFrame(function(){raf=0;renderView();});}
@@ -727,20 +737,27 @@ function setEra(i,quiet){
   i=Math.max(0,Math.min(ERAS.length-1,i));if(i===st.era&&!st.preview)return;
   var from=ERAS[st.era].ya;st.era=i;st.preview=false;renderEra();
   if(!quiet)travel(from,ERAS[i].ya);
+  var e=ERAS[i];say(e.key==='hoy'?'Hoy, 2026.':e.short+', '+e.sub+'. Reconstrucción artística, confianza '+e.confWord+'.');
+  if(st.dirty&&navigator.vibrate){try{navigator.vibrate(8);}catch(_){}}
 }
+function say(t){lastLive=t;$('live').textContent=t;}
 
 /* the "time travel" counter: counts the years in log scale, then fades */
 var ctr={raf:0,t:0};
 function nice(a){var p=Math.pow(10,Math.max(0,Math.floor(Math.log(a)/Math.LN10)-1));return Math.round(a/p)*p;}
-function fmtAgo(a,exact){if(a<.5)return 'Hoy';if(a<1000)return String(2026-Math.round(a));return 'hace '+(exact?Math.round(a):nice(a)).toLocaleString('es-MX')+' años';}
+function fmtAgo(a,exact,yrs){if(a<.5)return 'Hoy';if(yrs)return String(2026-Math.round(a));var v=exact?Math.round(a):nice(a);
+  if(v>=1e6)return 'hace '+Math.round(v/1e6).toLocaleString('es-MX')+(v>=2e6?' millones':' millón')+' de años';
+  if(v>=1e4)return 'hace '+Math.round(v/1e3).toLocaleString('es-MX')+' mil años';
+  return 'hace '+v.toLocaleString('es-MX')+' años';}
 function travel(from,to){
   if(from===to)return;
   cancelAnimationFrame(ctr.raf);clearTimeout(ctr.t);
   counter.classList.add('on');
-  var done=function(){counter.textContent=fmtAgo(to,true);ctr.t=setTimeout(function(){counter.classList.remove('on');},reduce?900:650);};
+  var yrs=Math.max(from,to)<1000;
+  var done=function(){counter.textContent=fmtAgo(to,true,yrs);ctr.t=setTimeout(function(){counter.classList.remove('on');},reduce?900:650);};
   if(reduce){done();return;}
   var L0=Math.log(from+1),L1=Math.log(to+1),t0=performance.now(),dur=900;
-  var step=function(now){var t=Math.min(1,(now-t0)/dur),k=1-Math.pow(1-t,3);if(t>=1){done();return;}counter.textContent=fmtAgo(Math.exp(L0+(L1-L0)*k)-1,false);ctr.raf=requestAnimationFrame(step);};
+  var step=function(now){var t=Math.min(1,(now-t0)/dur),k=1-Math.pow(1-t,3);if(t>=1){done();return;}counter.textContent=fmtAgo(Math.exp(L0+(L1-L0)*k)-1,false,yrs);ctr.raf=requestAnimationFrame(step);};
   ctr.raf=requestAnimationFrame(step);
 }
 
@@ -789,7 +806,7 @@ function compLoop(){
   if(comp.tgt!=null&&performance.now()>comp.pause){var d=w180(comp.tgt-st.h);if(Math.abs(d)>.15)setHeading(st.h+d*.2);}
   comp.loop=requestAnimationFrame(compLoop);
 }
-function startCompass(){
+function startCompass(){hideGira();
   comp.evt=('ondeviceorientationabsolute' in window)?'deviceorientationabsolute':'deviceorientation';
   window.addEventListener(comp.evt,onOri);comp.on=true;comp.tgt=null;st.dirty=true;cancelAnimationFrame(anim);compLoop();
   cbtn.textContent='Brújula activa';cbtn.classList.add('active');cbtn.setAttribute('aria-pressed','true');
@@ -827,20 +844,59 @@ vf.addEventListener('keydown',function(ev){
 });
 [edgeL,edgeR].forEach(function(b){b.addEventListener('click',function(){if(b._az!=null){hideCoach();userTurn(b._az);}});});
 slider.addEventListener('input',function(){st.dirty=true;setEra(+slider.value);});
-function startPrev(ev){if(ERAS[st.era].key==='hoy'||st.preview)return;if(ev.type==='keydown'){if(ev.key!==' '&&ev.key!=='Enter')return;ev.preventDefault();}st.preview=true;updateHud();showPano('hoy');renderView();}
-function endPrev(ev){if(!st.preview)return;if(ev.type==='keyup'&&ev.key!==' '&&ev.key!=='Enter')return;st.preview=false;updateHud();showPano(ERAS[st.era].key);renderView();}
-hold.addEventListener('pointerdown',function(ev){try{hold.setPointerCapture(ev.pointerId);}catch(_){}startPrev(ev);});
-['pointerup','pointercancel','lostpointercapture','blur','keyup'].forEach(function(t){hold.addEventListener(t,endPrev);});
-hold.addEventListener('keydown',startPrev);
+/* compare with today: a tap toggles, a long press (over 300 ms) peeks until release */
+function setPreview(on){
+  on=!!on&&ERAS[st.era].key!=='hoy';if(on===st.preview)return;
+  st.preview=on;LH.classList.toggle('on',on);updateHud();renderView();
+  say(on?'Hoy, 2026. Comparando con '+ERAS[st.era].short+'.':ERAS[st.era].short+'. Reconstrucción artística.');
+}
+var peek={t:0,on:false,from:false,skip:false};
+hold.addEventListener('pointerdown',function(ev){
+  stopIntro();try{hold.setPointerCapture(ev.pointerId);}catch(_){}
+  clearTimeout(peek.t);peek.on=false;
+  peek.t=setTimeout(function(){peek.on=true;peek.from=st.preview;setPreview(!st.preview);},300);
+});
+function endPeek(){clearTimeout(peek.t);if(peek.on){peek.on=false;peek.skip=true;setPreview(peek.from);setTimeout(function(){peek.skip=false;},450);}}
+['pointerup','pointercancel','lostpointercapture','blur'].forEach(function(t){hold.addEventListener(t,endPeek);});
+hold.addEventListener('click',function(){if(peek.skip){peek.skip=false;return;}stopIntro();setPreview(!st.preview);});
 hold.addEventListener('contextmenu',function(ev){ev.preventDefault();});
 
 function copyText(txt,ok,fail){try{navigator.clipboard.writeText(txt).then(ok,fail);}catch(_){fail();}}
 $('share').addEventListener('click',function(){
   st.dirty=true;writeHash();
   var e=ERAS[st.era],url=location.href,msg=$('shareMsg');
+  if(framed){msg.textContent='Vista previa: el enlace funcionará en la versión publicada.';return;}
   var copy=function(){copyText(url,function(){msg.textContent='Enlace copiado';},function(){msg.textContent=url;});};
   if(navigator.share){navigator.share({title:'Cámara del tiempo',text:'Mira el Zócalo: '+e.title+', mirando al '+DIR8[d8(st.h)],url:url}).then(function(){msg.textContent='';},function(err){if(!(err&&err.name==='AbortError'))copy();});}
   else copy();
+});
+
+/* "Guardar postal": the current view as a 1080x1350 PNG with the honesty stamp drawn into it */
+$('postal').addEventListener('click',function(){
+  stopIntro();var e=ERAS[st.era],k=st.preview?'hoy':e.key,past=k!=='hoy',vx=st.h*U-120,msg=$('shareMsg');
+  var g=[0];if(vx<30)g.push(-1440);if(vx+240>1230)g.push(1440);
+  var svg='<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="'+f1(vx)+' 0 240 300" preserveAspectRatio="xMidYMid slice"><defs>'+G+'</defs>'+g.map(function(x){return '<g transform="translate('+x+' 0)">'+PANO[k]+'</g>';}).join('')+'</svg>';
+  var img=new Image();msg.textContent='Preparando postal…';
+  img.onerror=function(){msg.textContent='No se pudo crear la postal en este navegador.';};
+  img.onload=function(){
+    try{
+      var c=document.createElement('canvas');c.width=1080;c.height=1350;var x=c.getContext('2d');x.drawImage(img,0,0,1080,1350);
+      var gr=x.createLinearGradient(0,1010,0,1350);gr.addColorStop(0,'rgba(8,12,11,0)');gr.addColorStop(1,'rgba(8,12,11,.85)');x.fillStyle=gr;x.fillRect(0,1010,1080,340);
+      x.fillStyle='#fff';x.textBaseline='alphabetic';
+      x.font='800 60px Archivo, Arial, sans-serif';x.fillText(past?e.title:'El Zócalo hoy',56,1170,968);
+      x.font='600 36px Archivo, Arial, sans-serif';x.fillText('Zócalo, CDMX · mirando al '+DIR8[d8(st.h)],56,1222,968);
+      x.font='500 28px "IBM Plex Mono", monospace';x.fillStyle='rgba(255,255,255,.85)';x.fillText('Cámara del tiempo · boceto · '+(location.host||'vista previa'),56,1300,968);
+      if(past){var t='Reconstrucción artística · confianza '+e.confWord;x.font='700 34px Archivo, Arial, sans-serif';var w=x.measureText(t).width;
+        x.save();x.translate(56,120);x.rotate(-2*R);x.fillStyle='rgba(142,58,43,.95)';x.fillRect(-12,-44,w+24,64);x.strokeStyle='#fff';x.lineWidth=3;x.strokeRect(-6,-38,w+12,52);x.fillStyle='#fff';x.fillText(t,0,0);x.restore();}
+      c.toBlob(function(b){
+        if(!b){msg.textContent='No se pudo crear la postal.';return;}
+        var name='camara-del-tiempo-'+k+'.png',file=null;try{file=new File([b],name,{type:'image/png'});}catch(_){}
+        if(file&&navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:'Cámara del tiempo'}).then(function(){msg.textContent='';},function(){msg.textContent='';});return;}
+        var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove();msg.textContent='Postal guardada.';
+      },'image/png');
+    }catch(_){msg.textContent='No se pudo crear la postal en este navegador.';}
+  };
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
 });
 
 aiBox.addEventListener('toggle',function(){if(aiBox.open)$('prompt').value=buildPrompt();});
@@ -867,11 +923,29 @@ $('copy').addEventListener('click',function(){
   var txt=buildPrompt();$('prompt').value=txt;copyPrompt(txt);
 });
 
-/* ---------- start: a deep link opens straight into its view; otherwise a short trip from today to 1500 ---------- */
-if(readHash()||reduce){renderEra();showCoach(reduce?300:600);}
+/* the honesty stamp opens "¿Qué tan seguro es esto?" */
+$('stamp').addEventListener('click',function(){stopIntro();var c=$('conf');c.open=true;try{$('confSec').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}catch(_){}});
+
+/* "turn your phone" pill: touch screens with orientation support only */
+var gira=$('gira'),canGira='DeviceOrientationEvent' in window&&coarse;
+function hideGira(){gira.hidden=true;}
+$('giraBtn').addEventListener('click',function(){stopIntro();hideGira();hideCoach();if(!comp.on)cbtn.click();});
+vf.addEventListener('pointermove',function(){if(drag&&!gira.hidden&&Math.abs(st.h-drag.h)>2)hideGira();});
+
+/* inside the preview frame the address is not shareable yet */
+var framed=false;try{framed=window.top!==window;}catch(_){framed=true;}
+if(framed){$('share').textContent='Compartir (disponible al publicar)';}
+
+/* ---------- start: a deep link opens straight into its view; otherwise a short trip Hoy, 1910, 1700, 1500 ---------- */
+var intro={t:0,on:false};
+function stopIntro(){if(!intro.on)return;intro.on=false;clearTimeout(intro.t);}
+function afterIntro(){if(canGira&&!comp.on){gira.hidden=false;}else showCoach(reduce?300:600);}
+['pointerdown','keydown','wheel'].forEach(function(t){window.addEventListener(t,function(){if(intro.on){st.dirty=true;stopIntro();afterIntro();}},{capture:true,passive:true});});
+if(readHash()||reduce){renderEra();afterIntro();}
 else{
-  var target=st.era;st.era=0;renderEra();
-  setTimeout(function(){if(!st.dirty)setEra(target);showCoach(1800);},700);
+  var target=st.era,seq=[1,2,target];st.era=0;renderEra();intro.on=true;
+  var next=function(){if(!intro.on)return;var i=seq.shift();setEra(i);if(seq.length)intro.t=setTimeout(next,1100);else{intro.on=false;afterIntro();}};
+  intro.t=setTimeout(next,900);
 }
 })();
 </script>

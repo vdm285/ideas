@@ -290,3 +290,75 @@ browser: Chrome and the browser pane could not open local files in this session.
 - Landmark pills: up to 3 rows; a place is skipped if it can't fit without overlapping (fine for
   now, revisit with real pictures).
 - The texts and sources are still sample data to verify.
+
+## Round 2: sketch changelog (2026-09-25)
+
+A critic read the round-1 sketch as a first-time user. Main complaints: the picture was buried
+under labels, and the Hoy button flickered on a normal tap. What changed:
+
+- **Compare with today works on a tap.** "Ver hoy" switches to today and the label becomes
+  "Volver a 1500". Holding it longer than 0.3 s is a quick peek until you let go. Today now sits
+  on its own layer that fades in 0.2 s, so nothing is swapped mid-fade and the flicker is gone.
+  The button reports its state to screen readers.
+- **The picture is clearer.** The crosshair and the "BOCETO" badge on the picture are gone. The
+  caption is one line, for example "Templos del recinto sagrado · hoy: detrás y debajo de la
+  Catedral". Name tags sit on the ground below the horizon, each with a thin line up to its
+  building. The side chips moved up to 40%. The stamp is one line: "Reconstrucción artística ·
+  confianza media-baja". The drag hint moved to 48%. The top bar shows "Mirando al norte".
+- **The first seconds are a short trip.** The view opens at 350°, facing the Cathedral. It then
+  steps through Hoy, 1910, 1700 and 1500 about every 1.1 s, and the slider visibly moves. The
+  first touch or key press stops the trip. With reduced motion there is no trip. 1500 has a new
+  highlighted landmark, "Templos del recinto sagrado" (today: behind and under the Cathedral,
+  approximate). The sources pass still has to verify it.
+- **"Gira con tu celular".** On touch phones with orientation support, a white pill in the
+  picture turns the compass on, with the line "En el Zócalo o desde casa" under it. It hides
+  once the compass is on or after the first drag.
+- **"Guardar postal".** This button builds a 1080×1350 PNG of the current view. The honesty stamp,
+  the era, "mirando al …" and the address are drawn into the image. It shares through the phone
+  when possible and downloads otherwise. The page also has `description` and `og:` tags, so
+  links show a preview text.
+- **Labels and wording.**
+  - Era names are now Hoy / 1910 / 1700 / 1500 / Mamuts / Mar, with 2026 / Porfiriato /
+    Virreinato / Tenochtitlan / 14 mil años / 100 M años underneath.
+  - The slider hint reads "Desliza → para ir más atrás".
+  - "EN VIVO" and "Cámara en vivo" are now "HOY · 2026".
+  - The counter reads "hace 100 millones de años" and "hace 14 mil años", and it no longer
+    switches formats partway through a count.
+  - Directions use the local set: nororiente, suroriente, surponiente, norponiente. The strip
+    shows N / Ote / S / Pte.
+  - "No es una foto" is kept only in the stamp's screen-reader label.
+  - Quotation marks are now “ ”.
+- **Info panel.**
+  - "Qué verías" comes first.
+  - Confidence, "En qué se basa" and "Lo que no sabemos" fold into one "¿Qué tan seguro es esto?
+    · confianza …" section.
+  - Tapping the stamp scrolls to that section and opens it.
+  - On phones under 880 px, "Frente a ti" and the compass strip are hidden.
+- **Quick fixes.**
+  - The charset and viewport tags now sit right after the title.
+  - The photo picker no longer forces the camera, so a gallery photo also works.
+  - Each era change is announced to screen readers ("1500, Tenochtitlan. Reconstrucción
+    artística, confianza media-baja.").
+  - Each era step vibrates briefly on Android.
+  - Inside the preview frame, the share button says the link will work once the page is
+    published.
+
+**Checked:**
+- The script passes `node --check`.
+- Headless Chrome loads the page without errors. The trip ends on 1500 facing the Cathedral, with
+  the caption, tags and stamp as described.
+- A tap on "Ver hoy" turns on today's layer. The label becomes "Volver a 1500" and the stamp hides.
+- The postal gets as far as the share step.
+- Headless Chrome can't go narrower than 500 px, so the 375–400 px layout is still unchecked.
+
+**Still pending**
+- The draggable before/after curtain (a split view with a "Hoy | 1500" handle). This was the
+  critic's stretch goal.
+- The postal is a single image. A side-by-side "hoy | 1500" version is still to do.
+- Check on a real phone:
+  - the 375–400 px layout
+  - how the Ver hoy pill, the stamp and the "Gira con tu celular" pill sit together
+  - that the postal share works on iPhone and Android.
+- The strip is still not tappable. It's hidden on phones instead.
+- The texts, sources and the new "Templos del recinto sagrado" landmark are still sample data to
+  verify.
