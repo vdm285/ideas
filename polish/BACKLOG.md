@@ -4,7 +4,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Globo 1b — motion, card, flags.** Drag inertia, zoom-scaled sensitivity, a hop in the fly-to, spin that eases. Card name in Alegreya 800, a fact card that is not the sample amber, segmented tabs, a drop cap on adult Historia. One flag image per country from flag-icons 7.5.0, hidden on error, with credit in the footer. Acceptance: a drag coasts, and a Windows phone shows a flag image.
+1. **Globo 1b — motion and card, still open.** A drag coasts, the card shows a flag image, and the fact card is no longer the sample amber. Still open: a hop in the fly-to (zoom out about 15% mid-flight, 600–1,600 ms by distance), spin that eases, segmented tabs, a drop cap on adult Historia, and neighbour chips. Acceptance: flying to a country pulls back, then settles.
 
 ## Later (alternate apps, lowest score first)
 
@@ -13,6 +13,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Globo fact card (iteration 7).** The "¿Sabías que…?" card uses the accent tint in both themes. The sample ribbon stays amber. Tabs and the drop cap are still open.
 - **Globo flags (iteration 6).** A flag image on the country name, from flag-icons, hidden if it fails. The credit is in Acerca.
 - **Globo drag coast (iteration 5).** The globe keeps turning after a drag and eases to a stop. Fly-to hop, flags, and the card type are still open.
 - **Tabla 1b (iteration 4).** TV page height 1,374 → 1,080. Stat strip on every card. Amber safety note. Quiz check and shake. Shaded Bohr nucleus. The level control is not yet a sliding thumb, and electrons are not lit spheres.
@@ -26,10 +27,10 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Tabla, dark: the f-block rows are the closest pair under a colour-blind simulation. Contrast failures are now 0.
 - Tabla, TV: the page fits, and the experiment and quiz sit below the fold inside the card.
 - Tabla, Reto: the end is a text bar and ten dots.
-- Globo, phone: the footer runs into the collapsed sheet, and the chips sit between the globe and the sheet.
-- Globo, TV: the search bar crosses the top of the disc, and drag still has no inertia.
-- Globo, both themes: the "¿Sabías que…?" card uses the same amber as the sample ribbon.
-- Globo, motion: drag stops dead. Frames average 22 ms, p95 32 ms.
+- Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
+- Globo, TV: the search bar crosses the top of the disc.
+- Globo, card: the tabs are a plain underline, and adult Historia has no drop cap.
+- Globo, motion: a drag coasts; the fly-to does not hop. Frames average 22 ms, p95 33 ms.
 
 ## Needs Victor
 
