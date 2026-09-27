@@ -4,7 +4,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Globo — drop cap on adult Historia.** The first paragraph of an adult Historia is still plain. Give its first letter a drop cap. Kids mode stays plain. Do not change the words. Acceptance: México's adult Historia opens with a large first letter, and Modo niños does not.
+1. **Tabla phone — less chrome above the table.** The rotation note still takes two lines above the sideways table. Make it one line and keep the meaning. Acceptance: the phone picture shows the table higher, the note still says to turn the phone, and targets under 44 px do not rise.
 
 ## Later (alternate apps, lowest score first)
 
@@ -14,6 +14,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Globo drop cap (iteration 14).** Adult Historia opens with a large first letter. Modo niños does not. The score stays 73 because the neighbour chips are still plain.
 - **Tabla electrons (iteration 13).** Each electron is a shaded sphere, and it glows in the dark. The frame time stayed about 16 ms. The card score stays 7 because the quiz is still below the fold.
 - **Globo tabs (iteration 12).** Historia, Comida, Cultura, and Hoy are a segmented control. The text fades in. G4 8 → 9. Historia still has no drop cap.
 - **Tabla phone preview (iteration 11).** Pressing a tile shows its symbol and name. During Reto the name is hidden. T6 6 → 7. The resting tiles are still nameless.
@@ -36,7 +37,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Tabla, Reto: the end is a text bar and ten dots.
 - Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
 - Globo, TV: the search bar crosses the top of the disc.
-- Globo, card: adult Historia has no drop cap, and the neighbour chips are plain.
+- Globo, card: the neighbour chips are plain text.
 - Globo, game: ¿Dónde está…? is still a plain question, with no progress and no end card.
 - Globo, motion: a flight hops and Giro eases. Slow frames are about 33 ms.
 

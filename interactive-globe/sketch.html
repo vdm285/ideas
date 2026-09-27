@@ -152,6 +152,7 @@ a{color:var(--accent)}
 .tab[aria-selected="true"]{color:var(--ink)}
 .kids .tab svg{width:22px;height:22px}
 .tabbody{display:flex;flex-direction:column;gap:12px}
+.tabbody p.drop::first-letter{font-family:var(--display);font-weight:800;float:left;font-size:3.1rem;line-height:.78;padding:.06em .12em 0 0;color:var(--ink)}
 .tabbody.in{animation:tabin 150ms var(--ease-out)}
 @keyframes tabin{from{opacity:0}to{opacity:1}}
 .tabbody p{margin:0;max-width:65ch}
@@ -1115,7 +1116,8 @@ $("share").onclick = async () => {
 };
 function bodyFor(s) {
   if (tab !== "hoy") {
-    return "<p>" + esc(kids ? s[tab].k : s[tab].a) + "</p>";
+    const drop = !kids && tab === "historia" ? "drop" : "";
+    return "<p" + (drop ? ' class="' + drop + '"' : "") + ">" + esc(kids ? s[tab].k : s[tab].a) + "</p>";
   }
   const n = s.hoy;
   const top = '<div class="label"><span class="tag">tema de ejemplo · no es la noticia de hoy</span></div>';

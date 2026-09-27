@@ -1,6 +1,6 @@
 # Tabla Viva and Globo Curioso
 
-**Status:** working. Last push 27 sep 2026, 16:52 (Mexico City). Iteration 13. Both apps pass the check.
+**Status:** working. Last push 27 sep 2026, 16:57 (Mexico City). Iteration 14. Both apps pass the check.
 
 **How to see it:**
 
@@ -12,12 +12,12 @@
 **Scoreboard:** Tabla 68. Globo 73.
 
 - Tabla 68. T1 6, the phone table is higher but the rotation note still leads. T2 7, contrast failures are 0; alkali and noble gases are both pink. T3 7, phone tiles still have no names until you press. T4 6, card type is small from across a room. T5 7, the electrons are lit spheres; the quiz still sits below the fold on a TV. T6 7, pressing a phone tile shows its name; there is still no move from tile to card. T7 8, a TV no longer scrolls (1,080 px). T8 5, the Reto end is a text bar. T9 7, 133 phone targets are under 44 px. T10 8, one global sample badge covers the automatic cards.
-- Globo 73. G1 7, the search bar still crosses the top of the disc. G2 7, the graticule is faint. G3 7, a flight pulls back and Giro eases; slow frames are still about 34 ms. G4 9, the tabs are a segmented control; Historia still has no drop cap. G5 8, a TV no longer scrolls and the phone sheet works. G6 6, the search sits on the globe. G7 6, Modo niños fits on a TV; the game is still plain. G8 7, night has a blue halo. G9 6, 18 targets are under 44 px. G10 8, the sample ribbon is easy to miss in the card.
-- Errors: none. Under 24 px: 0. Contrast failures: 0. TV page height: 1,080 px for both. Globe p95: 34 ms.
+- Globo 73. G1 7, the search bar still crosses the top of the disc. G2 7, the graticule is faint. G3 7, a flight pulls back and Giro eases; slow frames are still about 33 ms. G4 9, adult Historia opens with a large first letter; the neighbour chips are still plain. G5 8, a TV no longer scrolls and the phone sheet works. G6 6, the search sits on the globe. G7 6, Modo niños fits on a TV; the game is still plain. G8 7, night has a blue halo. G9 6, 18 targets are under 44 px. G10 8, the sample ribbon is easy to miss in the card.
+- Errors: none. Under 24 px: 0. Contrast failures: 0. TV page height: 1,080 px for both. Globe p95: 33 ms.
 
 **Top 3 changes:**
 
-1. The Bohr electrons are small shaded spheres. In the dark they glow.
+1. Adult Historia opens with a large first letter. Modo niños keeps the paragraph plain.
 2. On an element card, a blue thumb slides between 8 años, 12 años, and 15 o más.
 3. Flying to a country pulls the globe back, then settles. Turning Giro off lets it slow down.
 
@@ -25,7 +25,7 @@
 
 1. The globe's search bar still sits on top of the disc.
 2. Phone tiles are still small, and the name shows only while you press.
-3. Historia is still a plain paragraph, and on a TV the rest of an element card sits below the fold.
+3. Neighbour chips are still plain text, and on a TV the rest of an element card sits below the fold.
 
 **Needs Victor:**
 
@@ -35,6 +35,7 @@
 
 ## Iterations
 
+- **27 sep 2026, 16:57, Globo, drop cap.** Globo stays 73. Adult Historia opens with a large first letter. Comida, Cultura, and Modo niños stay plain. The words are the same.
 - **27 sep 2026, 16:52, Tabla, electrons.** Tabla stays 68. Each electron is a shaded sphere, and in the dark it glows. The Bohr drawing still takes about 16 ms a frame. The quiz is still below the fold, so the card score stays 7.
 - **27 sep 2026, 16:47, Globo, tabs.** Globo 71 → 73. The four tabs are a segmented control with a sliding thumb, and the text fades in 150 ms. Reduced motion skips the fade. Historia still has no drop cap.
 - **27 sep 2026, 16:40, Tabla, phone preview.** Tabla 67 → 68. Pressing a tile shows its symbol and name in a bubble. During Reto the name stays hidden. The tiles are still nameless at rest.
