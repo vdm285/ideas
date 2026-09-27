@@ -27,7 +27,7 @@
   --fs-l:clamp(1.5rem,1.1rem + 1.2vw,2.4rem);
   --fs-xl:clamp(1.8rem,1.2rem + 1.8vw,3rem);
   --bg:#E9F0F1; --surface:#FFFFFF; --surface-2:#F3F7F7; --ink:#13262E; --muted:#4D6168; --line:#C8D7DA;
-  --ocean:#A9D1E0; --ocean-lit:#E7F6FB; --ocean-deep:#5E97AE; --rim:#2E6F88; --grat:rgba(19,38,46,.12); --shine:rgba(255,255,255,.55);
+  --ocean:#A9D1E0; --ocean-lit:#E7F6FB; --ocean-deep:#5E97AE; --rim:#2E6F88; --grat:rgba(19,38,46,.2); --shine:rgba(255,255,255,.55);
   --l0:#E4D0A2; --l1:#E4BBA8; --l2:#C5D2B2; --l3:#E3C6D2; --l4:#E7D7B6; --land-edge:#6A5E52;
   --pick:#D4411D; --pick-edge:#13262E; --hover:#FFFFFF;
   --accent:#1D5E78; --accent-soft:#D5E7ED; --accent-ink:#FFFFFF;
@@ -42,7 +42,7 @@
   :root:not([data-theme="light"]){
     color-scheme:dark;
     --bg:#0B1920; --surface:#11242D; --surface-2:#0E1E26; --ink:#E3ECEE; --muted:#99AFB6; --line:#23404B;
-    --ocean:#16394B; --ocean-lit:#2E6E88; --ocean-deep:#071821; --rim:#5EA5C1; --grat:rgba(227,236,238,.09); --shine:rgba(255,255,255,.07);
+    --ocean:#16394B; --ocean-lit:#2E6E88; --ocean-deep:#071821; --rim:#5EA5C1; --grat:rgba(227,236,238,.16); --shine:rgba(255,255,255,.07);
     --l0:#8C7344; --l1:#8A5648; --l2:#3E6248; --l3:#7A4E62; --l4:#8A6840; --land-edge:#0B1920;
     --pick:#FF7449; --pick-edge:#FFE2D6; --hover:#E3ECEE;
     --accent:#7CC2DC; --accent-soft:#1A3947; --accent-ink:#0B1920;
@@ -53,7 +53,7 @@
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#0B1920; --surface:#11242D; --surface-2:#0E1E26; --ink:#E3ECEE; --muted:#99AFB6; --line:#23404B;
-  --ocean:#16394B; --ocean-lit:#2E6E88; --ocean-deep:#071821; --rim:#5EA5C1; --grat:rgba(227,236,238,.09); --shine:rgba(255,255,255,.07);
+  --ocean:#16394B; --ocean-lit:#2E6E88; --ocean-deep:#071821; --rim:#5EA5C1; --grat:rgba(227,236,238,.16); --shine:rgba(255,255,255,.07);
   --l0:#8C7344; --l1:#8A5648; --l2:#3E6248; --l3:#7A4E62; --l4:#8A6840; --land-edge:#0B1920;
   --pick:#FF7449; --pick-edge:#FFE2D6; --hover:#E3ECEE;
   --accent:#7CC2DC; --accent-soft:#1A3947; --accent-ink:#0B1920;
@@ -91,7 +91,7 @@ a{color:var(--accent)}
 #globe{display:block;width:100%;height:auto;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;border-radius:50%;box-shadow:0 22px 36px rgba(19,38,46,.2)}
 #globe.dragging{cursor:grabbing}
 #globe .sphere{fill:url(#oceanGrad);stroke:var(--rim);stroke-width:1.5}
-#globe .grat{fill:none;stroke:var(--grat);stroke-width:.7}
+#globe .grat{fill:none;stroke:var(--grat);stroke-width:.9}
 #globe .land{stroke:var(--land-edge);stroke-width:.35;stroke-linejoin:round}
 #globe .land.c0{fill:var(--l0)} #globe .land.c1{fill:var(--l1)} #globe .land.c2{fill:var(--l2)} #globe .land.c3{fill:var(--l3)} #globe .land.c4{fill:var(--l4)}
 #globe .land.hov{stroke:var(--hover);stroke-width:1.6}

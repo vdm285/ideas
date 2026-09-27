@@ -4,7 +4,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla — bigger Bohr on a TV.** The drawing is the picture people came to see, and the quiz sits under it. Shrink only the caption and the fill buttons on a short wide screen, without moving the quiz above the drawing. Acceptance: the nucleus stays fully on screen at 1920×1080, and the page does not scroll.
+1. **Tabla — phone names at rest.** Tiles stay about 32 px, and the name appears only while you press. A resting label is not possible at that size. The next try is a slightly larger symbol on the phone tiles without raising the page. Acceptance: the phone page stays under 1,200 px, and targets under 24 px stay 0.
 
 ## Later (alternate apps, lowest score first)
 
@@ -14,6 +14,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Globo grid (iteration 23).** The lines are stronger and still fade at the rim. G2 7 → 8. Globo 77 → 78. No degree labels.
 - **Globo Hoy thread (iteration 22).** The timeline is ink: a hollow dot, then a filled dot. The sample tag stays first. Globo stays 77.
 - **Tabla arrow keys (iteration 21).** Left and right move one element. Up and down move 18. The score stays 69. The quiz was not moved above the Bohr, because that hid the drawing.
 - **Globo controls (iteration 20).** Search, chips, and controls sit clear of the globe. G6 7 → 8. Globo 76 → 77. The globe is smaller.
