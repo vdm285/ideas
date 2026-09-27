@@ -1691,7 +1691,20 @@ const HOOK = {
   document.addEventListener("keydown", ev => {
     if (attract.on) { stopAttract(); return; }
     resetIdle();
-    if (ev.key === "Escape") { $("#more").open = false; if (sheetOpen()) closeSheet(); }
+    if (ev.target.closest("input, textarea")) return;
+    if (ev.key === "Escape") { $("#more").open = false; if (sheetOpen()) closeSheet(); return; }
+    if (!state.sel || !ev.key.startsWith("Arrow")) return;
+    let z = state.sel;
+    if (ev.key === "ArrowRight") z = z % 118 + 1;
+    else if (ev.key === "ArrowLeft") z = (z + 116) % 118 + 1;
+    else if (ev.key === "ArrowDown") z = Math.min(118, z + 18);
+    else if (ev.key === "ArrowUp") z = Math.max(1, z - 18);
+    else return;
+    ev.preventDefault();
+    if (reto.on) { retoPick(z); return; }
+    open(z, false);
+    const cell = cells[z - 1];
+    if (cell) cell.focus({ preventScroll: true });
   });
 
   mqT.addEventListener("change", layout);

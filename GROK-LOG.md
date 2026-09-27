@@ -1,6 +1,6 @@
 # Tabla Viva and Globo Curioso
 
-**Status:** working. Last push 27 sep 2026, 17:26 (Mexico City). Iteration 20. Both apps pass the check.
+**Status:** working. Last push 27 sep 2026, 17:33 (Mexico City). Iteration 21. Both apps pass the check.
 
 **How to see it:**
 
@@ -17,7 +17,7 @@
 
 **Top 3 changes:**
 
-1. On a television the search, the country chips, and the controls sit clear of the globe.
+1. The arrow keys move between elements: left and right by one, up and down by a row. Typing in the search is left alone.
 2. On an element card, a blue thumb slides between 8 años, 12 años, and 15 o más.
 3. Flying to a country pulls the globe back, then settles. Turning Giro off lets it slow down.
 
@@ -35,6 +35,7 @@
 
 ## Iterations
 
+- **27 sep 2026, 17:33, Tabla, arrow keys.** Tabla stays 69. Left and right move one element. Up and down move a row of 18. The search box still uses the arrows for the cursor. Moving the quiz above the Bohr was tried and put back, because it hid the drawing.
 - **27 sep 2026, 17:26, Globo, controls.** Globo 76 → 77. The search, the country chips, and the controls sit clear of the globe, including in Modo niños. The globe is smaller. The page still fits in 1,080 px.
 - **27 sep 2026, 17:20, Tabla, attract.** T8 6 → 7. Tabla stays 69. The exhibition caption shifts each cycle. Reduced motion leaves it still. Holding the logo for 3 seconds still exits. There is no confetti.
 - **27 sep 2026, 17:15, Globo, search.** Globo 73 → 76. On a television the search sits above the globe. The page still fits in 1,080 px. The controls still touch the south rim.

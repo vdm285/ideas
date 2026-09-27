@@ -4,7 +4,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla — card below the fold.** On a television the experiment and the quiz sit inside the card, below the story. Bring the quiz up, or shorten the story block, without hiding the Bohr picture. Acceptance: at 1920×1080 the first quiz answer is visible without scrolling the card.
+1. **Globo — Hoy thread.** The Hoy tab is still a stack of headings. Turn "Antes" and "Hoy" into a clearer thread, keep the neutral quote cards, and keep "tema de ejemplo" prominent. Do not change the words. Acceptance: the sample tag is still the first thing in Hoy, and the page still fits a TV.
 
 ## Later (alternate apps, lowest score first)
 
@@ -14,6 +14,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Tabla arrow keys (iteration 21).** Left and right move one element. Up and down move 18. The score stays 69. The quiz was not moved above the Bohr, because that hid the drawing.
 - **Globo controls (iteration 20).** Search, chips, and controls sit clear of the globe. G6 7 → 8. Globo 76 → 77. The globe is smaller.
 - **Tabla attract (iteration 19).** The exhibition caption shifts each cycle. Reduced motion leaves it still. T8 6 → 7. Tabla stays 69.
 - **Globo search (iteration 18).** On a television the search sits above the globe. G1 7 → 8, G6 6 → 7. Globo 73 → 76. The controls still touch the south rim.
