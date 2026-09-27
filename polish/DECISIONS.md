@@ -23,3 +23,4 @@
 21. 2026-09-27 16:47 Mexico City — globo — The four tabs are a segmented control. The thumb is placed on the selected button, and the text fades in 150 ms. Reduced motion skips both. Undo: restore the underline tabs and remove the thumb.
 22. 2026-09-27 16:52 Mexico City — tabla — Electrons use one shared highlight, painted on each dot, so the count and the fill order stay the same. No shadow filter, so the drawing stays near 16 ms a frame. Undo: set `#bohr .e` fill back to the accent and remove `eGrad`.
 23. 2026-09-27 16:57 Mexico City — globo — Only adult Historia gets a drop cap. Comida, Cultura, Hoy, and Modo niños stay plain paragraphs, and the words are unchanged. Undo: remove `p.drop` and the class.
+24. 2026-09-27 17:01 Mexico City — tabla — On a phone the rotation note is one line and still tells you to turn the phone. The table starts a little higher. Undo: restore the two-sentence note and the old margins.

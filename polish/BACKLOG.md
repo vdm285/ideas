@@ -4,7 +4,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla phone — less chrome above the table.** The rotation note still takes two lines above the sideways table. Make it one line and keep the meaning. Acceptance: the phone picture shows the table higher, the note still says to turn the phone, and targets under 44 px do not rise.
+1. **Globo — neighbour chips.** The "Colinda con" chips are plain names. Show the same flag image used on the country card, and keep the tap target at least 44 px. Acceptance: México's neighbours show a flag, and a failed image hides.
 
 ## Later (alternate apps, lowest score first)
 
@@ -14,6 +14,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Tabla phone note (iteration 15).** The rotation note is one line. The phone page went from 1,208 px to 1,183 px. The score stays 68 because the note still sits above the table.
 - **Globo drop cap (iteration 14).** Adult Historia opens with a large first letter. Modo niños does not. The score stays 73 because the neighbour chips are still plain.
 - **Tabla electrons (iteration 13).** Each electron is a shaded sphere, and it glows in the dark. The frame time stayed about 16 ms. The card score stays 7 because the quiz is still below the fold.
 - **Globo tabs (iteration 12).** Historia, Comida, Cultura, and Hoy are a segmented control. The text fades in. G4 8 → 9. Historia still has no drop cap.

@@ -172,14 +172,14 @@ body.kiosk .more { display: none; }
 .colors .legend { margin-top: 6px; }
 .rot-note { display: none; margin: 8px 0 0; font-size: .85rem; color: var(--muted); }
 @media (max-width: 699px) {
-  .rot-note { display: block; margin: 2px 0 0; }
+  .rot-note { display: block; margin: 0; font-size: .84rem; line-height: 1.25; }
   .wrap { padding-block: 6px 24px; }
   .top { padding-block: 0 4px; gap: 8px; }
   .sub { display: none; }
   h1 { font-size: 1.35rem; }
   .logo { width: 42px; height: 44px; font-size: 1.15rem; }
   .badge { font-size: .62rem; padding: 3px 6px; }
-  .stage { margin-top: 6px; }
+  .stage { margin-top: 2px; }
   .colors { margin-top: 0; }
   .colors > summary { min-height: 32px; }
 }
@@ -600,7 +600,7 @@ body.kiosk .ai-note, body.kiosk .badge, body.kiosk .foot { display: none; }
     <button type="button" id="reto-again" hidden>Otra ronda</button>
     <button type="button" id="reto-exit">Salir</button>
   </div>
-  <p class="rot-note">En el celular la tabla va de lado. Si giras el teléfono, la ves como en tu libro.</p>
+  <p class="rot-note">Gira el teléfono: la tabla se ve como en tu libro.</p>
 
   <main class="stage">
     <div class="pt norm" id="pt" role="group" aria-label="Tabla periódica: 118 elementos"></div>
