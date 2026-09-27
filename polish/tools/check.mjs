@@ -14,7 +14,7 @@ import path from "node:path";
 import { pathToFileURL, fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
-const ENFORCE_STANDARDS = false;
+const ENFORCE_STANDARDS = true;
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(HERE, "..", "..");
 const args = process.argv.slice(2);
@@ -926,7 +926,7 @@ function ratchet() {
 }
 
 function writeBaselines(hashes) {
-  if (!isRepo || fails.length || !hashes.tabla || !hashes.globo) return;
+  if (!isRepo || quick || fails.length || !hashes.tabla || !hashes.globo) return;
   const prevLock = fs.existsSync(lockPath) ? JSON.parse(fs.readFileSync(lockPath, "utf8")) : null;
   if (!prevLock) {
     fs.writeFileSync(lockPath, JSON.stringify({ tabla: hashes.tabla, globo: hashes.globo }, null, 2) + "\n", "utf8");

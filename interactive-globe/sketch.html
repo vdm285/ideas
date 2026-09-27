@@ -1,9 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#E9F0F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1920" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Gira el globo y toca un país para ver su ficha.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23A9D1E0'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%232E6F88' stroke-width='1.5'/%3E%3C/svg%3E">
 <title>Globo Curioso</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500;700;800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500;700;800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
 <style>
 :root{
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
+  --space-5:24px; --space-6:32px; --space-7:48px;
+  --radius-s:8px; --radius-m:12px; --radius-l:16px;
+  --elev-1:0 1px 2px rgba(19,38,46,.08);
+  --elev-2:0 8px 20px rgba(19,38,46,.12);
+  --elev-3:0 16px 40px rgba(19,38,46,.18);
+  --t-fast:120ms; --t-ui:200ms; --t-panel:320ms;
+  --ease-out:cubic-bezier(.2,.8,.2,1);
+  --ease-inout:cubic-bezier(.65,0,.35,1);
+  --fs-s:clamp(.85rem,.8rem + .2vw,1rem);
+  --fs-b:clamp(1.0625rem,.95rem + .3vw,1.25rem);
+  --fs-l:clamp(1.5rem,1.1rem + 1.2vw,2.4rem);
+  --fs-xl:clamp(1.8rem,1.2rem + 1.8vw,3rem);
   --bg:#E9F0F1; --surface:#FFFFFF; --surface-2:#F3F7F7; --ink:#13262E; --muted:#4D6168; --line:#C8D7DA;
   --ocean:#A9D1E0; --ocean-deep:#76AEC3; --rim:#2E6F88; --grat:rgba(19,38,46,.12); --shine:rgba(255,255,255,.55);
   --l0:#F1DC8E; --l1:#F0BBA4; --l2:#BDD89E; --l3:#E2C6DD; --l4:#F4CC91; --land-edge:#5F7378;
@@ -177,6 +199,8 @@ footer p{margin:0}
   .pill,#globe .land.sel.flash{animation:none}
 }
 </style>
+</head>
+<body>
 
 <div class="wrap" id="app">
   <p class="ribbon">Boceto: textos de ejemplo, sin revisar</p>
@@ -1140,3 +1164,5 @@ if (fromLink) { $("pill").hidden = true; flash(selected); }
 setSpin(!fromLink && !reduce);
 if (phone.matches) sheet(fromLink ? "peek" : "mini");
 </script>
+</body>
+</html>

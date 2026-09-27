@@ -8,3 +8,5 @@
 6. 2026-09-27 14:50 Mexico City — both — The short token scan applies to text files. JPEG bytes can contain those three characters by chance. Longer tokens are scanned in every staged file. Undo: scan every byte of the shots.
 7. 2026-09-27 14:40 Mexico City — both — `core.autocrlf` is true for this repo. The existing git name and email were already set, so they were left as they are. Undo: `git config --unset core.autocrlf`.
 8. 2026-09-27 14:57 Mexico City — tabla — At 1024×768 the card stays a sheet (the dock starts at 1180). Tier 1b will decide whether the tablet should dock. Undo: change the 1180 px breakpoint.
+9. 2026-09-27 15:12 Mexico City — both — Tier 0 adds the document head and declares spacing, type, and motion tokens without using them, so the colours stay put. Globo's font stylesheet uses the same non-blocking trick as Tabla. Undo: revert commit of iteration 1.
+10. 2026-09-27 15:12 Mexico City — both — A quick check must not rewrite the saved measurements, or a light-only run would erase the dark-mode contrast count. Undo: let every run write `polish/metrics.json`.

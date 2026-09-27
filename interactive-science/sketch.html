@@ -1,6 +1,13 @@
-<title>Tabla Viva</title>
+<!doctype html>
+<html lang="es">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#EDF1F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D131A" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Toca la tabla periódica y abre la ficha de cada elemento.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314212F'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23EDF1F5'/%3E%3C/svg%3E">
+<title>Tabla Viva</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" media="print" onload="this.media='all'">
@@ -9,6 +16,19 @@
 
 /* ---------- Tokens: light palette on bare :root ---------- */
 :root {
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px;
+  --radius-s: 8px; --radius-m: 12px; --radius-l: 18px;
+  --elev-1: 0 1px 2px rgba(20, 33, 47, .08);
+  --elev-2: 0 8px 20px rgba(20, 33, 47, .12);
+  --elev-3: 0 16px 40px rgba(20, 33, 47, .16);
+  --t-fast: 120ms; --t-ui: 200ms; --t-panel: 320ms;
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --ease-inout: cubic-bezier(.65, 0, .35, 1);
+  --fs-s: clamp(.8rem, .75rem + .2vw, 1rem);
+  --fs-b: clamp(1rem, .92rem + .3vw, 1.2rem);
+  --fs-l: clamp(1.35rem, 1.05rem + 1vw, 2rem);
+  --fs-xl: clamp(1.8rem, 1.2rem + 1.8vw, 3rem);
   --bg: #EDF1F5;
   --surface: #FFFFFF;
   --surface-2: #F4F7FA;
@@ -425,6 +445,8 @@ body.kiosk .ai-note, body.kiosk .badge, body.kiosk .foot { display: none; }
   #bohr .orb, .tap-ring, .cell.glow, .cell.hint, .cell.miss, .cell.hit::before { animation: none !important; }
 }
 </style>
+</head>
+<body>
 
 <div class="wrap">
   <header class="top">
@@ -1532,3 +1554,5 @@ const HOOK = {
   if (!reduced()) STORY.forEach((z, k) => setTimeout(() => { const c = cells[z - 1]; c.classList.remove("glow"); void c.offsetWidth; c.classList.add("glow"); }, 700 + k * 250));
 })();
 </script>
+</body>
+</html>
