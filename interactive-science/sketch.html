@@ -508,6 +508,7 @@ body.kiosk .ai-note, body.kiosk .badge, body.kiosk .foot { display: none; }
 .attract-card {
   background: var(--ink); color: var(--bg); border-radius: 20px; padding: 18px 26px 20px; max-width: 660px;
   text-align: center; box-shadow: var(--shadow); display: grid; justify-items: center; gap: 6px;
+  transition: transform var(--t-panel) var(--ease-out);
 }
 .attract .big-call { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.5rem, 1rem + 3vw, 3rem); line-height: 1.05; margin: 0; text-wrap: balance; }
 .attract .fact { margin: 0; font-size: 1.1rem; min-height: 2.9em; }
@@ -1522,6 +1523,11 @@ const HOOK = {
     const f = ATTRACT[attract.fi++ % ATTRACT.length];
     $("#attract-fact").textContent = "¿Sabías que…? " + f.t;
     if (f.z) lupaShow(EL[f.z - 1]);
+    const card = document.querySelector(".attract-card");
+    if (!card) return;
+    if (reduced()) { card.style.transform = ""; return; }
+    const shifts = [0, -6, 6, -3, 4];
+    card.style.transform = "translateX(" + shifts[attract.fi % shifts.length] + "vw)";
   }
   function waveStep() {
     attract.col = attract.col % 18 + 1;

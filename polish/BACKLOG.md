@@ -4,7 +4,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla — attract caption.** The exhibition caption stays in one place, which can burn a television. Move the caption a little each cycle, and keep it still when motion is reduced. Acceptance: the 3 second logo hold still leaves exhibition mode.
+1. **Globo — controls off the south rim.** The zoom and Giro pill still covers the bottom of the disc. Lift it just clear of the globe without covering the country chips, and keep Modo niños from colliding. Acceptance: at 1920×1080 the controls do not overlap the disc or the chips, and the page stays 1,080 px.
 
 ## Later (alternate apps, lowest score first)
 
@@ -14,6 +14,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Tabla attract (iteration 19).** The exhibition caption shifts each cycle. Reduced motion leaves it still. T8 6 → 7. Tabla stays 69.
 - **Globo search (iteration 18).** On a television the search sits above the globe. G1 7 → 8, G6 6 → 7. Globo 73 → 76. The controls still touch the south rim.
 - **Tabla Reto end (iteration 17).** Three stars, a large score, and a blue "Otra ronda". T8 5 → 6. Tabla 68 → 69. Attract mode is still plain.
 - **Globo neighbour flags (iteration 16).** Neighbour chips show a flag and are 44 px tall. Targets under 44 px: 18 → 11. G9 6 → 7. Globo stays 73.
@@ -38,7 +39,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Tabla, phone: the table starts after the logo, the badge, the search, and the rotation note.
 - Tabla, dark: the f-block rows are the closest pair under a colour-blind simulation. Contrast failures are now 0.
 - Tabla, TV: the page fits, and the experiment and quiz sit below the fold inside the card.
-- Tabla, Reto: attract mode is still a static caption. The end card now has stars.
+- Tabla, Reto: the end card has stars, and the exhibition caption now shifts. There is still no confetti.
 - Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
 - Globo, TV: the controls still sit on the south edge of the disc. The search is above the globe.
 - Globo, card: Hoy is still a stack of headings.
