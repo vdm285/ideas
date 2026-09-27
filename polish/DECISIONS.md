@@ -25,3 +25,4 @@
 23. 2026-09-27 16:57 Mexico City — globo — Only adult Historia gets a drop cap. Comida, Cultura, Hoy, and Modo niños stay plain paragraphs, and the words are unchanged. Undo: remove `p.drop` and the class.
 24. 2026-09-27 17:01 Mexico City — tabla — On a phone the rotation note is one line and still tells you to turn the phone. The table starts a little higher. Undo: restore the two-sentence note and the old margins.
 25. 2026-09-27 17:05 Mexico City — globo — Neighbour chips use the same flag image as the country name, and the emoji flag helper is gone. Chips are 44 px tall, so targets under 44 px went from 18 to 11. Undo: restore `flagOf` in the chips and the 40 px height.
+26. 2026-09-27 17:10 Mexico City — tabla — A finished round shows one, two, or three stars from the score already on screen, a large line, and a blue "Otra ronda". The stars do not move. The banner text is unchanged. Undo: remove the star row and the `.again` button style.

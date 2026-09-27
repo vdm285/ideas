@@ -490,6 +490,9 @@ body.kiosk .ai-note, body.kiosk .badge, body.kiosk .foot { display: none; }
 .soon p { margin: 0 0 8px; }
 .rp h2 { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; margin: 0; }
 .rp .rt { font-family: var(--font-display); font-weight: 800; font-size: 2.6rem; line-height: 1.05; margin: 8px 0; }
+.rp .rt { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.7rem, 3vw, 2.5rem); line-height: 1.05; margin: 4px 0; }
+.rp .stars { margin: 0; letter-spacing: .18em; font-size: 1.7rem; color: var(--accent); }
+.sbtn.again { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); min-height: 52px; font-size: 1.15rem; }
 .dots { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; padding: 0; list-style: none; }
 .dots li { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); }
 .dots li.ok { background: var(--good); border-color: var(--good); }
@@ -1401,8 +1404,9 @@ const HOOK = {
     return `<div class="rp">
       <h2>Reto ${reto.lv === "easy" ? "fácil" : "difícil"}</h2>
       ${reto.done
-        ? `<p class="rt">${endText()}</p><p>Tu mejor ronda: ${getBest()} de ${ROUND}.</p>
-           <div class="bohr-ctl" style="justify-content:flex-start"><button class="sbtn" type="button" data-reto="again">Otra ronda</button><button class="sbtn" type="button" data-reto="exit">Salir del reto</button></div>`
+        ? `<p class="stars" aria-hidden="true">${"★".repeat(reto.score === ROUND ? 3 : reto.score >= 7 ? 2 : 1)}${"☆".repeat(reto.score === ROUND ? 0 : reto.score >= 7 ? 1 : 2)}</p>
+           <p class="rt">${endText()}</p><p>Tu mejor ronda: ${getBest()} de ${ROUND}.</p>
+           <div class="bohr-ctl" style="justify-content:flex-start"><button class="sbtn again" type="button" data-reto="again">Otra ronda</button><button class="sbtn" type="button" data-reto="exit">Salir del reto</button></div>`
         : `<p>Pregunta ${reto.i + 1} de ${ROUND}. Busca en la tabla:</p><p class="rt">${targetLabel(t)}</p>
            <p class="caption" style="text-align:left">${reto.lv === "easy" ? "Fácil: busca la casilla con este símbolo." : "Difícil: los nombres se ocultan; tienes que saber su símbolo."} Si fallas, primero se marca su fila y luego su columna.</p>`}
       <ul class="dots" aria-label="Resultados de la ronda">${dots}</ul>

@@ -4,7 +4,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla — Reto end.** The end of a round is a text bar and ten dots. Give it a clear end card with the score and a big "Otra ronda", and keep it still when motion is reduced. Acceptance: a perfect round still says "¡10 de 10! Perfecto." and the end is obvious on a TV.
+1. **Globo — search off the disc.** On a television the search bar still crosses the top of the globe. Move it into the header row so the ocean is clear, and keep the page at 1,080 px. Acceptance: the search still finds a country, and nothing scrolls.
 
 ## Later (alternate apps, lowest score first)
 
@@ -14,6 +14,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Tabla Reto end (iteration 17).** Three stars, a large score, and a blue "Otra ronda". T8 5 → 6. Tabla 68 → 69. Attract mode is still plain.
 - **Globo neighbour flags (iteration 16).** Neighbour chips show a flag and are 44 px tall. Targets under 44 px: 18 → 11. G9 6 → 7. Globo stays 73.
 - **Tabla phone note (iteration 15).** The rotation note is one line. The phone page went from 1,208 px to 1,183 px. The score stays 68 because the note still sits above the table.
 - **Globo drop cap (iteration 14).** Adult Historia opens with a large first letter. Modo niños does not. The score stays 73 because the neighbour chips are still plain.
@@ -36,7 +37,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Tabla, phone: the table starts after the logo, the badge, the search, and the rotation note.
 - Tabla, dark: the f-block rows are the closest pair under a colour-blind simulation. Contrast failures are now 0.
 - Tabla, TV: the page fits, and the experiment and quiz sit below the fold inside the card.
-- Tabla, Reto: the end is a text bar and ten dots.
+- Tabla, Reto: attract mode is still a static caption. The end card now has stars.
 - Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
 - Globo, TV: the search bar crosses the top of the disc.
 - Globo, card: Hoy is still a stack of headings.
