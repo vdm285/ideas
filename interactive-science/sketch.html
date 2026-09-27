@@ -195,6 +195,16 @@ body.kiosk .more { display: none; }
 .seg button { min-height: 44px; padding: 0 14px; border: 0; background: transparent; font-weight: 700; cursor: pointer; }
 .seg button + button { border-left: 2px solid var(--line); }
 .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.seg.lv { position: relative; --i: 1; display: inline-grid; grid-template-columns: repeat(3, minmax(5.6rem, 1fr)); }
+.seg.lv .thumb {
+  position: absolute; z-index: 0; top: 0; bottom: 0; left: 0; width: calc(100% / 3);
+  background: var(--accent); pointer-events: none;
+  transform: translateX(calc(var(--i) * 100%));
+  transition: transform var(--t-ui) var(--ease-out);
+}
+.seg.lv button { position: relative; z-index: 1; }
+.seg.lv button + button { border-left-color: transparent; }
+.seg.lv button[aria-pressed="true"] { background: transparent; color: var(--accent-ink); }
 .legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
 .legend-label { font-size: .85rem; color: var(--muted); margin-right: 4px; }
 .chip {
@@ -1182,7 +1192,7 @@ const HOOK = {
     if (smp) {
       h += `
       <div class="lv-row"><span class="lv-label" id="lv-lab">Cuéntamelo como para:</span>
-        <div class="seg" role="group" aria-labelledby="lv-lab">${LEVELS.map((l, i) => `<button type="button" data-lv="${i}" aria-pressed="${i === lvl}">${l}</button>`).join("")}</div>
+        <div class="seg lv" role="group" aria-labelledby="lv-lab" style="--i:${lvl}"><span class="thumb" aria-hidden="true"></span>${LEVELS.map((l, i) => `<button type="button" data-lv="${i}" aria-pressed="${i === lvl}">${l}</button>`).join("")}</div>
         ${sayBtn()}
       </div>
       <p class="story" id="story">${smp.lv[lvl]}</p>`;
@@ -1330,9 +1340,18 @@ const HOOK = {
     }
     const lv = t.closest("[data-lv]");
     if (lv) {
+      const from = state.level;
       state.level = +lv.dataset.lv;
       const top = panel.scrollTop; renderPanel(e); panel.scrollTop = top;
       const b = panel.querySelector(`[data-lv="${state.level}"]`); if (b) b.focus({ preventScroll: true });
+      const seg = panel.querySelector(".seg.lv"), thumb = seg && seg.querySelector(".thumb");
+      if (thumb && from !== state.level && !reduced()) {
+        thumb.style.transition = "none";
+        seg.style.setProperty("--i", String(from));
+        void thumb.offsetWidth;
+        thumb.style.transition = "";
+        seg.style.setProperty("--i", String(state.level));
+      }
       return;
     }
     const opt = t.closest("[data-opt]");

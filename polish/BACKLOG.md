@@ -4,16 +4,17 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla phone — lift the table.** The rotation note and the colour question still sit above a sideways table of nameless tiles. Shorten that chrome so more of the table shows on a phone, without a new button. Acceptance: the phone picture shows the table higher, and targets under 44 px do not rise.
+1. **Globo — Modo niños on a TV.** The control labels collide when the type is larger. Keep every button, and stop them overlapping. Acceptance: with Modo niños on, at 1920×1080, each control is readable and none covers another. The page still fits in 1,080 px.
 
 ## Later (alternate apps, lowest score first)
 
 - **Globo, next.** In Modo niños the TV control labels collide. Then segmented tabs, a drop cap on adult Historia, and neighbour chips.
-- **Tabla.** Finger preview on phones. Tile-to-card move. Reto HUD, stars, short confetti. Attract caption that moves. `?kiosk=1`. Más closes on an outside tap. Arrow keys between tiles. A sliding thumb on the level control, and lit electrons.
+- **Tabla.** Lift the phone table: the rotation note still leads, and the tiles have no names. Finger preview. Tile-to-card move. Reto HUD, stars, short confetti. Attract caption that moves. `?kiosk=1`. Más closes on an outside tap. Arrow keys between tiles. Lit electrons.
 - **Globo.** Forgiving taps near a coast. Hoy as an Antes → Hoy thread with neutral quote cards. Game HUD, a pulse when right, an arc when wrong. Friendlier Modo niños. Styled search suggestions. A Spanish message if d3 fails to load. The search bar still crosses the disc.
 
 ## Done
 
+- **Tabla level switch (iteration 9).** A thumb slides between 8 años, 12 años, and 15 o más. The card score stays 7 because the quiz is still below the fold on a TV.
 - **Globo fly-to (iteration 8).** A flight pulls back about 15%, then settles. Giro eases in and out. Fresh pictures are in `polish/shots/latest/`. Tabs, the drop cap, and the Modo niños control collision are still open.
 - **Globo fact card (iteration 7).** The "¿Sabías que…?" card uses the accent tint in both themes. The sample ribbon stays amber. Tabs and the drop cap are still open.
 - **Globo flags (iteration 6).** A flag image on the country name, from flag-icons, hidden if it fails. The credit is in Acerca.
