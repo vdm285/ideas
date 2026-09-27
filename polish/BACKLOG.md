@@ -4,16 +4,17 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Globo card — segmented tabs.** Historia, Comida, Cultura, and Hoy are still an underline. Make them a segmented control with the icons they already have, a sliding indicator, and a short crossfade. Do not change the texts. Acceptance: the four tabs still switch, and the selected one is obvious on a TV.
+1. **Tabla — lit electrons.** The Bohr picture has a shaded nucleus, and the electrons are still flat dots. Draw them as small lit spheres, brighter in the dark theme, without changing the counts. Acceptance: the television card shows round electrons, and reduced motion stays still.
 
 ## Later (alternate apps, lowest score first)
 
-- **Globo, next.** Segmented tabs, a drop cap on adult Historia, and neighbour chips. The search bar still crosses the disc.
+- **Globo, next.** A drop cap on adult Historia, and neighbour chips. The search bar still crosses the disc.
 - **Tabla.** Lift the phone table: the rotation note still leads. Tile-to-card move. Reto HUD, stars, short confetti. Attract caption that moves. `?kiosk=1`. Más closes on an outside tap. Arrow keys between tiles. Lit electrons.
 - **Globo.** Forgiving taps near a coast. Hoy as an Antes → Hoy thread with neutral quote cards. Game HUD, a pulse when right, an arc when wrong. Friendlier Modo niños. Styled search suggestions. A Spanish message if d3 fails to load. The search bar still crosses the disc.
 
 ## Done
 
+- **Globo tabs (iteration 12).** Historia, Comida, Cultura, and Hoy are a segmented control. The text fades in. G4 8 → 9. Historia still has no drop cap.
 - **Tabla phone preview (iteration 11).** Pressing a tile shows its symbol and name. During Reto the name is hidden. T6 6 → 7. The resting tiles are still nameless.
 - **Globo Modo niños (iteration 10).** On a TV the controls stay on one line and clear the country chips. G7 5 → 6. The game is still plain.
 - **Tabla level switch (iteration 9).** A thumb slides between 8 años, 12 años, and 15 o más. The card score stays 7 because the quiz is still below the fold on a TV.
@@ -34,7 +35,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Tabla, Reto: the end is a text bar and ten dots.
 - Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
 - Globo, TV: the search bar crosses the top of the disc.
-- Globo, card: the tabs are a plain underline, and adult Historia has no drop cap.
+- Globo, card: adult Historia has no drop cap, and the neighbour chips are plain.
 - Globo, game: ¿Dónde está…? is still a plain question, with no progress and no end card.
 - Globo, motion: a flight hops and Giro eases. Slow frames are about 33 ms.
 
