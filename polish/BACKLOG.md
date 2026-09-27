@@ -4,7 +4,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Globo — neighbour chips.** The "Colinda con" chips are plain names. Show the same flag image used on the country card, and keep the tap target at least 44 px. Acceptance: México's neighbours show a flag, and a failed image hides.
+1. **Tabla — Reto end.** The end of a round is a text bar and ten dots. Give it a clear end card with the score and a big "Otra ronda", and keep it still when motion is reduced. Acceptance: a perfect round still says "¡10 de 10! Perfecto." and the end is obvious on a TV.
 
 ## Later (alternate apps, lowest score first)
 
@@ -14,6 +14,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Globo neighbour flags (iteration 16).** Neighbour chips show a flag and are 44 px tall. Targets under 44 px: 18 → 11. G9 6 → 7. Globo stays 73.
 - **Tabla phone note (iteration 15).** The rotation note is one line. The phone page went from 1,208 px to 1,183 px. The score stays 68 because the note still sits above the table.
 - **Globo drop cap (iteration 14).** Adult Historia opens with a large first letter. Modo niños does not. The score stays 73 because the neighbour chips are still plain.
 - **Tabla electrons (iteration 13).** Each electron is a shaded sphere, and it glows in the dark. The frame time stayed about 16 ms. The card score stays 7 because the quiz is still below the fold.
@@ -38,7 +39,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Tabla, Reto: the end is a text bar and ten dots.
 - Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
 - Globo, TV: the search bar crosses the top of the disc.
-- Globo, card: the neighbour chips are plain text.
+- Globo, card: Hoy is still a stack of headings.
 - Globo, game: ¿Dónde está…? is still a plain question, with no progress and no end card.
 - Globo, motion: a flight hops and Giro eases. Slow frames are about 33 ms.
 

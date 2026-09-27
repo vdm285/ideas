@@ -128,7 +128,7 @@ a{color:var(--accent)}
 .btn svg,.chip svg,.tab svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 @media (pointer:coarse){.zoombtn{display:none!important}}
 .chips{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;justify-content:center;font-size:.92rem;color:var(--muted)}
-.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 14px;font-weight:700;cursor:pointer;min-height:40px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 14px;font-weight:700;cursor:pointer;min-height:44px}
 .chip:hover{border-color:var(--accent)}
 .search{display:flex;gap:8px;max-width:600px;margin-inline:auto;width:100%}
 .search input{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;min-height:42px}
@@ -502,7 +502,6 @@ const ALIAS = {
 /* Spanish names where the browser's own name reads oddly (and Wikipedia slugs that differ from the name). */
 const NAME_ES = { CI: "Costa de Marfil", MM: "Birmania (Myanmar)", TL: "Timor Oriental", CG: "República del Congo" };
 const WIKI = { CI: "Costa_de_Marfil", MM: "Birmania", TL: "Timor_Oriental", CG: "República_del_Congo", CD: "República_Democrática_del_Congo" };
-const noFlags = /Windows/.test(navigator.userAgent); // Windows shows flag emoji as two letters
 /* Places too small for the 1:110m map (ISO codes; names come from the browser). */
 const SMALL = "AD AG AI AS AW AX BB BH BL BM BQ CC CK CV CW CX DM FM FO GD GG GI GP GU HK IM IO JE KI KM KN KY LC LI MC MF MH MO MP MQ MS MT MU MV NF NR NU PF PM PN PW RE SC SG SH SM ST SX TC TK TO TV VA VC VG VI WF WS YT".split(" ");
 const CDMX = [-99.13, 19.43];
@@ -548,10 +547,6 @@ features.forEach((f, i) => { f.i = i; f.name = nameOf(f); f.area = d3.geoArea(f)
 const byCode = {};
 features.forEach(f => { if (f.properties.a) byCode[f.properties.a] = f; });
 const fold = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-function flagOf(a) {
-  if (noFlags || !a || !/^[A-Z]{2}$/.test(a)) return "";
-  return String.fromCodePoint(...[...a].map(ch => 0x1F1A5 + ch.charCodeAt(0)));
-}
 function flagImg(a) {
   if (!a || !/^[A-Z]{2}$/.test(a)) return "";
   const src = "https://cdn.jsdelivr.net/npm/flag-icons@7.5.0/flags/4x3/" + a.toLowerCase() + ".svg";
@@ -1014,8 +1009,7 @@ function factLines(f) {
 }
 function chipsFor(list) {
   return '<div class="chips">' + list.map(g => {
-    const fl = flagOf(g.properties.a);
-    return '<button class="chip" type="button" data-fi="' + g.i + '">' + (fl ? '<span aria-hidden="true">' + fl + "</span>" : "") + esc(g.name) + "</button>";
+    return '<button class="chip" type="button" data-fi="' + g.i + '">' + flagImg(g.properties.a) + esc(g.name) + "</button>";
   }).join("") + "</div>";
 }
 function moreFor(f, s) {

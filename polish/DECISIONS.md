@@ -24,3 +24,4 @@
 22. 2026-09-27 16:52 Mexico City — tabla — Electrons use one shared highlight, painted on each dot, so the count and the fill order stay the same. No shadow filter, so the drawing stays near 16 ms a frame. Undo: set `#bohr .e` fill back to the accent and remove `eGrad`.
 23. 2026-09-27 16:57 Mexico City — globo — Only adult Historia gets a drop cap. Comida, Cultura, Hoy, and Modo niños stay plain paragraphs, and the words are unchanged. Undo: remove `p.drop` and the class.
 24. 2026-09-27 17:01 Mexico City — tabla — On a phone the rotation note is one line and still tells you to turn the phone. The table starts a little higher. Undo: restore the two-sentence note and the old margins.
+25. 2026-09-27 17:05 Mexico City — globo — Neighbour chips use the same flag image as the country name, and the emoji flag helper is gone. Chips are 44 px tall, so targets under 44 px went from 18 to 11. Undo: restore `flagOf` in the chips and the 40 px height.
