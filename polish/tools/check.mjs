@@ -639,6 +639,12 @@ async function globoFlows(browser, file) {
     await page.mouse.up();
     const after = await page.evaluate(() => rot[0]);
     report(Math.abs(after - before) > 2, "globo drag", `${before.toFixed(1)} -> ${after.toFixed(1)}`);
+    await page.waitForFunction(() => {
+      const r = rot[0];
+      const prev = window.__coastR;
+      window.__coastR = r;
+      return prev != null && Math.abs(r - prev) < 0.02;
+    }, null, { timeout: 5000, polling: 40 }).catch(() => {});
 
     const country = await globoPoint(page, "country");
     report(!!country, "globo country point", country ? country.code : "none");

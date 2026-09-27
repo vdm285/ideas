@@ -13,6 +13,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Globo drag coast (iteration 5).** The globe keeps turning after a drag and eases to a stop. Fly-to hop, flags, and the card type are still open.
 - **Tabla 1b (iteration 4).** TV page height 1,374 → 1,080. Stat strip on every card. Amber safety note. Quiz check and shake. Shaded Bohr nucleus. The level control is not yet a sliding thumb, and electrons are not lit spheres.
 - **Globo 1a (iteration 3).** Hero globe, TV page height 1,113 → 1,080, night halo, muted lands, footer folded into Acerca. Search still crosses the disc.
 - **Tabla 1a (iteration 2).** Warm page, matched family colours, calm transition metals, dark glass tiles, pill search, 8 px tiles, star badge. Contrast failures 5 → 0. Phone page height 1,353 → 1,208. TV still 1,374.

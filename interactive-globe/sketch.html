@@ -719,6 +719,9 @@ function oceanMsg(ll) { const o = oceanAt(ll); return o ? "Eso es " + o + ". Toc
 /* ---------- Pointer: drag, pinch, tap, hover ---------- */
 const ptrs = new Map();
 let drag = null, pinch = null, moved = 0;
+let coast = null;
+const trail = [];
+function stopCoast() { if (coast) { coast.stop(); coast = null; } }
 function local(e) {
   const r = svg.node().getBoundingClientRect();
   return [(e.clientX - r.left) * size / r.width, (e.clientY - r.top) * size / r.height];
@@ -735,8 +738,9 @@ svg.on("pointerdown", e => {
   svg.node().setPointerCapture(e.pointerId);
   if (e.pointerType === "mouse") { try { svg.node().focus({ preventScroll: true }); } catch (err) {} }
   ptrs.set(e.pointerId, [e.clientX, e.clientY]);
-  setSpin(false); clearTimeout(idleTimer);
+  setSpin(false); stopCoast(); clearTimeout(idleTimer);
   if (flight) { flight.stop(); flight = null; }
+  trail.length = 0;
   tip.hidden = true; if (!quiz) $("pill").hidden = true;
   if (ptrs.size === 1) { drag = { x: e.clientX, y: e.clientY, rot: rot.slice() }; moved = 0; }
   if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch = { d: Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, z: zoom }; moved = 99; }
@@ -768,6 +772,9 @@ svg.on("pointermove", e => {
     const r = svg.node().getBoundingClientRect();
     const k = (180 / Math.PI) / proj.scale() * (size / r.width);
     rot = [drag.rot[0] + dx * k, Math.max(-85, Math.min(85, drag.rot[1] - dy * k)), 0];
+    const now = performance.now();
+    trail.push({ t: now, r: rot.slice() });
+    while (trail.length && now - trail[0].t > 80) trail.shift();
     render();
   }
 });
@@ -784,7 +791,23 @@ function endPtr(e, cancelled) {
       else if (f) { select(f, true); if (kids) sayName(f); }
       else if (f === null) say(oceanMsg(proj.invert(pt)));
     }
+    if (!cancelled && moved >= 6 && !reduce && trail.length > 1) {
+      const now = performance.now();
+      const old = trail[0];
+      const dt = Math.max(1, (now - old.t) / 16.7);
+      let vx = (rot[0] - old.r[0]) / dt;
+      let vy = (rot[1] - old.r[1]) / dt;
+      if (Math.hypot(vx, vy) >= 0.02) {
+        coast = d3.timer(() => {
+          vx *= 0.92; vy *= 0.92;
+          if (Math.hypot(vx, vy) < 0.02) { stopCoast(); return; }
+          rot = [rot[0] + vx, Math.max(-85, Math.min(85, rot[1] + vy)), 0];
+          render();
+        });
+      }
+    }
     drag = null; pinch = null;
+    trail.length = 0;
     idle();
   }
 }
@@ -819,6 +842,7 @@ function flyLL(c, z1, dur, extraTurn, done) {
   while (target[0] - rot[0] < -180) target[0] += 360;
   if (extraTurn && !reduce) target[0] += 360;
   const z0 = zoom;
+  stopCoast();
   if (flight) flight.stop();
   if (reduce) { rot = target; zoom = z1; render(); if (done) done(); return; }
   const ir = d3.interpolate(rot.slice(), target);
