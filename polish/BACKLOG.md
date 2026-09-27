@@ -4,7 +4,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Globo — search off the disc.** On a television the search bar still crosses the top of the globe. Move it into the header row so the ocean is clear, and keep the page at 1,080 px. Acceptance: the search still finds a country, and nothing scrolls.
+1. **Tabla — attract caption.** The exhibition caption stays in one place, which can burn a television. Move the caption a little each cycle, and keep it still when motion is reduced. Acceptance: the 3 second logo hold still leaves exhibition mode.
 
 ## Later (alternate apps, lowest score first)
 
@@ -14,6 +14,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Globo search (iteration 18).** On a television the search sits above the globe. G1 7 → 8, G6 6 → 7. Globo 73 → 76. The controls still touch the south rim.
 - **Tabla Reto end (iteration 17).** Three stars, a large score, and a blue "Otra ronda". T8 5 → 6. Tabla 68 → 69. Attract mode is still plain.
 - **Globo neighbour flags (iteration 16).** Neighbour chips show a flag and are 44 px tall. Targets under 44 px: 18 → 11. G9 6 → 7. Globo stays 73.
 - **Tabla phone note (iteration 15).** The rotation note is one line. The phone page went from 1,208 px to 1,183 px. The score stays 68 because the note still sits above the table.
@@ -39,7 +40,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Tabla, TV: the page fits, and the experiment and quiz sit below the fold inside the card.
 - Tabla, Reto: attract mode is still a static caption. The end card now has stars.
 - Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
-- Globo, TV: the search bar crosses the top of the disc.
+- Globo, TV: the controls still sit on the south edge of the disc. The search is above the globe.
 - Globo, card: Hoy is still a stack of headings.
 - Globo, game: ¿Dónde está…? is still a plain question, with no progress and no end card.
 - Globo, motion: a flight hops and Giro eases. Slow frames are about 33 ms.
