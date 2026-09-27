@@ -1,6 +1,6 @@
 # Tabla Viva and Globo Curioso
 
-**Status:** working. Last push 27 sep 2026, 16:27 (Mexico City). Iteration 9. Both apps pass the check.
+**Status:** working. Last push 27 sep 2026, 16:33 (Mexico City). Iteration 10. Both apps pass the check.
 
 **How to see it:**
 
@@ -9,23 +9,23 @@
 3. ZIP: https://github.com/vdm285/ideas/archive/refs/heads/grok/polish-2026-09-27.zip. Unzip it and double-click either `sketch.html`. On this laptop the folder is `C:\Users\Victor\grok-work\ideas`.
 4. Before and after pictures: `polish/shots/before/` vs `polish/shots/latest/`.
 
-**Scoreboard:** Tabla 67 → 67. Globo 71.
+**Scoreboard:** Tabla 67. Globo 71 (G7 5 → 6).
 
 - Tabla 67. T1 6, the phone table is higher but the rotation note still leads. T2 7, contrast failures are 0; alkali and noble gases are both pink. T3 7, phone tiles still have no names. T4 6, card type is small from across a room. T5 7, the age switch has a sliding thumb; the quiz still sits below the fold on a TV. T6 6, a wrong quiz answer shakes, and there is no move from tile to card. T7 8, a TV no longer scrolls (1,080 px). T8 5, the Reto end is a text bar. T9 7, 133 phone targets are under 44 px. T10 8, one global sample badge covers the automatic cards.
-- Globo 71. G1 7, the search bar still crosses the top of the disc. G2 7, the graticule is faint. G3 7, a flight pulls back and Giro eases; slow frames are still about 33 ms. G4 8, the fact card is blue and the yellow sample ribbon stays yellow; the tabs are still a plain underline. G5 8, a TV no longer scrolls and the phone sheet works. G6 6, the search sits on the globe. G7 5, the game is plain, and Modo niños makes the TV controls collide. G8 7, night has a blue halo. G9 6, 18 targets are under 44 px. G10 8, the sample ribbon is easy to miss in the card.
-- Errors: none. Under 24 px: 0. Contrast failures: 0. TV page height: 1,080 px for both. Globe p95: 35 ms.
+- Globo 71. G1 7, the search bar still crosses the top of the disc. G2 7, the graticule is faint. G3 7, a flight pulls back and Giro eases; slow frames are still about 33 ms. G4 8, the fact card is blue and the yellow sample ribbon stays yellow; the tabs are still a plain underline. G5 8, a TV no longer scrolls and the phone sheet works. G6 6, the search sits on the globe. G7 6, Modo niños fits on a TV; the game is still plain. G8 7, night has a blue halo. G9 6, 18 targets are under 44 px. G10 8, the sample ribbon is easy to miss in the card.
+- Errors: none. Under 24 px: 0. Contrast failures: 0. TV page height: 1,080 px for both. Globe p95: 33 ms.
 
 **Top 3 changes:**
 
-1. On an element card, a blue thumb slides between 8 años, 12 años, and 15 o más.
-2. Flying to a country pulls the globe back, then settles. Turning Giro off lets it slow down.
-3. The "¿Sabías que…?" card is blue, so it no longer looks like the yellow sample label.
+1. In Modo niños, the television controls stay on one line and no longer cover the country chips.
+2. On an element card, a blue thumb slides between 8 años, 12 años, and 15 o más.
+3. Flying to a country pulls the globe back, then settles. Turning Giro off lets it slow down.
 
 **Top 3 open issues:**
 
 1. The globe's search bar still sits on top of the disc.
 2. Phone tiles are still small and have no names.
-3. In Modo niños the television controls run into each other. The country tabs are still a plain underline, and on a TV the rest of an element card sits below the fold.
+3. The country tabs are still a plain underline, and on a TV the rest of an element card sits below the fold.
 
 **Needs Victor:**
 
@@ -35,6 +35,7 @@
 
 ## Iterations
 
+- **27 sep 2026, 16:33, Globo, Modo niños.** G7 5 → 6. Globo stays 71. On a television the controls stay on one line and clear the country chips. The game is still plain.
 - **27 sep 2026, 16:27, Tabla, level switch.** Tabla stays 67. A blue thumb slides between 8 años, 12 años, and 15 o más. The quiz is still below the fold, so the card score stays 7.
 - **27 sep 2026, 16:21, Globo, fly-to hop.** Globo 69 → 71. A flight pulls back about 15% in the middle, then settles. Giro speeds up and slows down. Reduced motion still jumps. Fresh pictures are in `polish/shots/latest/`. In Modo niños the TV controls collide.
 - **27 sep 2026, 16:08, Globo, fact card.** Globo 68 → 69. The "¿Sabías que…?" card is blue by day and by night. The yellow ribbon, the "(ejemplo)" line, and the "tema de ejemplo" tag stay yellow.

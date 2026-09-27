@@ -4,16 +4,17 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Globo — Modo niños on a TV.** The control labels collide when the type is larger. Keep every button, and stop them overlapping. Acceptance: with Modo niños on, at 1920×1080, each control is readable and none covers another. The page still fits in 1,080 px.
+1. **Tabla phone — names on the tiles you press.** The sideways table still has nameless tiles about 32 px wide. A preview above the finger shows the big symbol and the name, and it does not add a button. Acceptance: pressing a phone tile shows its name before the card opens, and targets under 24 px stay 0.
 
 ## Later (alternate apps, lowest score first)
 
-- **Globo, next.** In Modo niños the TV control labels collide. Then segmented tabs, a drop cap on adult Historia, and neighbour chips.
-- **Tabla.** Lift the phone table: the rotation note still leads, and the tiles have no names. Finger preview. Tile-to-card move. Reto HUD, stars, short confetti. Attract caption that moves. `?kiosk=1`. Más closes on an outside tap. Arrow keys between tiles. Lit electrons.
+- **Globo, next.** Segmented tabs, a drop cap on adult Historia, and neighbour chips. The search bar still crosses the disc.
+- **Tabla.** Lift the phone table: the rotation note still leads. Tile-to-card move. Reto HUD, stars, short confetti. Attract caption that moves. `?kiosk=1`. Más closes on an outside tap. Arrow keys between tiles. Lit electrons.
 - **Globo.** Forgiving taps near a coast. Hoy as an Antes → Hoy thread with neutral quote cards. Game HUD, a pulse when right, an arc when wrong. Friendlier Modo niños. Styled search suggestions. A Spanish message if d3 fails to load. The search bar still crosses the disc.
 
 ## Done
 
+- **Globo Modo niños (iteration 10).** On a TV the controls stay on one line and clear the country chips. G7 5 → 6. The game is still plain.
 - **Tabla level switch (iteration 9).** A thumb slides between 8 años, 12 años, and 15 o más. The card score stays 7 because the quiz is still below the fold on a TV.
 - **Globo fly-to (iteration 8).** A flight pulls back about 15%, then settles. Giro eases in and out. Fresh pictures are in `polish/shots/latest/`. Tabs, the drop cap, and the Modo niños control collision are still open.
 - **Globo fact card (iteration 7).** The "¿Sabías que…?" card uses the accent tint in both themes. The sample ribbon stays amber. Tabs and the drop cap are still open.
@@ -33,7 +34,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
 - Globo, TV: the search bar crosses the top of the disc.
 - Globo, card: the tabs are a plain underline, and adult Historia has no drop cap.
-- Globo, Modo niños: on a TV the control labels collide.
+- Globo, game: ¿Dónde está…? is still a plain question, with no progress and no end card.
 - Globo, motion: a flight hops and Giro eases. Slow frames are about 33 ms.
 
 ## Needs Victor
