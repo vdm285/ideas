@@ -1,0 +1,26 @@
+{
+  "updated": "2026-09-27T21:05:15.510Z",
+  "tabla": {
+    "under44": 133,
+    "under24": 0,
+    "contrastFails": 5,
+    "axeSerious": 5,
+    "axeCritical": 0,
+    "tvPageHeight": 1390,
+    "fcp": 160,
+    "bohrFrameAvg": 16.3,
+    "longTasks": null
+  },
+  "globo": {
+    "under44": 18,
+    "under24": 0,
+    "contrastFails": 0,
+    "axeSerious": 1,
+    "axeCritical": 0,
+    "tvPageHeight": 1130,
+    "fcp": 304,
+    "frameAvg": 22,
+    "frameP95": 33.2,
+    "longTasks": null
+  }
+}
