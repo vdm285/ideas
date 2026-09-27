@@ -226,6 +226,13 @@ body.kiosk .more { display: none; }
 @media (min-width: 1180px) {
   .stage { grid-template-columns: minmax(0, 1fr) clamp(340px, 26vw, 470px); }
 }
+@media (min-width: 1180px) and (max-height: 1100px) {
+  .wrap { height: 100dvh; max-width: none; box-sizing: border-box; display: flex; flex-direction: column; padding-block: 8px 10px; }
+  .stage { flex: 1; min-height: 0; margin-top: 8px; align-items: stretch; }
+  .pt.norm { height: 100%; min-height: 0; grid-template-rows: auto repeat(7, minmax(0, 1fr)) 8px minmax(0, 1fr) minmax(0, 1fr); }
+  .pt.norm .cell { aspect-ratio: auto; min-height: 0; }
+  .panel { max-height: 100%; }
+}
 
 /* ---------- The table ---------- */
 .pt { display: grid; gap: 3px; }
@@ -359,6 +366,10 @@ html.big .cell .n { font-size: max(.6rem, min(15cqi, 14px)); }
 .big-tile .s { font-family: var(--font-display); font-weight: 800; font-size: 2.7rem; margin-top: 6px; }
 .big-tile .m { font-family: var(--font-mono); font-size: .72rem; margin-top: 4px; }
 .p-head h2 { font-family: var(--font-display); font-weight: 800; font-size: 2rem; line-height: 1.02; margin: 0; text-wrap: balance; }
+.strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 14px 0 0; }
+.strip div { background: var(--surface-2); border-radius: 10px; padding: 8px 10px; min-width: 0; }
+.strip dt { font-size: .68rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.strip dd { margin: 2px 0 0; font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: .95rem; overflow-wrap: anywhere; }
 .kind { margin: 6px 0 0; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .tag {
   font-family: var(--font-mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .07em;
@@ -374,7 +385,7 @@ html.big .cell .n { font-size: max(.6rem, min(15cqi, 14px)); }
 .bohr svg { width: 100%; max-width: 300px; height: auto; display: block; }
 #bohr .ring { fill: none; stroke: var(--line); stroke-width: 1.5; }
 #bohr .e { fill: var(--accent); transition: opacity .15s; }
-#bohr .nuc { fill: var(--cat); stroke: var(--ink); stroke-opacity: .25; }
+#bohr .nuc { fill: url(#nucGrad); stroke: var(--ink); stroke-opacity: .25; }
 #bohr .nuc-s { font-family: var(--font-display); font-weight: 800; font-size: 22px; fill: var(--tile-ink); }
 #bohr .orb { transform-box: view-box; transform-origin: 160px 160px; animation: spin 10s linear infinite; }
 #bohr.paused .orb { animation-play-state: paused; }
@@ -393,7 +404,7 @@ html.big .cell .n { font-size: max(.6rem, min(15cqi, 14px)); }
 .learn p, .todo p { margin: 0 0 6px; max-width: 62ch; }
 .lv-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 18px; }
 .lv-label { font-weight: 700; }
-.story { font-size: 1.12rem; line-height: 1.55; margin: 12px 0 6px !important; }
+.story { font-size: 1.15rem; line-height: 1.6; max-width: 62ch; margin: 12px 0 6px !important; }
 .hitbtn {
   flex: none; max-width: 52%; min-height: 38px; padding: 0 10px; border-radius: 9px; border: 0; cursor: pointer;
   background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: .92rem;
@@ -417,15 +428,21 @@ body.kiosk .ai-note, body.kiosk .badge, body.kiosk .foot { display: none; }
 .exp { background: var(--surface-2); border-radius: 12px; padding: 12px 14px; }
 .exp ol { margin: 6px 0 8px; padding-left: 1.3em; display: grid; gap: 4px; }
 .exp .note { font-size: .9rem; }
-.exp .safe strong { color: var(--warn); }
+.exp .safe { background: #F8E7C4; color: #3D2A08; border-radius: 10px; padding: 8px 12px; }
+.exp .safe strong { color: #6A3E00; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .exp .safe { background: #3A2C12; color: #F6E4C0; }
+  :root:not([data-theme="light"]) .exp .safe strong { color: #F0C27A; }
+}
 .quiz .q { font-weight: 700; }
 .opts { display: grid; gap: 6px; margin: 6px 0; }
 .opt {
   min-height: 48px; text-align: left; padding: 8px 14px; border-radius: 10px; border: 2px solid var(--line);
-  background: var(--surface); cursor: pointer; font-weight: 600;
+  background: var(--surface); cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;
 }
-.opt.right { border-color: var(--good); box-shadow: inset 0 0 0 1px var(--good); }
-.opt.wrong { border-color: var(--bad); opacity: .75; }
+.opt.right { border-color: var(--good); background: color-mix(in srgb, var(--good) 16%, var(--surface)); box-shadow: inset 0 0 0 1px var(--good); }
+.opt.right::after { content: "✓"; margin-left: auto; font-weight: 800; }
+.opt.wrong { border-color: var(--bad); opacity: .75; animation: shake .35s ease; }
 .why { font-weight: 600; }
 .todo { margin-top: 18px; border: 2px dashed var(--line); border-radius: 12px; padding: 4px 14px 14px; }
 .todo .src { font-size: .85rem; color: var(--muted); }
@@ -1005,7 +1022,7 @@ const HOOK = {
     });
     const rings = R.map(r => `<circle class="ring" cx="160" cy="160" r="${r.toFixed(1)}"/>`).join("");
     const orbs = groups.map((g, i) => `<g class="orb" style="animation-duration:${7 + i * 4}s${i % 2 ? ";animation-direction:reverse" : ""}">${g}</g>`).join("");
-    return `<svg id="bohr" viewBox="0 0 320 320" role="img" aria-label="Modelo de Bohr de ${e.name}: ${sh.join(", ")} electrones por capa">${rings}${orbs}<circle class="nuc" cx="160" cy="160" r="30"/><text class="nuc-s" x="160" y="161" text-anchor="middle" dominant-baseline="central">${e.s}</text></svg>`;
+    return `<svg id="bohr" viewBox="0 0 320 320" role="img" aria-label="Modelo de Bohr de ${e.name}: ${sh.join(", ")} electrones por capa"><defs><radialGradient id="nucGrad" cx="38%" cy="34%" r="70%"><stop offset="0%" stop-color="#fff" stop-opacity=".55"/><stop offset="45%" stop-color="var(--cat)"/><stop offset="100%" stop-color="var(--ink)" stop-opacity=".35"/></radialGradient></defs>${rings}${orbs}<circle class="nuc" cx="160" cy="160" r="30" fill="url(#nucGrad)"/><text class="nuc-s" x="160" y="161" text-anchor="middle" dominant-baseline="central">${e.s}</text></svg>`;
   }
   const restLabel = e => `${e.z} ${e.z === 1 ? "electrón" : "electrones"} en ${e.shells.length} ${e.shells.length === 1 ? "capa" : "capas"}`;
   const fillText = (sub, i, n) => state.level < 2
@@ -1155,7 +1172,13 @@ const HOOK = {
       <div class="p-head" style="--cat:${colorVar(e)};--cat-ink:${inkVar(e)}">
         <div class="big-tile" aria-hidden="true"><span class="z">${e.z}</span><span class="s">${e.s}</span></div>
         <div><h2>${e.name}</h2><p class="kind">${CAT[e.cat].one}${smp ? ' <span class="tag">★ Historia completa</span>' : ""}</p></div>
-      </div>`;
+      </div>
+      <dl class="strip">
+        <div><dt>Número atómico</dt><dd>${e.z}</dd></div>
+        <div><dt>Masa</dt><dd>${radio ? e.mass : e.mass + " u"}</dd></div>
+        <div><dt>Estado a 25 °C</dt><dd>${STATE[e.st]}</dd></div>
+        <div><dt>Grupo · Periodo</dt><dd>${e.f ? "fila f" : e.g} · ${e.p}</dd></div>
+      </dl>`;
     if (smp) {
       h += `
       <div class="lv-row"><span class="lv-label" id="lv-lab">Cuéntamelo como para:</span>

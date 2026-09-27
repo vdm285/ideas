@@ -1,14 +1,14 @@
 {
-  "updated": "2026-09-27T21:39:52.512Z",
+  "updated": "2026-09-27T21:46:45.349Z",
   "tabla": {
     "under44": 133,
     "under24": 0,
     "contrastFails": 0,
     "axeSerious": 0,
     "axeCritical": 0,
-    "tvPageHeight": 1374,
-    "fcp": 152,
-    "bohrFrameAvg": 16.4,
+    "tvPageHeight": 1080,
+    "fcp": 224,
+    "bohrFrameAvg": 16.3,
     "longTasks": null
   },
   "globo": {
@@ -18,9 +18,9 @@
     "axeSerious": 0,
     "axeCritical": 0,
     "tvPageHeight": 1080,
-    "fcp": 72,
-    "frameAvg": 22.1,
-    "frameP95": 33.1,
+    "fcp": 68,
+    "frameAvg": 22.9,
+    "frameP95": 33.4,
     "longTasks": null
   }
 }
