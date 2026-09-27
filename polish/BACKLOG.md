@@ -4,16 +4,17 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla — phone names at rest.** Tiles stay about 32 px, and the name appears only while you press. A resting label is not possible at that size. The next try is a slightly larger symbol on the phone tiles without raising the page. Acceptance: the phone page stays under 1,200 px, and targets under 24 px stay 0.
+1. **Globo — game HUD.** ¿Dónde está…? is still a plain question, with no progress and no end card. Add a small score pill, a pulse when the tap is right, a shake plus an arc to the right country when it is wrong, and an end card with stars. Acceptance: the question words stay the same, reduced motion skips the motion, the TV page stays 1,080 px, and Modo niños still shows no casualty numbers.
 
-## Later (alternate apps, lowest score first)
+## Later (alternate apps)
 
-- **Globo, next.** A drop cap on adult Historia, and neighbour chips. The search bar still crosses the disc.
-- **Tabla.** Lift the phone table: the rotation note still leads. Tile-to-card move. Reto HUD, stars, short confetti. Attract caption that moves. `?kiosk=1`. Más closes on an outside tap. Arrow keys between tiles.
-- **Globo.** Forgiving taps near a coast. Hoy as an Antes → Hoy thread with neutral quote cards. Game HUD, a pulse when right, an arc when wrong. Friendlier Modo niños. Styled search suggestions. A Spanish message if d3 fails to load. The search bar still crosses the disc.
+- **Tabla, next.** A slightly larger symbol on the phone tiles, without a resting name and without raising the page. Acceptance: the phone page stays under 1,200 px, and targets under 24 px stay 0. Do not move the quiz above the Bohr until the drawing can stay on screen.
+- **Globo.** Make the sample ribbon easier to see. Join the two pills under the globe if the page still fits. Degree labels only if they read as decoration of the grid, not as new facts.
+- **Tabla.** Short confetti on a perfect Reto, still off when motion is reduced. Tile-to-card move. Más closes on an outside tap.
 
 ## Done
 
+- **Tabla television story (iteration 24).** On a short wide screen the story is 20 px. T4 6 → 7. Tabla 69 → 70. From across a room that size is still the floor.
 - **Globo grid (iteration 23).** The lines are stronger and still fade at the rim. G2 7 → 8. Globo 77 → 78. No degree labels.
 - **Globo Hoy thread (iteration 22).** The timeline is ink: a hollow dot, then a filled dot. The sample tag stays first. Globo stays 77.
 - **Tabla arrow keys (iteration 21).** Left and right move one element. Up and down move 18. The score stays 69. The quiz was not moved above the Bohr, because that hid the drawing.
@@ -42,13 +43,13 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 - Tabla, phone: the table starts after the logo, the badge, the search, and the rotation note.
 - Tabla, dark: the f-block rows are the closest pair under a colour-blind simulation. Contrast failures are now 0.
-- Tabla, TV: the page fits, and the experiment and quiz sit below the fold inside the card.
+- Tabla, TV: the story is 20 px on a short wide screen. The experiment and quiz sit below the fold inside the card.
 - Tabla, Reto: the end card has stars, and the exhibition caption now shifts. There is still no confetti.
 - Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
 - Globo, TV: the globe is smaller so the controls can sit below it. Search, chips, and controls are clear of the disc.
 - Globo, card: Hoy is still a stack of headings. The timeline is now ink, not the selection red.
 - Globo, game: ¿Dónde está…? is still a plain question, with no progress and no end card.
-- Globo, motion: a flight hops and Giro eases. Slow frames are about 33 ms.
+- Globo, motion: a flight hops and Giro eases. A slow frame was 38 ms, inside the 25% band.
 
 ## Needs Victor
 

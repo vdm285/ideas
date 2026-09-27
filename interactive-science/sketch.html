@@ -428,6 +428,9 @@ html.big .cell .n { font-size: max(.6rem, min(15cqi, 14px)); }
 .lv-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 18px; }
 .lv-label { font-weight: 700; }
 .story { font-size: 1.15rem; line-height: 1.6; max-width: 62ch; margin: 12px 0 6px !important; }
+@media (min-width: 1180px) and (max-height: 1100px) {
+  .story { font-size: 1.25rem; }
+}
 .hitbtn {
   flex: none; max-width: 52%; min-height: 38px; padding: 0 10px; border-radius: 9px; border: 0; cursor: pointer;
   background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: .92rem;

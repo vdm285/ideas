@@ -32,3 +32,4 @@
 30. 2026-09-27 17:33 Mexico City — tabla — Arrow keys move by atomic number, and up or down jumps 18. They do nothing while the cursor is in the search. Moving the quiz above the Bohr was restored, because the drawing was cut off. Undo: remove the arrow branch. Do not retry the quiz move until the drawing can stay on screen.
 31. 2026-09-27 17:39 Mexico City — globo — The Hoy timeline uses ink, not the red used to mark the chosen country, so it does not look like a warning. The words are unchanged. Undo: point the dots back at `--thread`.
 32. 2026-09-27 17:44 Mexico City — globo — The grid is a bit darker and a bit thicker, in both themes, and it still fades toward the edge. Undo: set the grid opacity back to .12 by day and .09 at night, and the stroke back to .7.
+33. 2026-09-27 17:56 Mexico City — tabla — On a short wide screen the story is 20 px. The rule sits after the base size so it wins. Phones stay at the smaller size. Undo: delete that media query.
