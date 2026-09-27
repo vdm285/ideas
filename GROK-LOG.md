@@ -1,6 +1,6 @@
 # Tabla Viva and Globo Curioso
 
-**Status:** working. Last push 27 sep 2026, 17:20 (Mexico City). Iteration 19. Both apps pass the check.
+**Status:** working. Last push 27 sep 2026, 17:26 (Mexico City). Iteration 20. Both apps pass the check.
 
 **How to see it:**
 
@@ -9,15 +9,15 @@
 3. ZIP: https://github.com/vdm285/ideas/archive/refs/heads/grok/polish-2026-09-27.zip. Unzip it and double-click either `sketch.html`. On this laptop the folder is `C:\Users\Victor\grok-work\ideas`.
 4. Before and after pictures: `polish/shots/before/` vs `polish/shots/latest/`.
 
-**Scoreboard:** Tabla 69. Globo 73 → 76.
+**Scoreboard:** Tabla 69. Globo 76 → 77.
 
 - Tabla 69. T1 6, the rotation note is one line, and it still sits above the table. T2 7, contrast failures are 0; alkali and noble gases are both pink. T3 7, phone tiles still have no names until you press. T4 6, card type is small from across a room. T5 7, the electrons are lit spheres; the quiz still sits below the fold on a TV. T6 7, pressing a phone tile shows its name; there is still no move from tile to card. T7 8, a TV no longer scrolls (1,080 px). T8 7, the exhibition caption shifts each cycle; there is still no confetti. T9 7, 133 phone targets are under 44 px. T10 8, one global sample badge covers the automatic cards.
-- Globo 76. G1 8, the search sits above the globe; the controls still touch the south rim. G2 7, the graticule is faint. G3 7, a flight pulls back and Giro eases; slow frames are still about 38 ms. G4 9, neighbour chips show flags; Hoy is still a stack of headings. G5 8, a TV no longer scrolls and the phone sheet works. G6 7, the search is off the disc; the controls still sit on the south edge. G7 6, Modo niños fits on a TV; the game is still plain. G8 7, night has a blue halo. G9 7, 11 targets are under 44 px. G10 8, the sample ribbon is easy to miss in the card.
-- Errors: none. Under 24 px: 0. Contrast failures: 0. TV page height: 1,080 px for both. Globe p95: 38 ms.
+- Globo 77. G1 8, the globe is smaller so the controls can sit below it. G2 7, the graticule is faint. G3 7, a flight pulls back and Giro eases; slow frames are still about 35 ms. G4 9, neighbour chips show flags; Hoy is still a stack of headings. G5 8, a TV no longer scrolls and the phone sheet works. G6 8, the search and the controls are clear of the disc; they are two separate pills. G7 6, Modo niños fits on a TV; the game is still plain. G8 7, night has a blue halo. G9 7, 11 targets are under 44 px. G10 8, the sample ribbon is easy to miss in the card.
+- Errors: none. Under 24 px: 0. Contrast failures: 0. TV page height: 1,080 px for both. Globe p95: 35 ms.
 
 **Top 3 changes:**
 
-1. In exhibition mode the caption shifts a little each time the line changes, so it does not sit in one spot.
+1. On a television the search, the country chips, and the controls sit clear of the globe.
 2. On an element card, a blue thumb slides between 8 años, 12 años, and 15 o más.
 3. Flying to a country pulls the globe back, then settles. Turning Giro off lets it slow down.
 
@@ -25,7 +25,7 @@
 
 1. Phone tiles are still small, and the name shows only while you press.
 2. Hoy is still a stack of headings, and on a TV the rest of an element card sits below the fold.
-3. The globe's controls still sit on the south edge of the disc.
+3. The television globe is smaller than it was, so the controls can sit underneath it.
 
 **Needs Victor:**
 
@@ -35,6 +35,7 @@
 
 ## Iterations
 
+- **27 sep 2026, 17:26, Globo, controls.** Globo 76 → 77. The search, the country chips, and the controls sit clear of the globe, including in Modo niños. The globe is smaller. The page still fits in 1,080 px.
 - **27 sep 2026, 17:20, Tabla, attract.** T8 6 → 7. Tabla stays 69. The exhibition caption shifts each cycle. Reduced motion leaves it still. Holding the logo for 3 seconds still exits. There is no confetti.
 - **27 sep 2026, 17:15, Globo, search.** Globo 73 → 76. On a television the search sits above the globe. The page still fits in 1,080 px. The controls still touch the south rim.
 - **27 sep 2026, 17:10, Tabla, Reto end.** Tabla 68 → 69. A perfect round shows three stars, a large "¡10 de 10! Perfecto.", and a blue "Otra ronda". The stars stay still. Attract mode is still plain.

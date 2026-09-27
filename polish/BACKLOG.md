@@ -4,7 +4,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Globo — controls off the south rim.** The zoom and Giro pill still covers the bottom of the disc. Lift it just clear of the globe without covering the country chips, and keep Modo niños from colliding. Acceptance: at 1920×1080 the controls do not overlap the disc or the chips, and the page stays 1,080 px.
+1. **Tabla — card below the fold.** On a television the experiment and the quiz sit inside the card, below the story. Bring the quiz up, or shorten the story block, without hiding the Bohr picture. Acceptance: at 1920×1080 the first quiz answer is visible without scrolling the card.
 
 ## Later (alternate apps, lowest score first)
 
@@ -14,6 +14,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Globo controls (iteration 20).** Search, chips, and controls sit clear of the globe. G6 7 → 8. Globo 76 → 77. The globe is smaller.
 - **Tabla attract (iteration 19).** The exhibition caption shifts each cycle. Reduced motion leaves it still. T8 6 → 7. Tabla stays 69.
 - **Globo search (iteration 18).** On a television the search sits above the globe. G1 7 → 8, G6 6 → 7. Globo 73 → 76. The controls still touch the south rim.
 - **Tabla Reto end (iteration 17).** Three stars, a large score, and a blue "Otra ronda". T8 5 → 6. Tabla 68 → 69. Attract mode is still plain.
@@ -41,7 +42,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Tabla, TV: the page fits, and the experiment and quiz sit below the fold inside the card.
 - Tabla, Reto: the end card has stars, and the exhibition caption now shifts. There is still no confetti.
 - Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
-- Globo, TV: the controls still sit on the south edge of the disc. The search is above the globe.
+- Globo, TV: the globe is smaller so the controls can sit below it. Search, chips, and controls are clear of the disc.
 - Globo, card: Hoy is still a stack of headings.
 - Globo, game: ¿Dónde está…? is still a plain question, with no progress and no end card.
 - Globo, motion: a flight hops and Giro eases. Slow frames are about 33 ms.
