@@ -636,16 +636,34 @@ function flash(f) {
 
 /* ---------- Spin ---------- */
 /* The frame timer only runs while spinning (saves battery on cheap phones). */
-let spinning = false, spinTimer = null, last = null, idleTimer = null;
-function setSpin(on) {
-  spinning = on;
-  $("spin").setAttribute("aria-pressed", on ? "true" : "false");
-  if (on && !spinTimer) {
-    last = null;
-    spinTimer = d3.timer(t => { if (last != null) { rot[0] += (t - last) * 0.004; render(); } last = t; });
-  } else if (!on && spinTimer) { spinTimer.stop(); spinTimer = null; }
+let spinning = false, spinTimer = null, last = null, idleTimer = null, spinVel = 0;
+const SPIN_CRUISE = 0.004;
+function stopSpinMotion() {
+  const timer = spinTimer;
+  spinTimer = null; spinVel = 0; last = null;
+  if (timer) timer.stop();
 }
-$("spin").onclick = () => setSpin(!spinning);
+function setSpin(on) {
+  spinning = !!on && !reduce;
+  $("spin").setAttribute("aria-pressed", spinning ? "true" : "false");
+  if (!spinning) { stopSpinMotion(); return; }
+  if (spinTimer) return;
+  last = null;
+  spinTimer = d3.timer(t => {
+    if (last == null) { last = t; return; }
+    const dt = Math.min(50, t - last);
+    last = t;
+    if (spinning) spinVel = Math.min(SPIN_CRUISE, spinVel + SPIN_CRUISE * dt / 400);
+    else spinVel *= Math.pow(0.92, dt / 16.7);
+    if (!spinning && spinVel * 16.7 < 0.02) { stopSpinMotion(); return; }
+    rot[0] += dt * spinVel;
+    render();
+  });
+}
+$("spin").onclick = () => {
+  if (spinning) { spinning = false; $("spin").setAttribute("aria-pressed", "false"); }
+  else setSpin(true);
+};
 /* Phones have no spin button: the globe starts spinning again after 30 s without touches. */
 function idle() {
   clearTimeout(idleTimer);
@@ -840,27 +858,35 @@ svg.on("keydown", e => {
   e.preventDefault(); setSpin(false); render();
 });
 
-/* ---------- Fly to a country (roulette = extra full turn, slower, for Sorpréndeme) ---------- */
+/* ---------- Fly to a country (roulette = extra full turn, for Sorpréndeme) ---------- */
 let flight = null;
+function hopZoom(z0, zHop, z1, e) {
+  const t = e <= 0.5 ? e / 0.5 : (e - 0.5) / 0.5;
+  const s = t * t * (3 - 2 * t);
+  return e <= 0.5 ? z0 + (zHop - z0) * s : zHop + (z1 - zHop) * s;
+}
 function flyLL(c, z1, dur, extraTurn, done) {
   const target = [-c[0], Math.max(-70, Math.min(70, -c[1])), 0];
   while (target[0] - rot[0] > 180) target[0] -= 360;
   while (target[0] - rot[0] < -180) target[0] += 360;
   if (extraTurn && !reduce) target[0] += 360;
   const z0 = zoom;
+  const span = Math.hypot(target[0] - rot[0], target[1] - rot[1]);
+  const ms = dur == null ? Math.round(600 + Math.min(1, span / 180) * 1000) : dur;
+  const zHop = Math.max(0.85, Math.min(z0, z1) * 0.85);
   stopCoast();
   if (flight) flight.stop();
   if (reduce) { rot = target; zoom = z1; render(); if (done) done(); return; }
   const ir = d3.interpolate(rot.slice(), target);
   flight = d3.timer(t => {
-    const u = Math.min(1, t / dur), e = d3.easeCubicInOut(u);
-    rot = ir(e); zoom = z0 + (z1 - z0) * e; render();
-    if (u >= 1) { flight.stop(); flight = null; if (done) done(); }
+    const u = Math.min(1, t / ms), e = d3.easeCubicInOut(u);
+    rot = ir(e); zoom = hopZoom(z0, zHop, z1, e); render();
+    if (u >= 1) { flight.stop(); flight = null; zoom = z1; render(); if (done) done(); }
   });
 }
 function flyTo(f, roulette, done) {
   const z1 = f.area < 0.0008 ? Math.max(zoom, 3.5) : f.area < 0.004 ? Math.max(zoom, 2.2) : f.area > 0.1 ? Math.min(zoom, 1.2) : zoom;
-  flyLL(f.cen, z1, roulette ? 1800 : 900, roulette, () => { flash(f); if (done) done(); });
+  flyLL(f.cen, z1, null, roulette, () => { flash(f); if (done) done(); });
 }
 
 /* ---------- Read aloud ---------- */

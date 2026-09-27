@@ -4,15 +4,17 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Globo 1b — motion and card, still open.** A drag coasts, the card shows a flag image, and the fact card is no longer the sample amber. Still open: a hop in the fly-to (zoom out about 15% mid-flight, 600–1,600 ms by distance), spin that eases, segmented tabs, a drop cap on adult Historia, and neighbour chips. Acceptance: flying to a country pulls back, then settles.
+1. **Tabla phone — lift the table.** The rotation note and the colour question still sit above a sideways table of nameless tiles. Shorten that chrome so more of the table shows on a phone, without a new button. Acceptance: the phone picture shows the table higher, and targets under 44 px do not rise.
 
 ## Later (alternate apps, lowest score first)
 
-- **Tabla.** Finger preview on phones. Full-width rotated table. Tile-to-card move. Reto HUD, stars, short confetti. Attract caption that moves. `?kiosk=1`. Más closes on an outside tap. Arrow keys between tiles.
-- **Globo.** Forgiving taps near a coast. Hoy as an Antes → Hoy thread with neutral quote cards. Game HUD, a pulse when right, an arc when wrong. Friendlier Modo niños. Styled search suggestions. A Spanish message if d3 fails to load.
+- **Globo, next.** In Modo niños the TV control labels collide. Then segmented tabs, a drop cap on adult Historia, and neighbour chips.
+- **Tabla.** Finger preview on phones. Tile-to-card move. Reto HUD, stars, short confetti. Attract caption that moves. `?kiosk=1`. Más closes on an outside tap. Arrow keys between tiles. A sliding thumb on the level control, and lit electrons.
+- **Globo.** Forgiving taps near a coast. Hoy as an Antes → Hoy thread with neutral quote cards. Game HUD, a pulse when right, an arc when wrong. Friendlier Modo niños. Styled search suggestions. A Spanish message if d3 fails to load. The search bar still crosses the disc.
 
 ## Done
 
+- **Globo fly-to (iteration 8).** A flight pulls back about 15%, then settles. Giro eases in and out. Fresh pictures are in `polish/shots/latest/`. Tabs, the drop cap, and the Modo niños control collision are still open.
 - **Globo fact card (iteration 7).** The "¿Sabías que…?" card uses the accent tint in both themes. The sample ribbon stays amber. Tabs and the drop cap are still open.
 - **Globo flags (iteration 6).** A flag image on the country name, from flag-icons, hidden if it fails. The credit is in Acerca.
 - **Globo drag coast (iteration 5).** The globe keeps turning after a drag and eases to a stop. Fly-to hop, flags, and the card type are still open.
@@ -30,7 +32,8 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
 - Globo, TV: the search bar crosses the top of the disc.
 - Globo, card: the tabs are a plain underline, and adult Historia has no drop cap.
-- Globo, motion: a drag coasts; the fly-to does not hop. Frames average 22 ms, p95 33 ms.
+- Globo, Modo niños: on a TV the control labels collide.
+- Globo, motion: a flight hops and Giro eases. Slow frames are about 33 ms.
 
 ## Needs Victor
 
