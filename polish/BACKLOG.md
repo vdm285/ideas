@@ -4,7 +4,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla phone — names on the tiles you press.** The sideways table still has nameless tiles about 32 px wide. A preview above the finger shows the big symbol and the name, and it does not add a button. Acceptance: pressing a phone tile shows its name before the card opens, and targets under 24 px stay 0.
+1. **Globo card — segmented tabs.** Historia, Comida, Cultura, and Hoy are still an underline. Make them a segmented control with the icons they already have, a sliding indicator, and a short crossfade. Do not change the texts. Acceptance: the four tabs still switch, and the selected one is obvious on a TV.
 
 ## Later (alternate apps, lowest score first)
 
@@ -14,6 +14,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Tabla phone preview (iteration 11).** Pressing a tile shows its symbol and name. During Reto the name is hidden. T6 6 → 7. The resting tiles are still nameless.
 - **Globo Modo niños (iteration 10).** On a TV the controls stay on one line and clear the country chips. G7 5 → 6. The game is still plain.
 - **Tabla level switch (iteration 9).** A thumb slides between 8 años, 12 años, and 15 o más. The card score stays 7 because the quiz is still below the fold on a TV.
 - **Globo fly-to (iteration 8).** A flight pulls back about 15%, then settles. Giro eases in and out. Fresh pictures are in `polish/shots/latest/`. Tabs, the drop cap, and the Modo niños control collision are still open.

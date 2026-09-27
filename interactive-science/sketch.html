@@ -332,6 +332,19 @@ html.big .cell .n { font-size: max(.6rem, min(15cqi, 14px)); }
 .key { margin: 0; padding: 0; list-style: none; display: grid; gap: 3px; min-width: 0; line-height: 1.3; font-size: clamp(.75rem, 7cqh, 1.1rem); color: var(--muted); }
 .key b { color: var(--ink); font-family: var(--font-mono); font-weight: 600; }
 .key .t { font-family: var(--font-display); font-weight: 800; font-size: clamp(.9rem, 9cqh, 1.5rem); color: var(--ink); }
+.peek {
+  position: fixed; z-index: 60; left: 0; top: 0; pointer-events: none;
+  width: 96px; min-height: 78px; padding: 16px 8px 8px; box-sizing: border-box;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: 16px; background: var(--cat); color: var(--cat-ink, var(--tile-ink));
+  box-shadow: 0 10px 24px rgba(23, 32, 51, .28);
+  transform: translate(-50%, -100%);
+}
+.peek.below { transform: translate(-50%, 0); }
+.peek .z { position: absolute; top: 6px; left: 8px; font-family: var(--font-mono); font-size: .72rem; }
+.peek .s { font-family: var(--font-display); font-weight: 800; font-size: 2rem; line-height: 1; }
+.peek .n { max-width: 88px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .82rem; }
+@media (min-width: 700px) { .peek { display: none !important; } }
 @container lupa (max-width: 240px) {
   .lupa { flex-direction: column; align-items: stretch; }
   .lt { width: 100%; height: auto; }
@@ -610,6 +623,7 @@ body.kiosk .ai-note, body.kiosk .badge, body.kiosk .foot { display: none; }
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="peek" id="peek" hidden aria-hidden="true"><span class="z"></span><span class="s"></span><span class="n"></span></div>
 
 <script>
 /* ===== Data and pure logic (no DOM) ===== */
@@ -1590,6 +1604,41 @@ const HOOK = {
     const p = ev.target.closest(".ph");
     if (p) EL.forEach((e, i) => { if (e.f === p.dataset.f) cells[i].classList.add("glow"); });
   });
+  let peekHold = false, peekT = 0;
+  function showPeek(e, x, y) {
+    if (!mqT.matches || !e) return;
+    const el = $("#peek");
+    el.hidden = false;
+    el.style.setProperty("--cat", colorVar(e));
+    el.style.setProperty("--cat-ink", inkVar(e));
+    el.querySelector(".z").textContent = e.z;
+    el.querySelector(".s").textContent = e.s;
+    el.querySelector(".n").textContent = reto.on ? "?" : e.name;
+    const w = 96;
+    const cx = Math.max(w / 2 + 6, Math.min(window.innerWidth - w / 2 - 6, x));
+    const below = y < 118;
+    el.classList.toggle("below", below);
+    el.style.left = cx + "px";
+    el.style.top = (below ? y + 14 : y - 10) + "px";
+  }
+  function hidePeek() { $("#peek").hidden = true; }
+  pt.addEventListener("pointerdown", ev => {
+    const c = ev.target.closest(".cell");
+    if (!c || !mqT.matches) return;
+    peekHold = true; clearTimeout(peekT);
+    showPeek(EL[+c.dataset.z - 1], ev.clientX, ev.clientY);
+  });
+  pt.addEventListener("pointermove", ev => {
+    if (!peekHold) return;
+    const c = ev.target.closest(".cell");
+    if (c) showPeek(EL[+c.dataset.z - 1], ev.clientX, ev.clientY);
+  });
+  function endPeek() {
+    if (!peekHold) return;
+    peekHold = false; clearTimeout(peekT); peekT = setTimeout(hidePeek, 650);
+  }
+  pt.addEventListener("pointerup", endPeek);
+  pt.addEventListener("pointercancel", endPeek);
   pt.addEventListener("pointerover", ev => { const c = ev.target.closest(".cell"); if (c) lupaShow(EL[c.dataset.z - 1]); });
   pt.addEventListener("focusin", ev => { const c = ev.target.closest(".cell"); if (c) lupaShow(EL[c.dataset.z - 1]); });
   pt.addEventListener("pointerleave", () => lupaShow(EL[(state.sel || 26) - 1]));
