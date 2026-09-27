@@ -407,7 +407,7 @@ html.big .cell .n { font-size: max(.6rem, min(15cqi, 14px)); }
 .bohr { margin-top: 16px; background: var(--surface-2); border-radius: 14px; padding: 10px 12px 14px; display: grid; justify-items: center; gap: 8px; }
 .bohr svg { width: 100%; max-width: 300px; height: auto; display: block; }
 #bohr .ring { fill: none; stroke: var(--line); stroke-width: 1.5; }
-#bohr .e { fill: var(--accent); transition: opacity .15s; }
+#bohr .e { fill: url(#eGrad); transition: opacity .15s; }
 #bohr .nuc { fill: url(#nucGrad); stroke: var(--ink); stroke-opacity: .25; }
 #bohr .nuc-s { font-family: var(--font-display); font-weight: 800; font-size: 22px; fill: var(--tile-ink); }
 #bohr .orb { transform-box: view-box; transform-origin: 160px 160px; animation: spin 10s linear infinite; }
@@ -1046,7 +1046,7 @@ const HOOK = {
     });
     const rings = R.map(r => `<circle class="ring" cx="160" cy="160" r="${r.toFixed(1)}"/>`).join("");
     const orbs = groups.map((g, i) => `<g class="orb" style="animation-duration:${7 + i * 4}s${i % 2 ? ";animation-direction:reverse" : ""}">${g}</g>`).join("");
-    return `<svg id="bohr" viewBox="0 0 320 320" role="img" aria-label="Modelo de Bohr de ${e.name}: ${sh.join(", ")} electrones por capa"><defs><radialGradient id="nucGrad" cx="38%" cy="34%" r="70%"><stop offset="0%" stop-color="#fff" stop-opacity=".55"/><stop offset="45%" stop-color="var(--cat)"/><stop offset="100%" stop-color="var(--ink)" stop-opacity=".35"/></radialGradient></defs>${rings}${orbs}<circle class="nuc" cx="160" cy="160" r="30" fill="url(#nucGrad)"/><text class="nuc-s" x="160" y="161" text-anchor="middle" dominant-baseline="central">${e.s}</text></svg>`;
+    return `<svg id="bohr" viewBox="0 0 320 320" role="img" aria-label="Modelo de Bohr de ${e.name}: ${sh.join(", ")} electrones por capa"><defs><radialGradient id="nucGrad" cx="38%" cy="34%" r="70%"><stop offset="0%" stop-color="#fff" stop-opacity=".55"/><stop offset="45%" stop-color="var(--cat)"/><stop offset="100%" stop-color="var(--ink)" stop-opacity=".35"/></radialGradient><radialGradient id="eGrad" cx="32%" cy="28%" r="72%"><stop offset="0%" stop-color="#fff"/><stop offset="38%" stop-color="var(--accent)"/><stop offset="100%" stop-color="var(--ink)" stop-opacity=".9"/></radialGradient></defs>${rings}${orbs}<circle class="nuc" cx="160" cy="160" r="30" fill="url(#nucGrad)"/><text class="nuc-s" x="160" y="161" text-anchor="middle" dominant-baseline="central">${e.s}</text></svg>`;
   }
   const restLabel = e => `${e.z} ${e.z === 1 ? "electrón" : "electrones"} en ${e.shells.length} ${e.shells.length === 1 ? "capa" : "capas"}`;
   const fillText = (sub, i, n) => state.level < 2

@@ -4,16 +4,17 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla — lit electrons.** The Bohr picture has a shaded nucleus, and the electrons are still flat dots. Draw them as small lit spheres, brighter in the dark theme, without changing the counts. Acceptance: the television card shows round electrons, and reduced motion stays still.
+1. **Globo — drop cap on adult Historia.** The first paragraph of an adult Historia is still plain. Give its first letter a drop cap. Kids mode stays plain. Do not change the words. Acceptance: México's adult Historia opens with a large first letter, and Modo niños does not.
 
 ## Later (alternate apps, lowest score first)
 
 - **Globo, next.** A drop cap on adult Historia, and neighbour chips. The search bar still crosses the disc.
-- **Tabla.** Lift the phone table: the rotation note still leads. Tile-to-card move. Reto HUD, stars, short confetti. Attract caption that moves. `?kiosk=1`. Más closes on an outside tap. Arrow keys between tiles. Lit electrons.
+- **Tabla.** Lift the phone table: the rotation note still leads. Tile-to-card move. Reto HUD, stars, short confetti. Attract caption that moves. `?kiosk=1`. Más closes on an outside tap. Arrow keys between tiles.
 - **Globo.** Forgiving taps near a coast. Hoy as an Antes → Hoy thread with neutral quote cards. Game HUD, a pulse when right, an arc when wrong. Friendlier Modo niños. Styled search suggestions. A Spanish message if d3 fails to load. The search bar still crosses the disc.
 
 ## Done
 
+- **Tabla electrons (iteration 13).** Each electron is a shaded sphere, and it glows in the dark. The frame time stayed about 16 ms. The card score stays 7 because the quiz is still below the fold.
 - **Globo tabs (iteration 12).** Historia, Comida, Cultura, and Hoy are a segmented control. The text fades in. G4 8 → 9. Historia still has no drop cap.
 - **Tabla phone preview (iteration 11).** Pressing a tile shows its symbol and name. During Reto the name is hidden. T6 6 → 7. The resting tiles are still nameless.
 - **Globo Modo niños (iteration 10).** On a TV the controls stay on one line and clear the country chips. G7 5 → 6. The game is still plain.
