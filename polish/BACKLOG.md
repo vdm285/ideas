@@ -4,9 +4,8 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Globo 1a — light and the hero globe.** Ocean lit from the upper left, limb darkening, a soft highlight, an atmosphere halo, a contact shadow in light mode, and a sparse static starfield in dark mode. New muted land colours. Fine coasts and a graticule that fades at the limb. On a TV the globe fills the left ~60% (at least 850 px at 1920×1080) with the card docked and no page scroll. One pill toolbar. The footer folds into Acerca de. The phone globe is full-bleed and the sheet has a handle, a 20 px radius, and safe areas. Acceptance: TV page height ≤ 1080, and the TV shot shows a globe with a halo.
-2. **Tabla 1b — card, Bohr, TV fit.** Hero header, stat strip from table data only, segmented level control, calmer story measure, amber "Con un adulto", quiz cards that mark a hit and shake a miss. Bohr nucleus and electrons as lit spheres; the fill pops, and stays still under reduced motion. The whole table and the docked card fit at 1920×1080. Acceptance: TV page height ≤ 1080 and the card shot shows the stat strip.
-3. **Globo 1b — motion, card, flags.** Drag inertia, zoom-scaled sensitivity, a hop in the fly-to, spin that eases. Card name in Alegreya 800, a fact card that is not the sample amber, segmented tabs, a drop cap on adult Historia. One flag image per country from flag-icons 7.5.0, hidden on error, with credit in the footer. Acceptance: a drag coasts, and a Windows phone shows a flag image.
+1. **Tabla 1b — card, Bohr, TV fit.** Hero header, stat strip from table data only, segmented level control, calmer story measure, amber "Con un adulto", quiz cards that mark a hit and shake a miss. Bohr nucleus and electrons as lit spheres; the fill pops, and stays still under reduced motion. The whole table and the docked card fit at 1920×1080. Acceptance: TV page height ≤ 1080 and the card shot shows the stat strip.
+2. **Globo 1b — motion, card, flags.** Drag inertia, zoom-scaled sensitivity, a hop in the fly-to, spin that eases. Card name in Alegreya 800, a fact card that is not the sample amber, segmented tabs, a drop cap on adult Historia. One flag image per country from flag-icons 7.5.0, hidden on error, with credit in the footer. Acceptance: a drag coasts, and a Windows phone shows a flag image.
 
 ## Later (alternate apps, lowest score first)
 
@@ -15,6 +14,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Done
 
+- **Globo 1a (iteration 3).** Hero globe, TV page height 1,113 → 1,080, night halo, muted lands, footer folded into Acerca. Search still crosses the disc.
 - **Tabla 1a (iteration 2).** Warm page, matched family colours, calm transition metals, dark glass tiles, pill search, 8 px tiles, star badge. Contrast failures 5 → 0. Phone page height 1,353 → 1,208. TV still 1,374.
 - **Tier 0, both apps (iteration 1).** Standards mode, charset, lang, viewport, theme-color, description, inline icon. Globo fonts load without blocking. Tokens are declared and not yet used. Phone sheet: mini, peek, open. Globo TV height 1,130 → 1,113.
 
@@ -25,7 +25,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Tabla, TV: the page is 1,390 px tall, so it scrolls. The card is a long plain column.
 - Tabla, Reto: the end is a text bar and ten dots.
 - Globo, phone: the footer runs into the collapsed sheet, and the chips sit between the globe and the sheet.
-- Globo, TV: the globe is a small disc, the page is 1,113 px tall, and there is no atmosphere.
+- Globo, TV: the search bar crosses the top of the disc, and drag still has no inertia.
 - Globo, both themes: the "¿Sabías que…?" card uses the same amber as the sample ribbon.
 - Globo, motion: drag stops dead. Frames average 22 ms, p95 32 ms.
 

@@ -11,3 +11,4 @@
 9. 2026-09-27 15:12 Mexico City — both — Tier 0 adds the document head and declares spacing, type, and motion tokens without using them, so the colours stay put. Globo's font stylesheet uses the same non-blocking trick as Tabla. Undo: revert commit of iteration 1.
 10. 2026-09-27 15:12 Mexico City — both — A quick check must not rewrite the saved measurements, or a light-only run would erase the dark-mode contrast count. Undo: let every run write `polish/metrics.json`.
 11. 2026-09-27 15:31 Mexico City — tabla — The atomic number is at 70% strength by day and full strength at night, because 70% failed contrast on the dark glass. Undo: set `.cell .z` opacity back to .7 in both themes.
+12. 2026-09-27 15:40 Mexico City — globo — On a short wide screen the page is locked to the window height so a TV does not scroll, and the long footer lives inside "Acerca de este boceto". Undo: remove the 1100 px layout block and put the footer back under the page.

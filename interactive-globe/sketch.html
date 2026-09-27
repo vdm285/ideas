@@ -27,8 +27,8 @@
   --fs-l:clamp(1.5rem,1.1rem + 1.2vw,2.4rem);
   --fs-xl:clamp(1.8rem,1.2rem + 1.8vw,3rem);
   --bg:#E9F0F1; --surface:#FFFFFF; --surface-2:#F3F7F7; --ink:#13262E; --muted:#4D6168; --line:#C8D7DA;
-  --ocean:#A9D1E0; --ocean-deep:#76AEC3; --rim:#2E6F88; --grat:rgba(19,38,46,.12); --shine:rgba(255,255,255,.55);
-  --l0:#F1DC8E; --l1:#F0BBA4; --l2:#BDD89E; --l3:#E2C6DD; --l4:#F4CC91; --land-edge:#5F7378;
+  --ocean:#A9D1E0; --ocean-lit:#E7F6FB; --ocean-deep:#5E97AE; --rim:#2E6F88; --grat:rgba(19,38,46,.12); --shine:rgba(255,255,255,.55);
+  --l0:#E4D0A2; --l1:#E4BBA8; --l2:#C5D2B2; --l3:#E3C6D2; --l4:#E7D7B6; --land-edge:#6A5E52;
   --pick:#D4411D; --pick-edge:#13262E; --hover:#FFFFFF;
   --accent:#1D5E78; --accent-soft:#D5E7ED; --accent-ink:#FFFFFF;
   --sample:#7A4F00; --sample-bg:#FDEFC8; --sample-line:#E9CD84;
@@ -42,8 +42,8 @@
   :root:not([data-theme="light"]){
     color-scheme:dark;
     --bg:#0B1920; --surface:#11242D; --surface-2:#0E1E26; --ink:#E3ECEE; --muted:#99AFB6; --line:#23404B;
-    --ocean:#16394B; --ocean-deep:#0D2735; --rim:#5EA5C1; --grat:rgba(227,236,238,.09); --shine:rgba(255,255,255,.07);
-    --l0:#8A7A3E; --l1:#8C5A4B; --l2:#55724A; --l3:#745772; --l4:#8D693D; --land-edge:#0B1920;
+    --ocean:#16394B; --ocean-lit:#2E6E88; --ocean-deep:#071821; --rim:#5EA5C1; --grat:rgba(227,236,238,.09); --shine:rgba(255,255,255,.07);
+    --l0:#8C7344; --l1:#8A5648; --l2:#3E6248; --l3:#7A4E62; --l4:#8A6840; --land-edge:#0B1920;
     --pick:#FF7449; --pick-edge:#FFE2D6; --hover:#E3ECEE;
     --accent:#7CC2DC; --accent-soft:#1A3947; --accent-ink:#0B1920;
     --sample:#F2C66A; --sample-bg:#342A11; --sample-line:#5E4B1C;
@@ -53,8 +53,8 @@
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#0B1920; --surface:#11242D; --surface-2:#0E1E26; --ink:#E3ECEE; --muted:#99AFB6; --line:#23404B;
-  --ocean:#16394B; --ocean-deep:#0D2735; --rim:#5EA5C1; --grat:rgba(227,236,238,.09); --shine:rgba(255,255,255,.07);
-  --l0:#8A7A3E; --l1:#8C5A4B; --l2:#55724A; --l3:#745772; --l4:#8D693D; --land-edge:#0B1920;
+  --ocean:#16394B; --ocean-lit:#2E6E88; --ocean-deep:#071821; --rim:#5EA5C1; --grat:rgba(227,236,238,.09); --shine:rgba(255,255,255,.07);
+  --l0:#8C7344; --l1:#8A5648; --l2:#3E6248; --l3:#7A4E62; --l4:#8A6840; --land-edge:#0B1920;
   --pick:#FF7449; --pick-edge:#FFE2D6; --hover:#E3ECEE;
   --accent:#7CC2DC; --accent-soft:#1A3947; --accent-ink:#0B1920;
   --sample:#F2C66A; --sample-bg:#342A11; --sample-line:#5E4B1C;
@@ -88,17 +88,18 @@ a{color:var(--accent)}
 @media (min-width:900px){.stage{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}}
 .globe-col{display:flex;flex-direction:column;gap:12px;min-width:0}
 .globe-box{position:relative;width:100%;max-width:600px;margin-inline:auto}
-#globe{display:block;width:100%;height:auto;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;border-radius:50%}
+#globe{display:block;width:100%;height:auto;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;border-radius:50%;box-shadow:0 22px 36px rgba(19,38,46,.2)}
 #globe.dragging{cursor:grabbing}
 #globe .sphere{fill:url(#oceanGrad);stroke:var(--rim);stroke-width:1.5}
 #globe .grat{fill:none;stroke:var(--grat);stroke-width:.7}
-#globe .land{stroke:var(--land-edge);stroke-width:.45;stroke-linejoin:round}
+#globe .land{stroke:var(--land-edge);stroke-width:.35;stroke-linejoin:round}
 #globe .land.c0{fill:var(--l0)} #globe .land.c1{fill:var(--l1)} #globe .land.c2{fill:var(--l2)} #globe .land.c3{fill:var(--l3)} #globe .land.c4{fill:var(--l4)}
 #globe .land.hov{stroke:var(--hover);stroke-width:1.6}
-#globe .land.sel{fill:var(--pick);stroke:var(--pick-edge);stroke-width:1.6}
+#globe .land.sel{fill:var(--pick);stroke:var(--pick-edge);stroke-width:2}
 #globe .land.sel.flash{animation:flash .9s ease-out}
 @keyframes flash{0%,35%{stroke-width:6}100%{stroke-width:1.6}}
 #globe .shine{fill:url(#shineGrad);pointer-events:none}
+#globe .limb{fill:url(#limbGrad);pointer-events:none}
 #globe .lbl{font-family:var(--display);font-weight:800;font-size:17px;fill:var(--ink);stroke:var(--surface);stroke-width:4.5px;stroke-linejoin:round;paint-order:stroke;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 .kids #globe .lbl{font-size:21px}
 #globe .ripple{fill:none;stroke:var(--pick);stroke-width:3;pointer-events:none}
@@ -173,11 +174,14 @@ a{color:var(--accent)}
 .who{font:500 .74rem/1.3 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
 footer{font-size:.85rem;color:var(--muted);max-width:80ch;display:flex;flex-direction:column;gap:6px}
 footer p{margin:0}
+.about summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+.about p{margin:6px 0 0;font-size:.85rem;color:var(--muted)}
 
 /* phones: the card becomes a bottom sheet */
 @media (max-width:899px){
   .wrap{padding-bottom:calc(42vh + 28px)}
-  .globe-box{max-width:min(600px,56vh)}
+  .globe-box{max-width:100%}
+  .panel{border-radius:20px 20px 0 0}
   .panel{position:fixed;left:0;right:0;bottom:0;z-index:20;max-height:42vh;overflow:auto;overscroll-behavior:contain;border-radius:18px 18px 0 0;border-bottom:0;padding:4px 16px 18px;gap:12px;box-shadow:0 -8px 28px var(--shadow);transition:max-height .25s ease}
   .panel.open{max-height:85vh}
   .panel.mini{max-height:128px;overflow:hidden}
@@ -197,6 +201,33 @@ footer p{margin:0}
 @media (prefers-reduced-motion: reduce){
   .switch .knob,.switch .knob::after,.panel{transition:none}
   .pill,#globe .land.sel.flash{animation:none}
+}
+@media (min-width:1100px) and (max-height:1100px){
+  .wrap{height:100dvh;max-width:none;box-sizing:border-box;padding:8px 18px 10px;gap:6px}
+  .brand p{display:none}
+  .stage{flex:1;min-height:0;grid-template-columns:minmax(0,1.5fr) minmax(360px,.9fr);align-items:stretch;gap:14px}
+  .globe-col{position:relative;min-height:0;justify-content:center}
+  .globe-box{width:min(100%,calc(100dvh - 78px));max-width:none}
+  .panel{min-height:0;max-height:100%;overflow:auto}
+  .globe-col>.status{position:absolute;left:12px;right:12px;top:6px;z-index:4;margin:0}
+  .globe-col>.search{position:absolute;left:12px;right:12px;top:28px;z-index:4;max-width:none}
+  .globe-col>.chips{position:absolute;left:50%;bottom:70px;transform:translateX(-50%);z-index:4;width:max-content;max-width:92%;background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+  .pill{top:22%}
+  .controls{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:4;flex-wrap:nowrap;background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:var(--elev-2)}
+  .about{margin-top:8px}
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #globe{box-shadow:0 0 0 7px rgba(90,170,220,.22),0 0 46px 10px rgba(70,150,210,.38)}
+  :root:not([data-theme="light"]) body{
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(1.2px 1.2px at 12% 18%, rgba(255,255,255,.75) 50%, transparent 52%),
+      radial-gradient(1px 1px at 28% 72%, rgba(255,255,255,.55) 50%, transparent 52%),
+      radial-gradient(1.4px 1.4px at 70% 22%, rgba(255,255,255,.7) 50%, transparent 52%),
+      radial-gradient(1px 1px at 82% 64%, rgba(255,255,255,.5) 50%, transparent 52%),
+      radial-gradient(1px 1px at 46% 40%, rgba(255,255,255,.4) 50%, transparent 52%),
+      radial-gradient(120% 90% at 50% 40%, transparent 60%, rgba(0,0,0,.35) 100%);
+  }
 }
 </style>
 </head>
@@ -289,13 +320,13 @@ footer p{margin:0}
       <div class="tabbody" id="tabbody" role="tabpanel" aria-labelledby="t-historia"></div>
       <div class="more" id="cmore"></div>
       <p class="src" id="src"></p>
+      <details class="about">
+        <summary>Acerca de este boceto</summary>
+        <p><strong>Esto es un boceto para sentir la idea, no un producto.</strong> Los textos de México, Japón, Egipto y Brasil son de muestra, escritos para este boceto y sin revisión experta. Los temas de «Hoy» son ejemplos del formato, no noticias de este día. Tamaños y distancias son aproximados, calculados con el mapa simplificado.</p>
+        <p>«Casa» usa una ubicación fija (Ciudad de México); la versión real podría preguntarte tu ciudad. Mapa: Natural Earth (dominio público), vía world-atlas 2.0.2. Las fronteras en disputa se muestran como las dibuja Natural Earth (control de hecho). Sin cuentas, sin anuncios, sin rastreo.</p>
+      </details>
     </section>
   </main>
-
-  <footer>
-    <p><strong>Esto es un boceto para sentir la idea, no un producto.</strong> Los textos de México, Japón, Egipto y Brasil son de muestra, escritos para este boceto y sin revisión experta. Los temas de «Hoy» son ejemplos del formato, no noticias de este día. Tamaños y distancias son aproximados, calculados con el mapa simplificado.</p>
-    <p>«Casa» usa una ubicación fija (Ciudad de México); la versión real podría preguntarte tu ciudad. Mapa: Natural Earth (dominio público), vía world-atlas 2.0.2. Las fronteras en disputa se muestran como las dibuja Natural Earth (control de hecho). Sin cuentas, sin anuncios, sin rastreo.</p>
-  </footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
@@ -524,20 +555,30 @@ try { kids = localStorage.getItem("gc-kids") === "1"; } catch (e) {}
 
 const svg = d3.select("#globe");
 const defs = svg.append("defs");
-const og = defs.append("radialGradient").attr("id", "oceanGrad").attr("cx", "42%").attr("cy", "38%").attr("r", "65%");
-og.append("stop").attr("offset", "0%").attr("style", "stop-color:var(--ocean)");
+const og = defs.append("radialGradient").attr("id", "oceanGrad").attr("cx", "36%").attr("cy", "32%").attr("r", "72%");
+og.append("stop").attr("offset", "0%").attr("style", "stop-color:var(--ocean-lit)");
+og.append("stop").attr("offset", "42%").attr("style", "stop-color:var(--ocean)");
 og.append("stop").attr("offset", "100%").attr("style", "stop-color:var(--ocean-deep)");
-const sg = defs.append("radialGradient").attr("id", "shineGrad").attr("cx", "35%").attr("cy", "30%").attr("r", "60%");
+const sg = defs.append("radialGradient").attr("id", "shineGrad").attr("cx", "32%").attr("cy", "26%").attr("r", "55%");
 sg.append("stop").attr("offset", "0%").attr("style", "stop-color:var(--shine)");
 sg.append("stop").attr("offset", "100%").attr("style", "stop-color:var(--shine);stop-opacity:0");
+const lg = defs.append("radialGradient").attr("id", "limbGrad").attr("cx", "64%").attr("cy", "70%").attr("r", "72%");
+lg.append("stop").attr("offset", "46%").attr("style", "stop-color:#063044;stop-opacity:0");
+lg.append("stop").attr("offset", "100%").attr("style", "stop-color:#063044;stop-opacity:.42");
+const gf = defs.append("radialGradient").attr("id", "gratFade").attr("cx", "50%").attr("cy", "50%").attr("r", "50%");
+gf.append("stop").attr("offset", "50%").attr("stop-color", "#fff");
+gf.append("stop").attr("offset", "100%").attr("stop-color", "#000");
+const gratMask = defs.append("mask").attr("id", "gratMask");
+gratMask.append("rect").attr("width", "100%").attr("height", "100%").attr("fill", "url(#gratFade)");
 
 const proj = d3.geoOrthographic().clipAngle(90).precision(0.4);
 const path = d3.geoPath(proj);
 const grat = d3.geoGraticule10();
 const sphereEl = svg.append("path").attr("class", "sphere");
-const gratEl = svg.append("path").attr("class", "grat");
+const gratEl = svg.append("path").attr("class", "grat").attr("mask", "url(#gratMask)");
 const landG = svg.append("g");
 const lands = landG.selectAll("path").data(features).join("path").attr("class", d => "land c" + d.c);
+const limbEl = svg.append("path").attr("class", "limb");
 const shineEl = svg.append("path").attr("class", "shine");
 const starEls = svg.append("g").selectAll("text").data(features.filter(f => SAMPLES[f.properties.a])).join("text").attr("class", "star").text("★");
 const lblEl = svg.append("text").attr("class", "lbl");
@@ -547,7 +588,7 @@ const facing = c => d3.geoDistance(c, [-rot[0], -rot[1]]) < 1.4;
 function render() {
   proj.rotate(rot).scale(base * zoom);
   const s = path({ type: "Sphere" });
-  sphereEl.attr("d", s); shineEl.attr("d", s);
+  sphereEl.attr("d", s); limbEl.attr("d", s); shineEl.attr("d", s);
   gratEl.attr("d", path(grat));
   lands.attr("d", path).classed("sel", d => d === selected).classed("hov", d => d === hovered);
   /* A small star marks the countries that have full cards (sample texts). */
