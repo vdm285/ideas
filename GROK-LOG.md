@@ -1,40 +1,33 @@
 # Tabla Viva and Globo Curioso
 
-**Status:** working. Last push 27 sep 2026, 18:38 (Mexico City). Iteration 30. Both apps pass the check.
+**Status:** finished by Claude on 2026-09-28 after Grok hit its weekly limit. Grok's run stopped at iteration 30 (last push 27 sep 2026, 18:38 Mexico City), before its wrap-up. Claude (senior dev) reviewed the branch and made the small fixes below on branch `claude/grok-fixes`. Both apps pass Grok's check run with Chrome (all but its branch-name test, which expects Grok's branch), plus a smoke test at phone, laptop and TV sizes in light and dark: no errors, no failed requests, no sideways scrolling. The frozen data is unchanged (content-lock hashes equal main's).
 
 **How to see it:**
 
-1. Any browser or phone: https://raw.githack.com/vdm285/ideas/grok/polish-2026-09-27/interactive-science/sketch.html and https://raw.githack.com/vdm285/ideas/grok/polish-2026-09-27/interactive-globe/sketch.html. If a link is blocked, use the ZIP.
-2. All changes: https://github.com/vdm285/ideas/compare/main...grok/polish-2026-09-27
-3. ZIP: https://github.com/vdm285/ideas/archive/refs/heads/grok/polish-2026-09-27.zip. Unzip it and double-click either `sketch.html`. On this laptop the folder is `C:\Users\Victor\grok-work\ideas`.
-4. Before and after pictures: `polish/shots/before/` vs `polish/shots/latest/`.
+1. Any browser or phone, with the fixes: https://raw.githack.com/vdm285/ideas/claude/grok-fixes/interactive-science/sketch.html and https://raw.githack.com/vdm285/ideas/claude/grok-fixes/interactive-globe/sketch.html (after the merge, swap `claude/grok-fixes` for `main`). Grok's version as it stopped: the same links with `grok/polish-2026-09-27`.
+2. All changes: https://github.com/vdm285/ideas/compare/main...claude/grok-fixes
+3. ZIP: https://github.com/vdm285/ideas/archive/refs/heads/claude/grok-fixes.zip. Unzip it and double-click either `sketch.html`.
+4. Before and after pictures: `polish/shots/before/` vs `polish/shots/latest/` (Grok's last set; it misses Grok's last two commits and these fixes).
 
-**Scoreboard:** Tabla 71 → 72. Globo 80.
+**Scores:** Grok's own: Tabla 52 → 72, Globo 52 → 80 (80 is final; a bullet that said 79 was stale). Independent design review before these fixes: Tabla 5 → 6.5, Globo 4.5 → 7 out of 10.
 
-- Tabla 72. T1 6, the rotation note is one line, and it still sits above the table. T2 7, contrast failures are 0; alkali and noble gases are both pink. T3 7, phone symbols are 16 px; the name still shows only while you press. T4 7, on a television the story is 20 px; from across a room that is still the floor. T5 7, the electrons are lit spheres; the quiz still sits below the fold on a TV. T6 8, the symbol travels from the tile to the card; the trip is a small square. T7 8, a TV no longer scrolls (1,080 px). T8 8, a perfect round throws a short burst; it is gone in under a second. T9 7, 133 phone targets are under 44 px. T10 8, one global sample badge covers the automatic cards.
-- Globo 79. G1 8, the globe is smaller so the controls can sit below it. G2 8, the grid is readable and fades at the edge; the lines have no degree labels. G3 7, a flight pulls back and Giro eases; a slow frame was 35 ms. G4 9, the Hoy thread is ink, not the selection red; it is still a stack of headings. G5 8, a TV no longer scrolls and the phone sheet works. G6 9, the country chips and the controls share one dock; the search is still its own bar above the globe. G7 7, the game has five dots, a green pulse, a shake, and an end card; Modo niños is still the same layout, only larger. G8 7, night has a blue halo. G9 7, 11 targets are under 44 px. G10 9, the sample ribbon sits in the header at 16 px; the source line in the card is still small.
-- Errors: none. Under 24 px: 0. Contrast failures: 0. TV page height: 1,080 px for both. Globe p95: 35 ms.
+**Fixes by Claude (one commit each):**
 
-**Top 3 changes:**
+- Tabla: tiles never overlap on short wide screens; the no-scroll fit is for TV-size screens only, laptops scroll (aca8ca7). Escape in the search box closes Más and the card again (be9926f). Arrow keys only move between tiles and never answer Reto; Up/Down follow the table as drawn (0a4a370). The Reto hit ring grows again and all confetti shows (fb1f356). The facts strip never splits a word and keeps "25 °C" together (e0e5bd6). The docked card shows "Más abajo ↓" while more is below (852d4e8).
+- Globo: the flag credit says truthfully when flags download (56c021c). No flag on places the map marks as disputed (82d7341). Giro automático works on a tap under reduced motion (2700bea). Laptops get the 578 px globe back (cc16bf0). Map colours that tell neighbours apart (608ffb0). The selected tab stands out (64460c0). "Para platicar en familia" leaves the sample amber (2c63160).
 
-1. Tapping a tile sends its symbol across to the card. Reduced motion stays still.
-2. Under the globe, the country chips and the controls are one dock. The search stays above.
-3. A perfect round throws a short burst from the stars. Reduced motion leaves them still.
+**Still open (from the review, 2026-09-27):**
 
-**Top 3 open issues:**
+- Grok's check: add laptop sizes, the legend and Reto screens, keyboard tests, Chrome as well as Edge, and allow only jsdelivr's /npm/ path. Re-take `polish/shots/latest/`.
+- Tabla: muddy dark-mode tiles (lanthanides, alkaline earths); tile names 9.6 px on TV; look-alike family colours; the tile-to-card animation aims at the name; doubled Reto end buttons.
+- Globo: blank space and small text in the TV card; the TV globe is 776 px (brief: 850); labels for the phone's icon-only buttons; phone and tablet pages scroll into empty space.
+- Honesty: say the "¿Sabías que…?" lines are unreviewed; ★ means both "full story" and "score"; show "isótopo más estable" in the strip; bring back the phone's "Toca cualquier elemento…" hint. Old bug, also on main: a `#constructor` link breaks Globo.
 
-1. Phone tiles are still small, and the name shows only while you press.
-2. Hoy is still a stack of headings, and on a TV the element quiz sits below the Bohr picture.
-3. The television globe is smaller than it was, so the controls can sit underneath it.
-
-**Needs Victor:**
-
-- Should the element card dock on a 1024 px tablet? Today it docks only from 1180 px.
-- Palestina's name, and the Georgia Wikipedia link, stay as they are until you say otherwise.
-- This run will not add new facts, a finer map, or live AI.
+**Needs Victor:** check the Windows laptop (`C:\Users\Victor\grok-work\ideas`) for work Grok never pushed: `git status` and `git log origin/grok/polish-2026-09-27..HEAD`. Grok's open questions stand: dock the element card on a 1024 px tablet? Palestina's name and the Georgia Wikipedia link.
 
 ## Iterations
 
+- **28 sep 2026, Claude, review fixes.** Grok stopped at its weekly limit, so Claude made the 13 small fixes the review asked for (listed at the top, one commit each). No new facts; the frozen data is unchanged; the check and a phone, laptop and TV smoke test pass in light and dark.
 - **27 sep 2026, 18:38, Tabla, tile move.** T6 7 → 8. Tabla 71 → 72. The symbol travels from the tile to the card in about a third of a second. Reduced motion and Reto do not send it. The page still fits in 1,080 px. A slow globe frame was 35 ms.
 - **27 sep 2026, 18:33, Globo, dock.** G6 8 → 9. Globo 79 → 80. On a television the country chips and the controls share one card under the globe, including in Modo niños. A side-by-side row was tried and put back, because it ran off a narrower screen. The page still fits in 1,080 px. The search stays above. A slow frame was 34 ms.
 - **27 sep 2026, 18:26, Tabla, confetti.** T8 7 → 8. Tabla 70 → 71. A perfect round throws twelve pieces from the stars. They fade in under a second. Reduced motion does not throw them. The end words stay "¡10 de 10! Perfecto." Fresh pictures are in `polish/shots/latest/`. A slow globe frame was 34 ms.

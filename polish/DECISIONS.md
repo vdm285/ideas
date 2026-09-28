@@ -39,3 +39,6 @@
 37. 2026-09-27 18:26 Mexico City — tabla — A perfect round throws twelve short pieces from the stars and they fade. Reduced motion does not throw them. The end words stay the same. Undo: remove burst and the confetti style.
 38. 2026-09-27 18:33 Mexico City — globo — On a short wide screen the country chips and the controls share one dock. Putting them on one line ran off a narrower screen, so they stay stacked. Undo: give each its own pill and restore the gap.
 39. 2026-09-27 18:38 Mexico City — tabla — Tapping a tile sends its symbol toward the card. Reduced motion and Reto do not. Undo: remove flyTile and the fly style.
+40. 2026-09-28 Mexico City — both — (Claude) The no-scroll height fit applies only on TV-size screens (900–1100 px tall); shorter laptops scroll, so tiles never overlap and the globe keeps 578 px. Undo: drop `min-height:900px` from both media queries.
+41. 2026-09-28 Mexico City — globo — (Claude) No flag on a place the map marks as disputed, matching the app's "sin tomar partido" note; the dispute note still shows. Undo: remove the `p.x` test in flagImg.
+42. 2026-09-28 Mexico City — tabla — (Claude) Arrow keys act only while a tile has focus; Up/Down go to the tile drawn above/below; during Reto they only move focus (Enter answers). Undo: revert 0a4a370.
