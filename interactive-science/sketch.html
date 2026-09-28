@@ -272,6 +272,10 @@ body.kiosk .more { display: none; }
 html.big .cell .s { font-size: max(1rem, min(44cqi, 44px)); }
 html.big .cell .z { font-size: max(.6rem, min(20cqi, 15px)); }
 html.big .cell .n { font-size: max(.6rem, min(15cqi, 14px)); }
+@container (max-width: 43px) {
+  .cell .s { font-size: 16px; margin-top: 5px; letter-spacing: -.05em; }
+  html.big .cell .s { font-size: 18px; }
+}
 @container (min-width: 40px) { html.big .cell .n { display: block; margin-top: 2px; } }
 .pt.hard .cell .n { display: none !important; }
 .pt.hinting .cell:not(.lite) { opacity: .3; }

@@ -4,15 +4,15 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla — larger phone symbols.** Tiles stay about 32 px, and the name appears only while you press. Make the symbol a little larger on a phone, without a resting name and without raising the page. Acceptance: the phone page stays under 1,200 px, and targets under 24 px stay 0.
+1. **Globo — sample ribbon.** The yellow "Boceto: textos de ejemplo, sin revisar" line is easy to miss once the card is open. Make that ribbon easier to see on the first screen without covering the globe or the card, and without changing its words. Acceptance: the words still contain "ejemplo", contrast stays 0, and the TV page stays 1,080 px.
 
 ## Later (alternate apps)
 
-- **Globo, next.** Make the sample ribbon easier to see without hiding the card. Join the two pills under the globe only if the page still fits. Do not draw degree labels that look like new facts.
-- **Tabla.** Short confetti on a perfect Reto, still off when motion is reduced. Tile-to-card move. Más closes on an outside tap. Do not move the quiz above the Bohr until the drawing can stay on screen.
+- **Tabla, next.** Short confetti on a perfect Reto, still off when motion is reduced. Tile-to-card move. Más closes on an outside tap. The phone name still appears only while you press. Do not move the quiz above the Bohr until the drawing can stay on screen.
 
 ## Done
 
+- **Tabla phone symbols (iteration 26).** Narrow tiles use a 16 px symbol, 18 px with Letra grande. The page stays 1,183 px. The score stays 70 because the name still appears only while you press.
 - **Globo game (iteration 25).** Five dots, a green pulse, a shake, and an end card with the same words. G7 6 → 7. Globo 78 → 79. Modo niños is still the same layout, only larger. Pictures refreshed in `polish/shots/latest/`.
 - **Tabla television story (iteration 24).** On a short wide screen the story is 20 px. T4 6 → 7. Tabla 69 → 70. From across a room that size is still the floor.
 - **Globo grid (iteration 23).** The lines are stronger and still fade at the rim. G2 7 → 8. Globo 77 → 78. No degree labels.
@@ -41,7 +41,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Flaws still open
 
-- Tabla, phone: the table starts after the logo, the badge, the search, and the rotation note.
+- Tabla, phone: symbols are 16 px. The name still appears only while you press. The table starts after the logo, the badge, the search, and the rotation note.
 - Tabla, dark: the f-block rows are the closest pair under a colour-blind simulation. Contrast failures are now 0.
 - Tabla, TV: the story is 20 px on a short wide screen. The experiment and quiz sit below the fold inside the card.
 - Tabla, Reto: the end card has stars, and the exhibition caption now shifts. There is still no confetti.
