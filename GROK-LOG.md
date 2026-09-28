@@ -1,6 +1,6 @@
 # Tabla Viva and Globo Curioso
 
-**Status:** working. Last push 27 sep 2026, 18:33 (Mexico City). Iteration 29. Both apps pass the check.
+**Status:** working. Last push 27 sep 2026, 18:38 (Mexico City). Iteration 30. Both apps pass the check.
 
 **How to see it:**
 
@@ -9,17 +9,17 @@
 3. ZIP: https://github.com/vdm285/ideas/archive/refs/heads/grok/polish-2026-09-27.zip. Unzip it and double-click either `sketch.html`. On this laptop the folder is `C:\Users\Victor\grok-work\ideas`.
 4. Before and after pictures: `polish/shots/before/` vs `polish/shots/latest/`.
 
-**Scoreboard:** Tabla 71. Globo 79 → 80.
+**Scoreboard:** Tabla 71 → 72. Globo 80.
 
-- Tabla 71. T1 6, the rotation note is one line, and it still sits above the table. T2 7, contrast failures are 0; alkali and noble gases are both pink. T3 7, phone symbols are 16 px; the name still shows only while you press. T4 7, on a television the story is 20 px; from across a room that is still the floor. T5 7, the electrons are lit spheres; the quiz still sits below the fold on a TV. T6 7, pressing a phone tile shows its name; there is still no move from tile to card. T7 8, a TV no longer scrolls (1,080 px). T8 8, a perfect round throws a short burst; it is gone in under a second. T9 7, 133 phone targets are under 44 px. T10 8, one global sample badge covers the automatic cards.
-- Globo 79. G1 8, the globe is smaller so the controls can sit below it. G2 8, the grid is readable and fades at the edge; the lines have no degree labels. G3 7, a flight pulls back and Giro eases; a slow frame was 34 ms. G4 9, the Hoy thread is ink, not the selection red; it is still a stack of headings. G5 8, a TV no longer scrolls and the phone sheet works. G6 9, the country chips and the controls share one dock; the search is still its own bar above the globe. G7 7, the game has five dots, a green pulse, a shake, and an end card; Modo niños is still the same layout, only larger. G8 7, night has a blue halo. G9 7, 11 targets are under 44 px. G10 9, the sample ribbon sits in the header at 16 px; the source line in the card is still small.
-- Errors: none. Under 24 px: 0. Contrast failures: 0. TV page height: 1,080 px for both. Globe p95: 34 ms.
+- Tabla 72. T1 6, the rotation note is one line, and it still sits above the table. T2 7, contrast failures are 0; alkali and noble gases are both pink. T3 7, phone symbols are 16 px; the name still shows only while you press. T4 7, on a television the story is 20 px; from across a room that is still the floor. T5 7, the electrons are lit spheres; the quiz still sits below the fold on a TV. T6 8, the symbol travels from the tile to the card; the trip is a small square. T7 8, a TV no longer scrolls (1,080 px). T8 8, a perfect round throws a short burst; it is gone in under a second. T9 7, 133 phone targets are under 44 px. T10 8, one global sample badge covers the automatic cards.
+- Globo 79. G1 8, the globe is smaller so the controls can sit below it. G2 8, the grid is readable and fades at the edge; the lines have no degree labels. G3 7, a flight pulls back and Giro eases; a slow frame was 35 ms. G4 9, the Hoy thread is ink, not the selection red; it is still a stack of headings. G5 8, a TV no longer scrolls and the phone sheet works. G6 9, the country chips and the controls share one dock; the search is still its own bar above the globe. G7 7, the game has five dots, a green pulse, a shake, and an end card; Modo niños is still the same layout, only larger. G8 7, night has a blue halo. G9 7, 11 targets are under 44 px. G10 9, the sample ribbon sits in the header at 16 px; the source line in the card is still small.
+- Errors: none. Under 24 px: 0. Contrast failures: 0. TV page height: 1,080 px for both. Globe p95: 35 ms.
 
 **Top 3 changes:**
 
-1. Under the globe, the country chips and the controls are one dock. The search stays above.
-2. A perfect round throws a short burst from the stars. Reduced motion leaves them still.
-3. The sample line sits between the title and Modo niños, and it does not cover the globe.
+1. Tapping a tile sends its symbol across to the card. Reduced motion stays still.
+2. Under the globe, the country chips and the controls are one dock. The search stays above.
+3. A perfect round throws a short burst from the stars. Reduced motion leaves them still.
 
 **Top 3 open issues:**
 
@@ -35,6 +35,7 @@
 
 ## Iterations
 
+- **27 sep 2026, 18:38, Tabla, tile move.** T6 7 → 8. Tabla 71 → 72. The symbol travels from the tile to the card in about a third of a second. Reduced motion and Reto do not send it. The page still fits in 1,080 px. A slow globe frame was 35 ms.
 - **27 sep 2026, 18:33, Globo, dock.** G6 8 → 9. Globo 79 → 80. On a television the country chips and the controls share one card under the globe, including in Modo niños. A side-by-side row was tried and put back, because it ran off a narrower screen. The page still fits in 1,080 px. The search stays above. A slow frame was 34 ms.
 - **27 sep 2026, 18:26, Tabla, confetti.** T8 7 → 8. Tabla 70 → 71. A perfect round throws twelve pieces from the stars. They fade in under a second. Reduced motion does not throw them. The end words stay "¡10 de 10! Perfecto." Fresh pictures are in `polish/shots/latest/`. A slow globe frame was 34 ms.
 - **27 sep 2026, 18:20, Globo, sample ribbon.** G10 8 → 9. Globo stays 79. On a television the sample line sits in the header at 16 px and does not cover the title, the switch, or the globe. The words are the same. The page still fits in 1,080 px. A slow frame was 36 ms.

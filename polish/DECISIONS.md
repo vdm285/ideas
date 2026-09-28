@@ -38,3 +38,4 @@
 36. 2026-09-27 18:20 Mexico City — globo — On a short wide screen the sample line sits in the header, out of the flow, so the page still fits. The words are the same. It does not cover the title or Modo niños. Undo: put the ribbon back in the flow and restore the old type size.
 37. 2026-09-27 18:26 Mexico City — tabla — A perfect round throws twelve short pieces from the stars and they fade. Reduced motion does not throw them. The end words stay the same. Undo: remove burst and the confetti style.
 38. 2026-09-27 18:33 Mexico City — globo — On a short wide screen the country chips and the controls share one dock. Putting them on one line ran off a narrower screen, so they stay stacked. Undo: give each its own pill and restore the gap.
+39. 2026-09-27 18:38 Mexico City — tabla — Tapping a tile sends its symbol toward the card. Reduced motion and Reto do not. Undo: remove flyTile and the fly style.

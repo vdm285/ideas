@@ -4,15 +4,16 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla — tile to card.** Pressing a tile still does not travel toward the card. Add a short move from the tile to the card that stays off when motion is reduced. Do not move the quiz above the Bohr. Acceptance: the phone page stays under 1,200 px, and the TV page stays 1,080 px.
+1. **Globo — source line.** The "(ejemplo)" line under a country text is still small. Make that line easier to read without changing its words. Acceptance: it still contains "ejemplo", contrast stays 0, and the TV page stays 1,080 px.
 
 ## Later (alternate apps)
 
-- **Globo, next.** The search is still its own bar above the globe. The source line in the card is still small. Do not draw degree labels that look like new facts.
-- **Tabla.** Más closes on an outside tap. The phone name still appears only while you press. Do not move the quiz above the Bohr until the drawing can stay on screen.
+- **Tabla, next.** Más closes on an outside tap. The phone name still appears only while you press. The symbol's trip is a small square. Do not move the quiz above the Bohr until the drawing can stay on screen.
+- **Globo.** The search is still its own bar above the globe. Do not draw degree labels that look like new facts.
 
 ## Done
 
+- **Tabla tile move (iteration 30).** The symbol travels to the card. T6 7 → 8. Tabla 71 → 72. Reduced motion and Reto stay still. The page stays 1,080 px.
 - **Globo dock (iteration 29).** The country chips and the controls share one card. G6 8 → 9. Globo 79 → 80. A single row ran off a narrower screen, so the two rows stay stacked. The page stays 1,080 px.
 - **Tabla confetti (iteration 28).** A perfect round throws twelve pieces. T8 7 → 8. Tabla 70 → 71. Reduced motion stays still. Pictures refreshed in `polish/shots/latest/`.
 - **Globo sample ribbon (iteration 27).** On a television the sample line sits in the header at 16 px. G10 8 → 9. Globo stays 79. The words are the same. The page stays 1,080 px.
@@ -53,7 +54,7 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Globo, TV: the globe is smaller so the dock can sit below it. The chips and the controls are one card. The search is still its own bar above the globe.
 - Globo, card: Hoy is still a stack of headings. The timeline is ink. The sample line in the header is 16 px; the source line in the card is still small.
 - Globo, game: the round has dots, a pulse, a shake, and an end card. Modo niños is still the same layout, only larger.
-- Globo, motion: a flight hops and Giro eases. A slow frame was 34 ms.
+- Globo, motion: a flight hops and Giro eases. A slow frame was 35 ms.
 
 ## Needs Victor
 

@@ -500,6 +500,7 @@ body.kiosk .ai-note, body.kiosk .badge, body.kiosk .foot { display: none; }
 .rp .rt { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.7rem, 3vw, 2.5rem); line-height: 1.05; margin: 4px 0; }
 .rp .stars { margin: 0; letter-spacing: .18em; font-size: 1.7rem; color: var(--accent); }
 .confetti { position: fixed; z-index: 70; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 2px; pointer-events: none; animation: burst 800ms var(--ease-out) forwards; }
+.flys { position: fixed; z-index: 74; display: flex; align-items: center; justify-content: center; pointer-events: none; font-family: var(--font-display); font-weight: 800; color: var(--ink); line-height: 1; border-radius: 8px; background: var(--surface); box-shadow: var(--elev-2); transition: transform 320ms var(--ease-out), opacity 320ms var(--ease-out); }
 @keyframes burst { to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.7); } }
 .sbtn.again { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); min-height: 52px; font-size: 1.15rem; }
 .dots { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; padding: 0; list-style: none; }
@@ -1333,12 +1334,35 @@ const HOOK = {
   }, { passive: true });
 
   function renderPanel(e) { clearTimeout(fillT); stopSay(); panel.innerHTML = panelHTML(e); }
+  function flyTile(cell) {
+    if (reduced() || reto.on || !cell) return;
+    document.querySelectorAll(".flys").forEach(n => n.remove());
+    const sym = cell.querySelector(".s");
+    const dest = panel.querySelector("h2");
+    if (!sym || !dest) return;
+    const from = sym.getBoundingClientRect(), to = dest.getBoundingClientRect();
+    if (from.width < 2 || to.width < 2 || to.bottom < 0 || to.top > innerHeight) return;
+    const el = document.createElement("span");
+    el.className = "flys";
+    el.textContent = sym.textContent;
+    const size = Math.max(from.height, 22);
+    el.style.left = (from.left + from.width / 2 - size / 2) + "px";
+    el.style.top = (from.top + from.height / 2 - size / 2) + "px";
+    el.style.width = size + "px"; el.style.height = size + "px";
+    el.style.fontSize = Math.round(size * .62) + "px";
+    document.body.appendChild(el);
+    const dx = (to.left + to.width / 2) - (from.left + from.width / 2);
+    const dy = (to.top + to.height / 2) - (from.top + from.height / 2);
+    requestAnimationFrame(() => { el.style.transform = "translate(" + dx + "px," + dy + "px)"; el.style.opacity = ".2"; });
+    setTimeout(() => el.remove(), 420);
+  }
   function open(z, show = true) {
     const e = EL[z - 1];
     if (state.sel) cells[state.sel - 1].classList.remove("sel");
     state.sel = z;
     cells[z - 1].classList.add("sel");
     renderPanel(e);
+    flyTile(cells[z - 1]);
     panel.scrollTop = 0;
     lupaShow(e);
     if (show) openSheet();
