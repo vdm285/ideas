@@ -1747,20 +1747,30 @@ const HOOK = {
     if (attract.on) { stopAttract(); return; }
     resetIdle();
     if (ev.key === "Escape") { $("#more").open = false; if (sheetOpen()) closeSheet(); return; }
-    if (ev.target.closest("input, textarea")) return;
-    if (!state.sel || !ev.key.startsWith("Arrow")) return;
-    let z = state.sel;
-    if (ev.key === "ArrowRight") z = z % 118 + 1;
-    else if (ev.key === "ArrowLeft") z = (z + 116) % 118 + 1;
-    else if (ev.key === "ArrowDown") z = Math.min(118, z + 18);
-    else if (ev.key === "ArrowUp") z = Math.max(1, z - 18);
-    else return;
+    /* arrows walk the table only while a tile has focus, and never answer Reto */
+    const from = ev.target.closest && ev.target.closest(".cell");
+    if (!from || ev.altKey || ev.ctrlKey || ev.metaKey) return;
+    const z = +from.dataset.z;
+    let to = null;
+    if (ev.key === "ArrowRight") to = cells[z % 118];
+    else if (ev.key === "ArrowLeft") to = cells[(z + 116) % 118];
+    else if (ev.key === "ArrowDown" || ev.key === "ArrowUp") to = tileInColumn(from, ev.key === "ArrowUp" ? -1 : 1);
+    if (!to) return;
     ev.preventDefault();
-    if (reto.on) { retoPick(z); return; }
-    open(z, false);
-    const cell = cells[z - 1];
-    if (cell) cell.focus({ preventScroll: true });
+    if (!reto.on) open(+to.dataset.z, false);
+    to.focus({ preventScroll: true });
+    to.scrollIntoView({ block: "nearest", inline: "nearest" });
   });
+  /* the nearest tile straight up (dir -1) or down (dir 1) in the table as drawn */
+  function tileInColumn(from, dir) {
+    const a = from.getBoundingClientRect(), ax = a.left + a.width / 2, ay = a.top + a.height / 2;
+    let best = null, bestDy = Infinity;
+    cells.forEach(c => {
+      const b = c.getBoundingClientRect(), dy = (b.top + b.height / 2 - ay) * dir;
+      if (dy > a.height / 2 && Math.abs(b.left + b.width / 2 - ax) < a.width / 2 && dy < bestDy) { best = c; bestDy = dy; }
+    });
+    return best;
+  }
 
   mqT.addEventListener("change", layout);
   mqDock.addEventListener("change", () => { if (mqDock.matches) closeSheet(); });
