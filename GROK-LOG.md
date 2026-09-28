@@ -1,6 +1,6 @@
 # Tabla Viva and Globo Curioso
 
-**Status:** working. Last push 27 sep 2026, 17:56 (Mexico City). Iteration 24. Both apps pass the check.
+**Status:** working. Last push 27 sep 2026, 18:07 (Mexico City). Iteration 25. Both apps pass the check.
 
 **How to see it:**
 
@@ -9,17 +9,17 @@
 3. ZIP: https://github.com/vdm285/ideas/archive/refs/heads/grok/polish-2026-09-27.zip. Unzip it and double-click either `sketch.html`. On this laptop the folder is `C:\Users\Victor\grok-work\ideas`.
 4. Before and after pictures: `polish/shots/before/` vs `polish/shots/latest/`.
 
-**Scoreboard:** Tabla 69 → 70. Globo 78.
+**Scoreboard:** Tabla 70. Globo 78 → 79.
 
 - Tabla 70. T1 6, the rotation note is one line, and it still sits above the table. T2 7, contrast failures are 0; alkali and noble gases are both pink. T3 7, phone tiles still have no names until you press. T4 7, on a television the story is 20 px; from across a room that is still the floor. T5 7, the electrons are lit spheres; the quiz still sits below the fold on a TV. T6 7, pressing a phone tile shows its name; there is still no move from tile to card. T7 8, a TV no longer scrolls (1,080 px). T8 7, the exhibition caption shifts each cycle; there is still no confetti. T9 7, 133 phone targets are under 44 px. T10 8, one global sample badge covers the automatic cards.
-- Globo 78. G1 8, the globe is smaller so the controls can sit below it. G2 8, the grid is readable and fades at the edge; the lines have no degree labels. G3 7, a flight pulls back and Giro eases; a slow frame was 38 ms. G4 9, the Hoy thread is ink, not the selection red; it is still a stack of headings. G5 8, a TV no longer scrolls and the phone sheet works. G6 8, the search and the controls are clear of the disc; they are two separate pills. G7 6, Modo niños fits on a TV; the game is still plain. G8 7, night has a blue halo. G9 7, 11 targets are under 44 px. G10 8, the sample ribbon is easy to miss in the card.
-- Errors: none. Under 24 px: 0. Contrast failures: 0. TV page height: 1,080 px for both. Globe p95: 38 ms, inside the 25% band of the previous 33 ms.
+- Globo 79. G1 8, the globe is smaller so the controls can sit below it. G2 8, the grid is readable and fades at the edge; the lines have no degree labels. G3 7, a flight pulls back and Giro eases; a slow frame was 35 ms. G4 9, the Hoy thread is ink, not the selection red; it is still a stack of headings. G5 8, a TV no longer scrolls and the phone sheet works. G6 8, the search and the controls are clear of the disc; they are two separate pills. G7 7, the game has five dots, a green pulse, a shake, and an end card; Modo niños is still the same layout, only larger. G8 7, night has a blue halo. G9 7, 11 targets are under 44 px. G10 8, the sample ribbon is easy to miss in the card.
+- Errors: none. Under 24 px: 0. Contrast failures: 0. TV page height: 1,080 px for both. Globe p95: 35 ms.
 
 **Top 3 changes:**
 
-1. On a television, the element story is 20 px, and the page still fits in one screen.
-2. The globe's grid is easier to see, in daylight and at night, and it still fades toward the edge.
-3. On a television the search, the country chips, and the controls sit clear of the globe.
+1. ¿Dónde está…? shows five dots, pulses green on a right tap, shakes on a wrong one, and ends with stars.
+2. On a television, the element story is 20 px, and the page still fits in one screen.
+3. The globe's grid is easier to see, in daylight and at night, and it still fades toward the edge.
 
 **Top 3 open issues:**
 
@@ -35,6 +35,7 @@
 
 ## Iterations
 
+- **27 sep 2026, 18:07, Globo, game.** G7 6 → 7. Globo 78 → 79. The question shows five dots. A right tap pulses green. A wrong tap shakes, and the globe turns to that country. The end card repeats the same words and adds stars. Reduced motion skips the pulse and the shake. Fresh pictures are in `polish/shots/latest/`. Modo niños is still the same layout, only larger.
 - **27 sep 2026, 17:56, Tabla, story.** T4 6 → 7. Tabla 69 → 70. On a short wide screen the story is 20 px. Phones stay as they were. The page still fits in 1,080 px. A slow globe frame was 38 ms, inside the 25% band. From across a room, 20 px is still small.
 - **27 sep 2026, 17:44, Globo, grid.** Globo 77 → 78. The latitude and longitude lines are stronger, and they still fade at the rim. They have no degree labels.
 - **27 sep 2026, 17:39, Globo, Hoy thread.** Globo stays 77. Antes is a hollow dot and Hoy is a filled ink dot. The sample tag stays first. The words are the same. A slow frame was 40 ms, inside the 25% band.

@@ -32,7 +32,7 @@
   --pick:#D4411D; --pick-edge:#13262E; --hover:#FFFFFF;
   --accent:#1D5E78; --accent-soft:#D5E7ED; --accent-ink:#FFFFFF;
   --sample:#7A4F00; --sample-bg:#FDEFC8; --sample-line:#E9CD84;
-  --thread:#D4411D; --shadow:rgba(19,38,46,.18);
+  --thread:#D4411D; --shadow:rgba(19,38,46,.18); --ok-dot:#7DDE9A; --ok-ring:#1E7A3C;
   --display:"Alegreya", Georgia, "Times New Roman", serif;
   --body:"Alegreya Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -47,7 +47,7 @@
     --pick:#FF7449; --pick-edge:#FFE2D6; --hover:#E3ECEE;
     --accent:#7CC2DC; --accent-soft:#1A3947; --accent-ink:#0B1920;
     --sample:#F2C66A; --sample-bg:#342A11; --sample-line:#5E4B1C;
-    --thread:#FF7449; --shadow:rgba(0,0,0,.5);
+    --thread:#FF7449; --shadow:rgba(0,0,0,.5); --ok-dot:#146B32; --ok-ring:#7DDE9A;
   }
 }
 :root[data-theme="dark"]{
@@ -58,7 +58,7 @@
   --pick:#FF7449; --pick-edge:#FFE2D6; --hover:#E3ECEE;
   --accent:#7CC2DC; --accent-soft:#1A3947; --accent-ink:#0B1920;
   --sample:#F2C66A; --sample-bg:#342A11; --sample-line:#5E4B1C;
-  --thread:#FF7449; --shadow:rgba(0,0,0,.5);
+  --thread:#FF7449; --shadow:rgba(0,0,0,.5); --ok-dot:#146B32; --ok-ring:#7DDE9A;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -117,6 +117,22 @@ a{color:var(--accent)}
 @keyframes pulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.08)}}
 .pill{width:max-content;max-width:92%;white-space:normal;text-align:center}
 .toast{animation:none;font-size:.95rem}
+.pill{display:flex;flex-direction:column;align-items:center;gap:6px}
+.qdots{display:flex;gap:7px}
+.qdots i{width:11px;height:11px;border-radius:50%;box-sizing:border-box;border:2px solid currentColor;background:transparent}
+.qdots i.now{background:currentColor}
+.qdots i.hit{background:var(--ok-dot);border-color:var(--ok-dot)}
+.qdots i.miss{opacity:.4}
+.qend{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;width:min(86%,300px);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px;box-shadow:var(--elev-2);padding:18px 16px}
+.qstars{margin:0;letter-spacing:.18em;font-size:1.8rem;color:var(--accent);line-height:1}
+.qline{margin:0;font-family:var(--display);font-weight:800;font-size:1.2rem;line-height:1.25}
+.qacts{display:flex;gap:8px;margin-top:4px}
+.qacts .btn{min-height:44px;padding:0 14px}
+#qagain{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.globe-box.pulse-ok::after{content:"";position:absolute;inset:0;border-radius:50%;border:4px solid var(--ok-ring);pointer-events:none;animation:okring 520ms var(--ease-out)}
+@keyframes okring{from{opacity:.95;transform:scale(.92)}to{opacity:0;transform:scale(1.05)}}
+.globe-box.shake{animation:qshake 420ms var(--ease-inout)}
+@keyframes qshake{0%,100%{transform:none}30%{transform:translateX(-6px)}60%{transform:translateX(5px)}}
 .cross{position:absolute;left:50%;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;pointer-events:none;display:none;color:var(--ink)}
 .cross svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round}
 #globe:focus-visible ~ .cross{display:block}
@@ -205,7 +221,7 @@ footer p{margin:0}
 }
 @media (prefers-reduced-motion: reduce){
   .switch .knob,.switch .knob::after,.panel,.tabs .thumb{transition:none}
-  .pill,#globe .land.sel.flash,.tabbody.in{animation:none}
+  .pill,#globe .land.sel.flash,.tabbody.in,.globe-box.pulse-ok::after,.globe-box.shake{animation:none}
 }
 @media (min-width:1100px) and (max-height:1100px){
   .wrap{height:100dvh;max-width:none;box-sizing:border-box;padding:8px 18px 10px;gap:6px}
@@ -257,8 +273,16 @@ footer p{margin:0}
       <div class="globe-box" id="globeBox">
         <svg id="globe" role="img" tabindex="0" aria-label="Globo terráqueo. Arrastra para girar y toca un país para verlo. Con el teclado: flechas para girar, más y menos para acercar, Enter para elegir el país del centro."></svg>
         <div class="tip" id="tip" hidden></div>
-        <div class="pill" id="pill" aria-hidden="true">Toca un país</div>
+        <div class="pill" id="pill" aria-hidden="true"><span id="pillText">Toca un país</span><span class="qdots" id="qdots" hidden></span></div>
         <div class="pill toast" id="toast" aria-hidden="true" hidden></div>
+        <div class="qend" id="qend" hidden>
+          <p class="qstars" id="qstars" aria-hidden="true"></p>
+          <p class="qline" id="qline"></p>
+          <div class="qacts">
+            <button class="btn" id="qagain" type="button">Otra ronda</button>
+            <button class="btn" id="qdone" type="button">Listo</button>
+          </div>
+        </div>
         <div class="cross" aria-hidden="true"><svg viewBox="0 0 28 28"><path d="M14 3v8M14 17v8M3 14h8M17 14h8"/></svg></div>
       </div>
       <p class="status" id="status" role="status" aria-live="polite"></p>
@@ -1131,10 +1155,11 @@ function bodyFor(s) {
     "<div><h4>Lo que aún no se sabe</h4><p>" + esc(n.nosabe) + "</p></div></div>";
 }
 function select(f, fly, roulette, focusName) {
+  $("qend").hidden = true;
   selected = f; picked = true; setSpin(false);
   if (!quiz) $("pill").hidden = true;
   if (fly) flyTo(f, roulette); else { render(); flash(f); }
-  say("Elegiste: " + f.name, true);
+  if (!quiz) say("Elegiste: " + f.name, true);
   renderPanel();
   sheet(quiz ? "mini" : "peek");
   if (focusName) $("cname").focus({ preventScroll: phone.matches });
@@ -1204,19 +1229,40 @@ $("searchForm").addEventListener("submit", e => {
 function quizPool() {
   return features.filter(f => f.properties.a && f.properties.a !== "AQ" && f.area > (kids ? 0.01 : 0.0015));
 }
+function paintDots() {
+  const el = $("qdots");
+  if (!quiz) { el.hidden = true; el.innerHTML = ""; return; }
+  let html = "";
+  for (let i = 0; i < 5; i++) {
+    const m = quiz.marks[i];
+    const c = m === "hit" ? "hit" : m === "miss" ? "miss" : i === quiz.round ? "now" : "";
+    html += '<i class="' + c + '"></i>';
+  }
+  el.innerHTML = html;
+  el.hidden = false;
+}
+function quizFlash(kind) {
+  if (reduce) return;
+  const box = $("globeBox");
+  box.classList.remove("pulse-ok", "shake");
+  void box.offsetWidth;
+  box.classList.add(kind === "ok" ? "pulse-ok" : "shake");
+  setTimeout(() => box.classList.remove("pulse-ok", "shake"), 560);
+}
 function quizNext() {
   const pool = quizPool().filter(f => !quiz.seen.includes(f));
   quiz.target = pool[Math.floor(Math.random() * pool.length)];
   quiz.seen.push(quiz.target);
   clearTimeout(toastT); $("toast").hidden = true;
-  const p = $("pill");
-  p.textContent = "Encuentra " + quiz.target.name + " (" + (quiz.round + 1) + " de 5)";
-  p.hidden = false;
+  $("pillText").textContent = "Encuentra " + quiz.target.name + " (" + (quiz.round + 1) + " de 5)";
+  $("pill").hidden = false;
+  paintDots();
   if (kids) sayName(quiz.target, "Encuentra ");
 }
 function quizStart() {
   if (quiz) { quizEnd(true); return; }
-  quiz = { round: 0, ok: 0, seen: [], target: null, wait: false };
+  $("qend").hidden = true;
+  quiz = { round: 0, ok: 0, seen: [], target: null, wait: false, marks: [] };
   $("quiz").setAttribute("aria-pressed", "true");
   setSpin(false);
   if (phone.matches) sheet("mini");
@@ -1229,13 +1275,18 @@ function quizAnswer(f, pt) {
   quiz.wait = true;
   if (f === t) {
     quiz.ok++;
+    quiz.marks[quiz.round] = "hit";
     select(t, false);
     say("¡Bien! " + quiz.ok + " de " + (quiz.round + 1), false, true);
     if (kids) sayName(t, "¡Bien! ");
+    quizFlash("ok");
   } else {
+    quiz.marks[quiz.round] = "miss";
     say((f ? "Eso es " + f.name : "Eso es agua") + "; " + t.name + " está aquí");
+    quizFlash("no");
     select(t, true);
   }
+  paintDots();
   setTimeout(() => {
     if (!quiz) return;
     quiz.wait = false; quiz.round++;
@@ -1246,11 +1297,24 @@ function quizEnd(stopped) {
   const q = quiz; quiz = null;
   $("quiz").setAttribute("aria-pressed", "false");
   $("pill").hidden = true;
-  if (!stopped) say("Terminaste: " + q.ok + " de 5. " + (q.ok >= 4 ? "¡Eres experto en mapas!" : q.ok >= 2 ? "¡Muy bien!" : "¡Otra vez y te sale mejor!"), false, q.ok >= 2);
-  else say("Juego terminado", true);
+  clearTimeout(toastT); $("toast").hidden = true;
+  paintDots();
+  if (!stopped) {
+    const line = "Terminaste: " + q.ok + " de 5. " + (q.ok >= 4 ? "¡Eres experto en mapas!" : q.ok >= 2 ? "¡Muy bien!" : "¡Otra vez y te sale mejor!");
+    const n = q.ok >= 4 ? 3 : q.ok >= 2 ? 2 : 1;
+    $("qstars").textContent = "★".repeat(n) + "☆".repeat(3 - n);
+    $("qline").textContent = line;
+    $("qend").hidden = false;
+    say(line, true);
+  } else {
+    $("qend").hidden = true;
+    say("Juego terminado", true);
+  }
 }
 $("quiz").setAttribute("aria-pressed", "false");
 $("quiz").onclick = quizStart;
+$("qagain").onclick = () => { $("qend").hidden = true; quizStart(); };
+$("qdone").onclick = () => { $("qend").hidden = true; };
 
 /* ---------- Phones: search + Sorpréndeme live in a sticky bar at the top of the sheet ---------- */
 const searchHome = $("searchForm").parentNode, searchNext = $("searchForm").nextElementSibling, ctrlBox = document.querySelector(".controls");
