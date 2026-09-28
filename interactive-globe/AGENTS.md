@@ -72,6 +72,12 @@ Rollout by checkpoints (each one used and trusted before the next):
 - News: weekly static digest from GDELT DOC 2.0 (cite + link GDELT) and Wikipedia current events.
 - Hosting: GitHub Pages or Cloudflare Pages (free).
 
+## Open ideas from Victor (for the dedicated project session)
+- **Disputed places (Victor, 2026-09-28):** today no flag is shown on places the map marks as disputed (neutral default).
+  For the **regular (adult) version**, show disputed areas visibly (e.g. a gradient or hatching between the claimants) and
+  explain what is disputed, who claims what and why, with diplomatic, neutral, journalistic tact; that is part of the
+  app's purpose. The **kids' version** is decided separately.
+
 ## How to work here
 - Branch per piece of work; `main` is the live site (once there is one).
 - Pure logic (country lookup, text checks, balance checks) is tested headless with macOS `jsc` or

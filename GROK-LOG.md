@@ -4,7 +4,7 @@
 
 **How to see it:**
 
-1. **Live (GitHub Pages, merged 2026-09-28):** https://vdm285.github.io/ideas/interactive-science/sketch.html and https://vdm285.github.io/ideas/interactive-globe/sketch.html. Grok's version as it stopped: https://raw.githack.com/vdm285/ideas/grok/polish-2026-09-27/interactive-globe/sketch.html (and interactive-science).
+1. **Live (GitHub Pages, merged 2026-09-28):** https://vdm285.github.io/ideas/interactive-science/sketch.html and https://vdm285.github.io/ideas/interactive-globe/sketch.html. Grok's version as it stopped: https://raw.githack.com/vdm285/ideas/1d27207d041b9073452fe97cba449f1003c6e11d/interactive-globe/sketch.html (and interactive-science; Grok's last commit, its branch was deleted after the merge).
 2. All changes vs the baseline: https://github.com/vdm285/ideas/compare/034ccf1...main (034ccf1 = main before Grok, after the 2026-09-28 email clean-up).
 3. ZIP: https://github.com/vdm285/ideas/archive/refs/heads/main.zip. Unzip it and double-click either `sketch.html`.
 4. Before and after pictures: `polish/shots/before/` vs `polish/shots/latest/` (Grok's last set; it misses Grok's last two commits and these fixes).
@@ -23,7 +23,7 @@
 - Globo: blank space and small text in the TV card; the TV globe is 776 px (brief: 850); labels for the phone's icon-only buttons; phone and tablet pages scroll into empty space.
 - Honesty: say the "¿Sabías que…?" lines are unreviewed; ★ means both "full story" and "score"; show "isótopo más estable" in the strip; bring back the phone's "Toca cualquier elemento…" hint. Old bug, also on main: a `#constructor` link breaks Globo.
 
-**Needs Victor:** check the Windows laptop (`C:\Users\Victor\grok-work\ideas`) for work Grok never pushed: `git status` and `git log origin/grok/polish-2026-09-27..HEAD`. Grok's open questions stand: dock the element card on a 1024 px tablet? Palestina's name and the Georgia Wikipedia link.
+**Needs Victor:** nothing from this run. (Grok stopped at its weekly limit before the wrap-up; nothing was left unpushed. Grok's branch and the fixes branch were deleted after the 2026-09-28 merge; the history is in main.)
 
 ## Iterations
 
