@@ -499,6 +499,8 @@ body.kiosk .ai-note, body.kiosk .badge, body.kiosk .foot { display: none; }
 .rp .rt { font-family: var(--font-display); font-weight: 800; font-size: 2.6rem; line-height: 1.05; margin: 8px 0; }
 .rp .rt { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.7rem, 3vw, 2.5rem); line-height: 1.05; margin: 4px 0; }
 .rp .stars { margin: 0; letter-spacing: .18em; font-size: 1.7rem; color: var(--accent); }
+.confetti { position: fixed; z-index: 70; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 2px; pointer-events: none; animation: burst 800ms var(--ease-out) forwards; }
+@keyframes burst { to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.7); } }
 .sbtn.again { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); min-height: 52px; font-size: 1.15rem; }
 .dots { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; padding: 0; list-style: none; }
 .dots li { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); }
@@ -538,7 +540,7 @@ body.kiosk .ai-note, body.kiosk .badge, body.kiosk .foot { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; }
-  #bohr .orb, .tap-ring, .cell.glow, .cell.hint, .cell.miss, .cell.hit::before { animation: none !important; }
+  #bohr .orb, .tap-ring, .cell.glow, .cell.hint, .cell.miss, .cell.hit::before, .confetti { animation: none !important; }
 }
 </style>
 </head>
@@ -1453,11 +1455,31 @@ const HOOK = {
     };
     step();
   }
+  function burst() {
+    if (reduced()) return;
+    document.querySelectorAll(".confetti").forEach(n => n.remove());
+    const stars = document.querySelector(".rp .stars");
+    const box = stars ? stars.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight * .4, width: 0, height: 0 };
+    const cx = box.left + box.width / 2, cy = box.top + box.height / 2;
+    const colors = ["var(--accent)", "var(--sample-bg)", "var(--ink)"];
+    for (let i = 0; i < 12; i++) {
+      const el = document.createElement("span");
+      el.className = "confetti";
+      el.style.left = cx + "px"; el.style.top = cy + "px";
+      el.style.background = colors[i % 3];
+      const a = i / 12 * 6.2832;
+      el.style.setProperty("--dx", Math.round(Math.cos(a) * (34 + (i % 3) * 14)) + "px");
+      el.style.setProperty("--dy", Math.round(Math.sin(a) * (26 + (i % 4) * 8) - 16) + "px");
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1000);
+    }
+  }
   function retoEnd() {
     reto.done = true; reto.lock = true;
     if (reto.score > getBest()) { setBest(reto.score); toast(`¡Nuevo récord: ${reto.score} de ${ROUND}!`); }
     retoRender();
     if (reto.score >= 5) { victoryWave(); chimeWin(); }
+    if (reto.score === ROUND) burst();
   }
   function retoStart() {
     stopAttract(); closeSheet(); clearFilters(); clearTimeout(fillT); stopSay();
@@ -1472,6 +1494,7 @@ const HOOK = {
     if (!reto.on) return;
     reto.on = false; reto.done = false; $("#reto").hidden = true; $("#btn-reto").setAttribute("aria-pressed", "false");
     clearTimeout(reto.t); clearTimeout(reto.w); reto.round++; toastEl.hidden = true;
+    document.querySelectorAll(".confetti").forEach(n => n.remove());
     clearHints(); pt.classList.remove("hard");
     if (state.sel) open(state.sel, false);
   }

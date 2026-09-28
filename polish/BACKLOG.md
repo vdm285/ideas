@@ -4,15 +4,15 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 
 ## Now
 
-1. **Tabla — perfect-round confetti.** A perfect Reto already shows three stars. Add a short burst that stays off when motion is reduced. Acceptance: the end words stay the same, the TV page stays 1,080 px, and reduced motion leaves the stars still.
+1. **Globo — one toolbar.** The search sits above the globe and the controls sit below it, as two pills. Join the controls into that lower pill only if both Modo niños and the normal layout still fit in 1,080 px. Do not cover the disc.
 
 ## Later (alternate apps)
 
-- **Globo, next.** Join the two pills under the globe only if the page still fits. The source line in the card is still small. Do not draw degree labels that look like new facts.
-- **Tabla.** A move from the tile to the card. Más closes on an outside tap. The phone name still appears only while you press. Do not move the quiz above the Bohr until the drawing can stay on screen.
+- **Tabla, next.** A move from the tile to the card. Más closes on an outside tap. The phone name still appears only while you press. Do not move the quiz above the Bohr until the drawing can stay on screen.
 
 ## Done
 
+- **Tabla confetti (iteration 28).** A perfect round throws twelve pieces. T8 7 → 8. Tabla 70 → 71. Reduced motion stays still. Pictures refreshed in `polish/shots/latest/`.
 - **Globo sample ribbon (iteration 27).** On a television the sample line sits in the header at 16 px. G10 8 → 9. Globo stays 79. The words are the same. The page stays 1,080 px.
 - **Tabla phone symbols (iteration 26).** Narrow tiles use a 16 px symbol, 18 px with Letra grande. The page stays 1,183 px. The score stays 70 because the name still appears only while you press.
 - **Globo game (iteration 25).** Five dots, a green pulse, a shake, and an end card with the same words. G7 6 → 7. Globo 78 → 79. Modo niños is still the same layout, only larger. Pictures refreshed in `polish/shots/latest/`.
@@ -46,12 +46,12 @@ Ranked for the polish loop. Apps alternate after the opening order. A red check 
 - Tabla, phone: symbols are 16 px. The name still appears only while you press. The table starts after the logo, the badge, the search, and the rotation note.
 - Tabla, dark: the f-block rows are the closest pair under a colour-blind simulation. Contrast failures are now 0.
 - Tabla, TV: the story is 20 px on a short wide screen. The experiment and quiz sit below the fold inside the card.
-- Tabla, Reto: the end card has stars, and the exhibition caption now shifts. There is still no confetti.
+- Tabla, Reto: a perfect round throws a short burst, and the exhibition caption shifts. The burst is gone in under a second.
 - Globo, phone: the chips and the zoom buttons sit between the globe and the sheet.
 - Globo, TV: the globe is smaller so the controls can sit below it. Search, chips, and controls are clear of the disc.
 - Globo, card: Hoy is still a stack of headings. The timeline is ink. The sample line in the header is 16 px; the source line in the card is still small.
 - Globo, game: the round has dots, a pulse, a shake, and an end card. Modo niños is still the same layout, only larger.
-- Globo, motion: a flight hops and Giro eases. A slow frame was 36 ms.
+- Globo, motion: a flight hops and Giro eases. A slow frame was 34 ms.
 
 ## Needs Victor
 
