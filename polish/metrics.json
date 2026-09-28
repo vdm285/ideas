@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-28T00:15:11.593Z",
+  "updated": "2026-09-28T00:20:19.364Z",
   "tabla": {
     "under44": 133,
     "under24": 0,
@@ -7,7 +7,7 @@
     "axeSerious": 0,
     "axeCritical": 0,
     "tvPageHeight": 1080,
-    "fcp": 208,
+    "fcp": 228,
     "bohrFrameAvg": 16.3,
     "longTasks": null
   },
@@ -18,9 +18,9 @@
     "axeSerious": 0,
     "axeCritical": 0,
     "tvPageHeight": 1080,
-    "fcp": 68,
-    "frameAvg": 22,
-    "frameP95": 34.4,
+    "fcp": 72,
+    "frameAvg": 23.5,
+    "frameP95": 35.8,
     "longTasks": null
   }
 }
