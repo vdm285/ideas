@@ -366,6 +366,15 @@ html.big .cell .n { font-size: max(.6rem, min(15cqi, 14px)); }
 @media (min-width: 1180px) {
   .panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); max-height: calc(100vh - 24px); overflow: auto; }
   .p-top { display: none; }
+  /* the docked card scrolls on its own: a fade and a label say so until its end is in view */
+  .panel::after {
+    content: "Más abajo ↓"; content: "Más abajo ↓" / ""; display: flex; align-items: flex-end; justify-content: center; box-sizing: border-box;
+    position: sticky; bottom: -22px; height: 64px; margin: -64px -18px -22px; padding-bottom: 12px; pointer-events: none;
+    font-size: 1rem; font-weight: 700; color: var(--ink);
+    background: linear-gradient(transparent, var(--surface) 70%);
+    opacity: 0; transition: opacity var(--t-ui) var(--ease-out);
+  }
+  .panel.more-below::after { opacity: 1; }
 }
 @media (max-width: 1179.98px) {
   .panel {
@@ -1337,6 +1346,11 @@ const HOOK = {
   }, { passive: true });
 
   function renderPanel(e) { clearTimeout(fillT); stopSay(); panel.innerHTML = panelHTML(e); }
+  const moreCue = () => panel.classList.toggle("more-below", mqDock.matches && panel.scrollTop + panel.clientHeight < panel.scrollHeight - 24);
+  panel.addEventListener("scroll", moreCue, { passive: true });
+  panel.addEventListener("toggle", moreCue, true);
+  new MutationObserver(() => requestAnimationFrame(moreCue)).observe(panel, { childList: true });
+  if (window.ResizeObserver) new ResizeObserver(moreCue).observe(panel);
   function flyTile(cell) {
     if (reduced() || reto.on || !cell) return;
     document.querySelectorAll(".flys").forEach(n => n.remove());
