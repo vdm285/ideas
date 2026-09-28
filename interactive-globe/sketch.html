@@ -672,8 +672,9 @@ function stopSpinMotion() {
   spinTimer = null; spinVel = 0; last = null;
   if (timer) timer.stop();
 }
+/* Reduced motion never starts the spin by itself (start, idle), but a tap on Giro still does. */
 function setSpin(on) {
-  spinning = !!on && !reduce;
+  spinning = !!on;
   $("spin").setAttribute("aria-pressed", spinning ? "true" : "false");
   if (!spinning) { stopSpinMotion(); return; }
   if (spinTimer) return;
@@ -690,7 +691,8 @@ function setSpin(on) {
   });
 }
 $("spin").onclick = () => {
-  if (spinning) { spinning = false; $("spin").setAttribute("aria-pressed", "false"); }
+  if (spinning && reduce) setSpin(false);
+  else if (spinning) { spinning = false; $("spin").setAttribute("aria-pressed", "false"); }
   else setSpin(true);
 };
 /* Phones have no spin button: the globe starts spinning again after 30 s without touches. */
