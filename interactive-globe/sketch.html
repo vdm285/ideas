@@ -572,8 +572,10 @@ features.forEach((f, i) => { f.i = i; f.name = nameOf(f); f.area = d3.geoArea(f)
 const byCode = {};
 features.forEach(f => { if (f.properties.a) byCode[f.properties.a] = f; });
 const fold = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-function flagImg(a) {
-  if (!a || !/^[A-Z]{2}$/.test(a)) return "";
+/* No flag for a place the map marks as disputed: we show no side (see DISPUTED). */
+function flagImg(p) {
+  const a = p && p.a;
+  if (!a || p.x || !/^[A-Z]{2}$/.test(a)) return "";
   const src = "https://cdn.jsdelivr.net/npm/flag-icons@7.5.0/flags/4x3/" + a.toLowerCase() + ".svg";
   return '<img class="flagimg" alt="" width="28" height="21" src="' + src + '" onerror="this.hidden=true">';
 }
@@ -1034,7 +1036,7 @@ function factLines(f) {
 }
 function chipsFor(list) {
   return '<div class="chips">' + list.map(g => {
-    return '<button class="chip" type="button" data-fi="' + g.i + '">' + flagImg(g.properties.a) + esc(g.name) + "</button>";
+    return '<button class="chip" type="button" data-fi="' + g.i + '">' + flagImg(g.properties) + esc(g.name) + "</button>";
   }).join("") + "</div>";
 }
 function moreFor(f, s) {
@@ -1075,7 +1077,7 @@ function textFor(f, s) {
 function renderPanel() {
   stopSpeak();
   const f = selected, p = f.properties, s = SAMPLES[p.a];
-  const fl = flagImg(p.a);
+  const fl = flagImg(p);
   $("cname").innerHTML = fl + esc(f.name);
   $("cfacts").textContent = factLines(f).join(" · ");
   const note = p.x ? (DISPUTED[p.a] || DISPUTED._) : "";
