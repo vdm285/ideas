@@ -236,11 +236,12 @@ body.kiosk .more { display: none; }
 @media (min-width: 1180px) {
   .stage { grid-template-columns: minmax(0, 1fr) clamp(340px, 26vw, 470px); }
 }
-@media (min-width: 1180px) and (max-height: 1100px) {
+/* TV-size screens fit without page scroll; shorter laptops scroll like before */
+@media (min-width: 1180px) and (min-height: 900px) and (max-height: 1100px) {
   .wrap { height: 100dvh; max-width: none; box-sizing: border-box; display: flex; flex-direction: column; padding-block: 8px 10px; }
   .stage { flex: 1; min-height: 0; margin-top: 8px; align-items: stretch; }
-  .pt.norm { height: 100%; min-height: 0; grid-template-rows: auto repeat(7, minmax(0, 1fr)) 8px minmax(0, 1fr) minmax(0, 1fr); }
-  .pt.norm .cell { aspect-ratio: auto; min-height: 0; }
+  .stage > .pt.norm { height: 100%; min-height: 0; grid-template-rows: auto repeat(7, minmax(0, 1fr)) 8px minmax(0, 1fr) minmax(0, 1fr); }
+  .pt.norm .cell { min-height: 0; max-height: 100%; } /* tiles shrink with their row, never into the next one */
   .panel { max-height: 100%; }
 }
 
