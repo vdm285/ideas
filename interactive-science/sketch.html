@@ -1746,8 +1746,8 @@ const HOOK = {
   document.addEventListener("keydown", ev => {
     if (attract.on) { stopAttract(); return; }
     resetIdle();
-    if (ev.target.closest("input, textarea")) return;
     if (ev.key === "Escape") { $("#more").open = false; if (sheetOpen()) closeSheet(); return; }
+    if (ev.target.closest("input, textarea")) return;
     if (!state.sel || !ev.key.startsWith("Arrow")) return;
     let z = state.sel;
     if (ev.key === "ArrowRight") z = z % 118 + 1;
