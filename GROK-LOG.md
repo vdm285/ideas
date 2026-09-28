@@ -4,9 +4,9 @@
 
 **How to see it:**
 
-1. Any browser or phone, with the fixes: https://raw.githack.com/vdm285/ideas/claude/grok-fixes/interactive-science/sketch.html and https://raw.githack.com/vdm285/ideas/claude/grok-fixes/interactive-globe/sketch.html (after the merge, swap `claude/grok-fixes` for `main`). Grok's version as it stopped: the same links with `grok/polish-2026-09-27`.
-2. All changes: https://github.com/vdm285/ideas/compare/main...claude/grok-fixes
-3. ZIP: https://github.com/vdm285/ideas/archive/refs/heads/claude/grok-fixes.zip. Unzip it and double-click either `sketch.html`.
+1. **Live (GitHub Pages, merged 2026-09-28):** https://vdm285.github.io/ideas/interactive-science/sketch.html and https://vdm285.github.io/ideas/interactive-globe/sketch.html. Grok's version as it stopped: https://raw.githack.com/vdm285/ideas/grok/polish-2026-09-27/interactive-globe/sketch.html (and interactive-science).
+2. All changes vs the baseline: https://github.com/vdm285/ideas/compare/034ccf1...main (034ccf1 = main before Grok, after the 2026-09-28 email clean-up).
+3. ZIP: https://github.com/vdm285/ideas/archive/refs/heads/main.zip. Unzip it and double-click either `sketch.html`.
 4. Before and after pictures: `polish/shots/before/` vs `polish/shots/latest/` (Grok's last set; it misses Grok's last two commits and these fixes).
 
 **Scores:** Grok's own: Tabla 52 → 72, Globo 52 → 80 (80 is final; a bullet that said 79 was stale). Independent design review before these fixes: Tabla 5 → 6.5, Globo 4.5 → 7 out of 10.
