@@ -8,7 +8,7 @@ Stage: learning / portfolio / open source (not commercial). Sketch: `sketch.html
   Mac mini's terminal with the free, open-source `arduino-cli`. Victor's hands do only what an AI cannot:
   plug in, photograph, wire from a numbered table, and watch what happens.
 - This already works in practice (Adafruit did it with Claude Code in March 2025). What is new here is the
-  packaging: no accounts, zero running cost, 20-minute evening sessions, Spanish device text, and the
+  packaging: no accounts, zero running cost, 20-minute sessions, Spanish device text, and the
   Mac mini's local 35B model as the "brain" for creative content (poems, oracle answers) at $0.
 - MVP: plug the Arduino in and, in under 20 minutes, Claude identifies it, makes its LED spell a word of
   Victor's choice in Morse code and reads back a "hola" message. Victor types no code.
@@ -21,11 +21,11 @@ Stage: learning / portfolio / open source (not commercial). Sketch: `sketch.html
 
 ## The idea in Victor's words
 (Paraphrased from Victor, 2026-09-25; not a verbatim quote.)
-- He owns an Arduino, a birthday gift from his wife; he does not know the exact model.
+- He owns an Arduino; he does not know the exact model.
 - He is interested in Raspberry Pi too.
 - He wants to build creative projects with Claude Code doing the programming while he gives the
   creative direction.
-- He is too tired after work for old-school learning (courses, reading datasheets, typing code).
+- He wants to skip old-school learning (courses, reading datasheets, typing code).
 
 ---
 
@@ -152,7 +152,7 @@ Every project follows the same loop: Victor picks and describes the feel → Cla
 table and checklist → Victor wires (USB unplugged), photographs → Claude checks the photo → upload →
 Victor watches → Claude reads the board's messages and adjusts. Device text is Spanish first.
 
-| # | Project | Extra parts (beyond a typical starter kit) | Hook for a mathematician/philosopher | Sessions |
+| # | Project | Extra parts (beyond a typical starter kit) | Math / ideas hook | Sessions |
 |---|---|---|---|---|
 | 1 | **Latido**: the on-board LED spells a word in Morse | none | Codes as meaning | 1 (the MVP) |
 | 2 | **Vida**: Conway's Game of Life on the LED grid | none on an UNO R4 WiFi; otherwise the Mac screen or an 8x8 LED matrix module | Emergence from simple rules; a torus world | 1 |
@@ -167,7 +167,7 @@ Victor watches → Claude reads the board's messages and adjusts. Device text is
 
 ### Project details
 **1. Latido (the MVP).** Parts: board + USB cable only. Claude: sketch that blinks a word Victor
-chooses (e.g. his wife's name) in Morse and prints "Hola, soy tu Arduino …" over USB; compile, upload,
+chooses (e.g. a name) in Morse and prints "Hola, soy tu Arduino …" over USB; compile, upload,
 read back. Victor: plug in, choose the word, watch.
 
 **2. Vida.** Parts: none on an UNO R4 WiFi (its 12 x 8 LED grid); on other boards the board streams
@@ -213,8 +213,8 @@ has no á, é, ñ built in; Claude defines them as custom characters (up to 8) o
 **9. Botón ListoLista.** Parts: 2-4 buttons with labels (huevos, leche, tortillas, café). Claude: board
 sends `ADD:huevos`; the bridge on the Mac is a small headless ListoLista client (reusing ListoLista's
 tested encryption and merge modules) that adds the item to the shared list through the existing relay;
-the list's secret link is stored only on the Mac. Victor: choose items, mount the buttons, test with his
-wife's phone. Depends on ListoLista checkpoint 1 going live. Later option: a Wi-Fi board (Pico 2 W,
+the list's secret link is stored only on the Mac. Victor: choose items, mount the buttons, test with a
+second phone. Depends on ListoLista checkpoint 1 going live. Later option: a Wi-Fi board (Pico 2 W,
 $7) so the button needs no USB cable (harder: the encryption must run on the tiny board).
 
 **10. Lissajous.** Parts: two micro-servos (kit usually has one), the kit's breadboard power module for
@@ -277,11 +277,11 @@ spell a word of Victor's choice in Morse and reads back a "hola" message; Victor
 |---|---|---|---|
 | 0 | Know the hardware | Board and kit identified from photos | `board.md` (model, port, board name) and `parts.md` (inventory) exist |
 | 1 | **MVP: the "hola" loop** | Write → compile → upload → blink → read back, all by Claude | Victor sees the LED spell his word; Claude shows the board's message; ≤ 20 min |
-| 2 | First wired creation | One project with parts (suggested: 2 Vida or 3 Poemas en morse) | It works on 3 different evenings without Claude's help |
+| 2 | First wired creation | One project with parts (suggested: 2 Vida or 3 Poemas en morse) | It works on 3 different days without Claude's help |
 | 3 | Mac mini as the brain | USB bridge to the local 35B (oracle, poems) or data into Jupyter (pendulum, weather) | Poem/answer/plot produced offline at $0 |
 | 4 | Untethered or Pi (only if wanted) | Wi-Fi board or Pi for a device that lives elsewhere | Decided in the interview |
 
-### First-session checklist (≤ 20 minutes, the evening Victor plugs it in)
+### First-session checklist (≤ 20 minutes, the day Victor plugs it in)
 Before (Claude, 2 min, with Victor's OK): `brew install arduino-cli` and `arduino-cli core update-index`.
 - [ ] (1 min) Clear a wooden/plastic table; drink away. Don't plug in yet.
 - [ ] (2 min) Photograph the board (top and bottom), its USB socket and the box; send to Claude.
@@ -309,8 +309,8 @@ driver needs Victor's admin password and a macOS approval; Claude explains why b
 3. **Clone drivers.** Official boards need no driver. Clones with a CH340 chip may need the chip maker's
    (WCH) driver on macOS; sources conflict on whether current macOS includes one. Installing it needs the
    admin password and a system-extension approval: Victor's decision, explained first.
-4. **Tiredness.** Debugging hardware at night can be frustrating. Every session has a "done" point
-   within 20-30 minutes; projects are ordered so early ones need no wiring or very little.
+4. **Frustration.** Debugging hardware can be frustrating. Every session has a clear "done" point;
+   projects are ordered so early ones need no wiring or very little.
 5. **Some learning is unavoidable.** Safe wiring needs a few ideas (breadboard rows, LED direction,
    resistors). Claude teaches them just in time in 2-3 sentences, never as a course.
 6. **Spanish on small screens.** The common LCD 16x2 lacks á, é, í, ó, ú, ñ; custom characters (max 8
@@ -338,13 +338,13 @@ driver needs Victor's admin password and a macOS approval; Claude explains why b
 | Stage | Victor's time | Claude's time | Money |
 |---|---|---|---|
 | Interview (this dossier) | 15-20 min | done | $0 |
-| Checkpoints 0-1 (identify + MVP) | ≤ 20 min, one evening | ~15 min | $0 |
+| Checkpoints 0-1 (identify + MVP) | ≤ 20 min, one session | ~15 min | $0 |
 | Projects 2-4 (little or no wiring) | 20-40 min each | 15-30 min each | $0 |
-| Projects 5-8 (sensors, bridge, Jupyter) | 1-2 evenings each | 30-60 min each | $0-10 per sensor if not in kit |
-| Project 9 (ListoLista button) | 2-3 evenings | 2-4 h (headless client + tests; junior can take the tests) | $0 |
-| Project 10 (Lissajous) | 3-4 evenings (mechanics) | ~1 h | a servo, a few dollars |
+| Projects 5-8 (sensors, bridge, Jupyter) | 1-2 sessions each | 30-60 min each | $0-10 per sensor if not in kit |
+| Project 9 (ListoLista button) | 2-3 sessions | 2-4 h (headless client + tests; junior can take the tests) | $0 |
+| Project 10 (Lissajous) | 3-4 sessions (mechanics) | ~1 h | a servo, a few dollars |
 | Raspberry Pi (optional) | depends | depends | $7 (Pico 2 W) to $110+ (Pi 5 4 GB + extras) |
-Running cost: $0 (Claude Max already paid; local model; no accounts or subscriptions).
+Running cost: $0 (existing AI tools; local model; no new accounts or subscriptions).
 
 ---
 
@@ -363,9 +363,9 @@ Running cost: $0 (Claude Max already paid; local model; no accounts or subscript
    screen)? OK to postpone buying until a project needs it?
 6. **How hands-on:** you do the wiring with Claude's tables, or someone at home helps? Do you want the
    2-3 sentence "why" explanations, or pure direction?
-7. **Rhythm:** how many minutes on a weekday evening (15, 30, 60)? Weekends?
+7. **Rhythm:** how long is a typical session (15, 30, 60 minutes)?
 8. **Safety comfort:** OK with the rules (no wall power, separate power for motors, water projects kept
-   apart)? Anyone else, e.g. children, near the workbench?
+   apart)? Anyone else near the workbench?
 9. **Open source and portfolio:** publish each project on GitHub (vdm285) with photos and short
    write-ups? In Spanish, English or both? Project name ideas?
 10. **Installs and drivers:** OK for Claude to install `arduino-cli` via Homebrew now, and to ask you

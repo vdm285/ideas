@@ -7,15 +7,32 @@
 Vendor-neutral briefing for any AI agent working on this project (Claude, ChatGPT/Codex, Gemini, Grok,
 or a local model). Whoever changes direction, hardware or safety rules updates this file.
 
-## Owner
-Victor (github.com/vdm285): creative director and owner. Mathematician/analytical philosopher with an
-MBA-style owner role and basic coding; explain in plain language, 2-3 sentences at a time, only when a
-concept matters for what he is about to do. He is tired after work: he gives direction, the agents write
-all code. He checks in at checkpoints: show what works, then ask go/no-go. Nothing is pushed to GitHub
-without his OK. Stage: personal learning, portfolio and open source; not commercial.
+## Owner and working rules (from Victor's HQ, 2026-09-29)
+Owner: Victor (github.com/vdm285). Stage: learning, portfolio and open source; not commercial.
+- **Replies:** checklist first (what's done, what needs Victor), then short details, in plain language.
+- **Language:** English with AIs; products for Victor's close circle start in Spanish.
+- **Who decides:** technical calls (tools, code, tests, free installs, pushes, `main` included) are the
+  agent's; tell Victor after. Design, direction and business: discuss first, Victor decides. A suggested
+  default may apply after 7 days of silence for technical choices only. Always ask first: force pushes,
+  deleting his data, anything posted or sent in his name, logins and passwords.
+- **Pushback:** on logic or design flaws and untested claims (not caution or licence caveats).
+- **Test it ourselves:** when a claim is thin or contested, run a small test: pass mark first, plus a
+  control that can fail.
+- **Brief card:** before any unattended agent run, Victor approves a one-screen card (goal, will / won't
+  do, what he will see, budget and stop rule).
+- **Checkpoints:** show what works, a live preview and "how to try it on your phone"; numbered steps
+  whenever his hands are needed.
+- **Locked prototype skeleton:** a `prototype` branch, locked on GitHub, holds only the data the app
+  keeps and the rules it enforces.
+- **Look:** plain by default (bare wireframe first); polish is an opt-in layer where the visuals are
+  the product.
+- **To-dos:** one dated list per project, in its `ROADMAP.md`.
+- **Here:** explain a concept just in time (2-3 sentences) and only when it matters for the next step.
+
+Personal context: in Claude's per-project memory, outside git.
 
 ## Mission
-Turn Victor's Arduino (a gift from his wife; model identified at checkpoint 0) and, later, possibly a
+Turn Victor's Arduino (model identified at checkpoint 0) and, later, possibly a
 Raspberry Pi into **creative objects he directs and AI builds**: things that blink, sound, measure and
 write. The agent writes, compiles, uploads and reads back; Victor's hands only plug in, photograph, wire
 from a numbered table and watch.
@@ -35,7 +52,7 @@ Rollout by checkpoints (each one used and enjoyed before the next):
    a part needs one. Storage on the Mac is tight: remove what is unused.
 4. **No accounts, no login walls:** no Arduino Cloud, no required Wokwi login, no API keys.
 5. **Optionality:** plain default (USB to the Mac mini); Wi-Fi boards, Pi, simulation are opt-in.
-6. **Zero running cost:** open-source tools, the local model, the Claude subscription Victor already has.
+6. **Zero running cost:** open-source tools, the local model and the AI tools already in use.
 7. **Spanish first** for anything the devices say or show; docs for agents in English, plain language.
 8. **Safety before cleverness** (hardware can hurt boards, the Mac or people): see "Safety rules".
 9. **Windows-Notepad benchmark:** each device does one thing instantly and plainly.
@@ -43,7 +60,7 @@ Rollout by checkpoints (each one used and enjoyed before the next):
 ## Hardware (facts; fill in at checkpoint 0)
 - Board: **(TBD)** model, FQBN, USB port name, genuine or clone (USB chip). Record in `board.md`.
 - Kit parts: **(TBD)** inventory from one photo. Record in `parts.md` (part, quantity, used by).
-- Host: Mac mini M6, 32 GB, macOS 27, always on; local model server at `http://127.0.0.1:8080`
+- Host: Mac mini M6, 32 GB, macOS 27; local model server at `http://127.0.0.1:8080`
   (`qwen3.6-35b-a3b`; send `"chat_template_kwargs": {"enable_thinking": false}` for short answers).
   Details: `~/local-ai/AGENTS.md`.
 
@@ -82,8 +99,8 @@ arduino-cli lib search <word> ; arduino-cli lib install "<library name>"
 2. Agent writes: the sketch, `WIRING.md` (numbered table: step, from pin, to breadboard row/part leg,
    wire colour, check), a "before power" checklist, and a Spanish one-paragraph `README.md`.
 3. Victor wires **with USB unplugged**, then sends a photo. Agent checks it against the table.
-4. Upload, Victor watches, agent reads the logs, adjusts. Sessions end at a clear "done" point within
-   20-30 minutes.
+4. Upload, Victor watches, agent reads the logs, adjusts. Every session ends at a clear
+   "done" point.
 
 ### Safety rules (agents must follow and repeat the relevant ones)
 - Never design anything connected to wall power (127 V in Mexico). The relay module is for low-voltage

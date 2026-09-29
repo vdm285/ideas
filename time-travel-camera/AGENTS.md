@@ -7,12 +7,28 @@ Vendor-neutral briefing for any AI agent working on this project (Claude, ChatGP
 Grok, or a local model). `CLAUDE.md` (when the repo exists) just imports it. Whoever changes direction
 or architecture updates this file.
 
-## Owner
-Victor (github.com/vdm285): product owner and architect. Mathematician and analytical philosopher,
-MBA-style owner, basic coding; explain in plain language. He checks in at milestones: show progress,
-a live preview and "how to test it on your phone" steps, then ask go/no-go. Nothing is published or
-pushed to GitHub without his OK. Project stage: personal learning, portfolio and open source; not
-commercial.
+## Owner and working rules (from Victor's HQ, 2026-09-29)
+Owner: Victor (github.com/vdm285). Stage: learning, portfolio and open source; not commercial.
+- **Replies:** checklist first (what's done, what needs Victor), then short details, in plain language.
+- **Language:** English with AIs; products for Victor's close circle start in Spanish.
+- **Who decides:** technical calls (tools, code, tests, free installs, pushes, `main` included) are the
+  agent's; tell Victor after. Design, direction and business: discuss first, Victor decides. A suggested
+  default may apply after 7 days of silence for technical choices only. Always ask first: force pushes,
+  deleting his data, anything posted or sent in his name, logins and passwords.
+- **Pushback:** on logic or design flaws and untested claims (not caution or licence caveats).
+- **Test it ourselves:** when a claim is thin or contested, run a small test: pass mark first, plus a
+  control that can fail.
+- **Brief card:** before any unattended agent run, Victor approves a one-screen card (goal, will / won't
+  do, what he will see, budget and stop rule).
+- **Checkpoints:** show what works, a live preview and "how to try it on your phone"; numbered steps
+  whenever his hands are needed.
+- **Locked prototype skeleton:** a `prototype` branch, locked on GitHub, holds only the data the app
+  keeps and the rules it enforces.
+- **Look:** plain by default (bare wireframe first); polish is an opt-in layer where the visuals are
+  the product.
+- **To-dos:** one dated list per project, in its `ROADMAP.md`.
+
+Personal context: in Claude's per-project memory, outside git.
 
 ## Mission
 **Point your phone at a place, pick an era, and see that same view back then**, with an honest label
@@ -20,7 +36,7 @@ of how sure we are. First place: the Zócalo of Mexico City. The benchmark is **
 opens instantly, straight into the view, nothing else in the way.
 
 Rollout by checkpoints (each one used and trusted before the next):
-1. Victor + family, on site at the Zócalo ("El Zócalo en cinco épocas").
+1. Victor's close circle, on site at the Zócalo ("El Zócalo en cinco épocas").
 2. Friends and family; 5-10 spots in the Centro Histórico (feedback).
 3. Free public open-source app; others can add spots and eras through reviewed data files.
 
@@ -50,7 +66,7 @@ Rollout by checkpoints (each one used and trusted before the next):
   tight AR overlay. Reason: browser GPS/compass errors (tens of metres, ~10°); no WebXR AR in iPhone
   Safari (2026).
 - Checkpoint 1 content: **curated pictures** (Option A) for 1 spot × 4 directions × 4-5 eras, made by
-  Victor with his Gemini/ChatGPT subscriptions from his own photos; texts written from sources and
+  Victor with consumer AI image apps (e.g. Gemini, ChatGPT) from his own photos; texts written from sources and
   reviewed.
 - Opt-in power feature: "Hazlo con tu IA" (copy a precise prompt, use your own AI app).
 - Live generation (Cloudflare Workers AI, free daily allowance, hard cap) only after checkpoint 1.

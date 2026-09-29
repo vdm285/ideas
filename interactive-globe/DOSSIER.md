@@ -135,7 +135,7 @@ with sources. Static site, $0, no account.
 | # | Checkpoint | Who uses it | Goal | Status |
 |---|---|---|---|---|
 | 0 | Sketch | Victor | Feel the idea (`sketch.html`), answer the interview below | ✅ built 2026-09-25 |
-| 1 | **Globo de la casa** | Victor + family | Globe (option A) + 20 countries × 3 layers × 2 levels, Modo niños, source links, home-screen icon | 🔜 after the interview |
+| 1 | **Globo de la casa** | Victor's close circle | Globe (option A) + 20 countries × 3 layers × 2 levels, Modo niños, source links, home-screen icon | 🔜 after the interview |
 | 2 | Hoy piloto | Family + a few friends | Weekly news card with "Uniendo los puntos" for 5 countries, for 4 weeks. Does the format feel fair and useful? | 💤 |
 | 3 | Todo el mundo | Friends and family, maybe a teacher | All countries, finer map when zoomed, offline, Viajes layer | 💤 |
 | 4 | Público, open source | Anyone | English, contribution rules, "report an error" without accounts | 💤 |
@@ -199,7 +199,7 @@ Rough, in AI-assisted working sessions (a session ≈ one focused senior sitting
 
 Answer in any order; defaults in brackets are what I'd do if you don't mind either way.
 
-1. **Who is the first user?** You and your wife, children in the family (what ages?), a classroom?
+1. **Who is the first user?** Your close circle (any kids? what ages?), a classroom?
    This sets the kid reading level. [ages 8-12]
 2. **What does "unbiased" mean to you?** (a) a neutral voice with only facts, (b) each side in its
    own words, clearly labelled, or (c) both? On a contested topic, who has the final word? [c; you]
@@ -208,7 +208,7 @@ Answer in any order; defaults in brackets are what I'd do if you don't mind eith
 4. **Look:** clean school-globe style (light, any phone, like the sketch) or satellite Google-Earth
    style (heavier, may need accounts/costs)? Would a "Ver en Google Earth" button be enough for
    satellite views? [school globe + button]
-5. **Which 20 countries first?** [Mexico, Latin America, the 4 samples, and places your family has ties to]
+5. **Which 20 countries first?** [Mexico, Latin America, the 4 samples, and places with personal ties]
 6. **Kids and news:** in Modo niños, hide Hoy, show a gentle version, or show it only with an adult?
    [gentle version]
 7. **Depth:** 30-second cards only, or also "leer más" links to Wikipedia/Vikidia? Want "Léemelo"

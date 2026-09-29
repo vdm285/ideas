@@ -127,7 +127,7 @@ Includes:
 - "Reto" game (find the element), attract mode for a kiosk, big-text switch.
 - No accounts, no server, no AI at runtime, no analytics.
 
-Who uses it: Victor plus 1-2 kids in the family, on a phone and on a tablet or TV.
+Who uses it: first users from Victor's close circle, on a phone and on a tablet or TV.
 Pass test: a kid uses it 10 minutes without help and asks to come back; Victor puts it on a big
 screen with one tap. Then checkpoint 2 (a teacher/classroom, all 118 cards), then checkpoint 3
 (public, open source, first fork).
@@ -185,7 +185,7 @@ Rough, in the units that matter to Victor:
 
 ## Interview questions for Victor
 
-1. **Who is the first real user?** Kids in your family (which ages?), a school class, or a public
+1. **Who is the first real user?** Kids you know (which ages?), a school class, or a public
    screen (museum, library, a business lobby)? This sets the reading level and the layout.
 2. **Which screen first?** Phone, tablet, or a big touch TV? Do you have (or can you borrow) a touch
    screen, or would it be a TV plus mouse at first?

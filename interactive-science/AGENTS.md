@@ -7,12 +7,28 @@
 Vendor-neutral briefing for any AI agent working on this project (Claude, ChatGPT/Codex, Gemini,
 Grok, or a local model). Whoever changes direction or architecture updates this file.
 
-## Owner
-Victor (github.com/vdm285): product owner and architect. Mathematician/MBA with basic coding;
-explain in plain language. He checks in at milestones: show progress, a live preview and "how to
-test it on your phone / on the big screen" steps, then ask go/no-go. Nothing is merged to `main`
-or pushed to GitHub without his OK. Stage: personal learning, portfolio and open source; not
-commercial.
+## Owner and working rules (from Victor's HQ, 2026-09-29)
+Owner: Victor (github.com/vdm285). Stage: learning, portfolio and open source; not commercial.
+- **Replies:** checklist first (what's done, what needs Victor), then short details, in plain language.
+- **Language:** English with AIs; products for Victor's close circle start in Spanish.
+- **Who decides:** technical calls (tools, code, tests, free installs, pushes, `main` included) are the
+  agent's; tell Victor after. Design, direction and business: discuss first, Victor decides. A suggested
+  default may apply after 7 days of silence for technical choices only. Always ask first: force pushes,
+  deleting his data, anything posted or sent in his name, logins and passwords.
+- **Pushback:** on logic or design flaws and untested claims (not caution or licence caveats).
+- **Test it ourselves:** when a claim is thin or contested, run a small test: pass mark first, plus a
+  control that can fail.
+- **Brief card:** before any unattended agent run, Victor approves a one-screen card (goal, will / won't
+  do, what he will see, budget and stop rule).
+- **Checkpoints:** show what works, a live preview and "how to try it on your phone"; numbered steps
+  whenever his hands are needed.
+- **Locked prototype skeleton:** a `prototype` branch, locked on GitHub, holds only the data the app
+  keeps and the rules it enforces.
+- **Look:** plain by default (bare wireframe first); polish is an opt-in layer where the visuals are
+  the product.
+- **To-dos:** one dated list per project, in its `ROADMAP.md`.
+
+Personal context: in Claude's per-project memory, outside git.
 
 ## Mission
 Interactive science for **big touch screens and phones**, starting with **Tabla Viva**, a periodic
@@ -21,7 +37,7 @@ it, how its electrons fill the shells, its isotopes, and a safe mini-experiment.
 human anatomy (down to the cell), biology, ecology, physics.
 
 Rollout by checkpoints (each one used and trusted before the next):
-1. Victor + 1-2 kids in the family, on a phone and a tablet/TV (about 20 full element cards).
+1. First users from Victor's close circle, on a phone and a tablet/TV (about 20 full element cards).
 2. A teacher or classroom and a real touch screen (all 118 cards).
 3. Public open-source release; first fork (probably anatomy).
 

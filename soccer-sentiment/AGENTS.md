@@ -7,18 +7,35 @@ Vendor-neutral briefing for any AI agent working on this project (Claude, ChatGP
 Grok, or a local model). `CLAUDE.md` (when the repo exists) just imports it. Whoever changes direction
 or architecture updates this file.
 
-## Owner
-Victor (github.com/vdm285): product owner and architect. Mathematician and analytical philosopher,
-MBA-style owner, basic coding; explain in plain language, and show the maths when it matters (he
-likes it). He checks in at milestones: show the scoreboard, explain what changed, then ask go/no-go.
-Nothing is published or pushed to GitHub without his OK. Project stage: personal learning, portfolio
-and open source; not commercial.
+## Owner and working rules (from Victor's HQ, 2026-09-29)
+Owner: Victor (github.com/vdm285). Stage: learning, portfolio and open source; not commercial.
+- **Replies:** checklist first (what's done, what needs Victor), then short details, in plain language.
+- **Language:** English with AIs; products for Victor's close circle start in Spanish.
+- **Who decides:** technical calls (tools, code, tests, free installs, pushes, `main` included) are the
+  agent's; tell Victor after. Design, direction and business: discuss first, Victor decides. A suggested
+  default may apply after 7 days of silence for technical choices only. Always ask first: force pushes,
+  deleting his data, anything posted or sent in his name, logins and passwords.
+- **Pushback:** on logic or design flaws and untested claims (not caution or licence caveats).
+- **Test it ourselves:** when a claim is thin or contested, run a small test: pass mark first, plus a
+  control that can fail.
+- **Brief card:** before any unattended agent run, Victor approves a one-screen card (goal, will / won't
+  do, what he will see, budget and stop rule).
+- **Checkpoints:** show what works, a live preview and "how to try it on your phone"; numbered steps
+  whenever his hands are needed.
+- **Locked prototype skeleton:** a `prototype` branch, locked on GitHub, holds only the data the app
+  keeps and the rules it enforces.
+- **Look:** plain by default (bare wireframe first); polish is an opt-in layer where the visuals are
+  the product.
+- **To-dos:** one dated list per project, in its `ROADMAP.md`.
+- **Here:** show the maths when it matters. Publishing results (scoreboard, write-up) is Victor's call.
+
+Personal context: in Claude's per-project memory, outside git.
 
 ## Mission
 A **paper-trading research lab**, not a betting tool. It answers one question honestly: *does news
 sentiment, read by AI, tell us anything the Liga MX betting market doesn't already know?* Every
 prediction is scored against the closing odds on a public-style scoreboard. No real money, ever.
-It is also Victor's hands-on course in data science (backtests, calibration, proper scoring rules)
+It is also a hands-on learning project in data science (backtests, calibration, proper scoring rules)
 and NLP (Spanish headline labelling with the local model).
 
 Rollout by checkpoints (each one used and trusted before the next):
@@ -84,7 +101,7 @@ Rollout by checkpoints (each one used and trusted before the next):
 ## How to work here (once the repo exists)
 - Python 3.12 with uv; pandas, matplotlib; penaltyblog for ratings models. Raw data lives in
   `data/` and is git-ignored; derived, shareable results in `results/`.
-- Branch per piece of work; nothing merged or pushed without Victor's OK.
+- Branch per piece of work; merge only tested work.
 - Tests before features: odds→probability maths, scoring rules, bootstrap and leakage checks get
   known-answer tests first. Tests are protected: don't weaken them to make code pass.
 - Local juniors (via `~/local-ai/scripts/delegate.sh`) get bounded chores with a pass/fail

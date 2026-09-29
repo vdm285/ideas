@@ -72,7 +72,7 @@ overlays don't. The sketch uses a window.
 - A few spots (start with one: the Zócalo), 4 directions each (N, E, S, W), 4-5 eras.
 - Each window is a picture made ahead of time, plus a short text: "what you'd see", "what stands here
   today", confidence level, sources.
-- **Who makes the pictures:** Victor, with his existing subscriptions (Gemini app in Google AI Pro,
+- **Who makes the pictures:** Victor, with consumer AI image apps (the Gemini app,
   ChatGPT), starting from his own photos taken at the spot, using prompts that Claude writes from the
   sources. A third-party guide reports about 100 images/day on AI Pro and ~20/day free
   ([Zenken, 2026](https://ai.zenken.co.jp/en/post/gemini-image-guide/), not confirmed on Google's own
@@ -115,7 +115,7 @@ overlays don't. The sketch uses a window.
 | Victor (owner) | Chooses eras and places, takes the photos on site, generates and picks pictures (Option A), says go/no-go at each checkpoint. |
 | Claude (senior, cloud) | Research and fact-checking with sources, the prompt template, the app code, review. |
 | Local Qwen3.6-35B (junior, Mac mini) | Text chores with a pass/fail check: draft Spanish panel texts from source excerpts; fill and validate the places data file against a schema; write the heading math tests ("which landmark is in front of me", angles wrap at 360°). It does not make images: it is a text model and the workstation mission excludes image generation. |
-| Gemini / ChatGPT (Victor's subscriptions) | Make the pictures; a second vendor cross-checks historical claims. The "superbrain" could do one deep research pass on "the Zócalo in 1519: what stood in each direction". |
+| Gemini / ChatGPT (consumer apps) | Make the pictures; a second vendor cross-checks historical claims. The "superbrain" could do one deep research pass on "the Zócalo in 1519: what stood in each direction". |
 
 | Option | Cost to Victor | Cost to user | Taps to see the past | Control over accuracy | Build effort |
 |---|---|---|---|---|---|
@@ -136,14 +136,14 @@ today", a confidence level, sources and the **Reconstrucción artística** stamp
 
 | Checkpoint | Who uses it | Goal |
 |---|---|---|
-| 1 | Victor + family, on a visit to the Zócalo | Feel it on site; decide if the idea holds up |
+| 1 | Victor's close circle, on a visit to the Zócalo | Feel it on site; decide if the idea holds up |
 | 2 | Friends and family; 5-10 spots in the Centro Histórico | Feedback; spot data format proven; maybe Option C |
 | 3 | Public, open source | Others can add spots and eras (data files + review rules); English |
 
 **Checkpoint 1 is done when**
 - Victor stands near the flagpole, points at the Cathedral, slides to 1500, and the view and text match
   what he's facing.
-- It works on Victor's Android and his wife's iPhone; first picture on screen in under 2 s on 4G.
+- It works on an Android phone and an iPhone; first picture on screen in under 2 s on 4G.
 - Every past picture shows its confidence level and at least one dated source.
 - Someone who knows the history (a friend, or a second AI with sources) finds nothing clearly wrong.
 
@@ -221,8 +221,8 @@ Each question has a default we'd use if there's no answer.
    *Default: no people in checkpoint 1.*
 7. **May the Mac mini make images?** Today its mission excludes image generation and storage is tight.
    *Default: no; images come from cloud subscriptions.*
-8. **Who is it for first?** Family, tourists, teachers and school groups? Spanish only? *Default:
-   family, Spanish only.*
+8. **Who is it for first?** Your close circle, tourists, teachers and school groups? Spanish only?
+   *Default: close circle, Spanish only.*
 9. **Accuracy partner?** Contact someone (a UNAM or INAH historian, Thomas Kole) before going public?
    *Default: no outreach until checkpoint 2.*
 10. **Name?** "Cámara del tiempo", "Aquí antes", "Ventana al pasado", or yours. *Default: Cámara del
