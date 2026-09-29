@@ -89,7 +89,7 @@ details.settings .inner{display:grid;gap:10px;padding:0 12px 12px}
 .handoff{display:grid;gap:8px;padding:12px;border-radius:10px;background:var(--accent-soft);border:1px solid var(--line)}
 .handoff p{font-size:.88rem}
 .handoff textarea{width:100%;min-height:92px;font:inherit;font-size:.84rem;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
-.badge-tonight{display:inline-flex;align-items:center;min-height:36px;padding:4px 12px;border-radius:999px;background:var(--led);color:#2A1E00;font-weight:700;font-size:.86rem}
+.badge-today{display:inline-flex;align-items:center;min-height:36px;padding:4px 12px;border-radius:999px;background:var(--led);color:#2A1E00;font-weight:700;font-size:.86rem}
 .pick-ok{flex-basis:100%;margin:0;font-size:.86rem;color:var(--ok);font-weight:700}
 .done-box{display:grid;gap:8px;padding:14px;border-radius:10px;background:var(--accent-soft);border:1px solid var(--line);margin-top:14px}
 details.need summary{cursor:pointer;color:var(--accent);font-weight:700;font-size:.9rem;min-height:36px;display:flex;align-items:center}
@@ -330,7 +330,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
       <p class="status" id="status" aria-live="polite">Listo para deletrear.</p>
 
       <div class="handoff">
-        <p><b>¿Esta es tu palabra?</b> Copia el mensaje y pégalo en Claude la noche de la sesión: con eso arranca, sin que tengas que escribir nada más.</p>
+        <p><b>¿Esta es tu palabra?</b> Copia el mensaje y pégalo en Claude al empezar la sesión: con eso arranca, sin que tengas que escribir nada más.</p>
         <button class="btn copy-msg" type="button">Copiar mensaje para Claude</button>
         <textarea class="msg-fallback" readonly hidden aria-label="Mensaje para Claude (selecciónalo y cópialo)"></textarea>
       </div>
@@ -363,7 +363,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
   <!-- ================= CHECKLIST ================= -->
   <section class="block" id="sesion" aria-labelledby="sesionTitle">
     <div class="sec-head">
-      <span class="eyebrow">Etapa 1 · la noche que lo enchufas</span>
+      <span class="eyebrow">Etapa 1 · el día que lo enchufas</span>
       <h2 id="sesionTitle">La primera sesión, paso a paso</h2>
       <p>Marca cada paso al terminarlo; el cronómetro arranca solo con la primera marca. Los pasos de Claude los hace Claude en la terminal; tú solo confirmas lo que ves. Las marcas se guardan en este navegador.</p>
     </div>
@@ -712,7 +712,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
   function claudeMessage(){
     var word = plainWord(state.parsed.words) || "HOLA";
     var p = PROJECTS.filter(function(x){ return x.n === picked; })[0];
-    return "Claude: es la noche de Latido (etapa 1 de DOSSIER.md, idea Arduino + Raspberry Pi). " +
+    return "Claude: hoy toca Latido (etapa 1 de DOSSIER.md, idea Arduino + Raspberry Pi). " +
       "Mi palabra: «" + word + "», velocidad " + $("wpm").value + " palabras/min. " +
       "Placa: por identificar (te mando fotos). " +
       "Siguiente proyecto: " + (p ? p.n + ". " + p.name : "sin elegir todavía") + ". " +
@@ -885,9 +885,9 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
     PROJECTS.forEach(function(p){
       var b = band(p.lvl), pips = "";
       for(var i = 1; i <= 5; i++) pips += '<i class="' + (i <= p.lvl ? "f" : "") + '"></i>';
-      var tags = (p.mvp ? '<span class="tag mvp">Esta noche</span>' : "") + (p.nowire ? '<span class="tag">sin cables</span>' : "");
+      var tags = (p.mvp ? '<span class="tag mvp">Hoy</span>' : "") + (p.nowire ? '<span class="tag">sin cables</span>' : "");
       var isPicked = picked === p.n;
-      var action = p.mvp ? '<span class="badge-tonight">Esta noche</span>' :
+      var action = p.mvp ? '<span class="badge-today">Hoy</span>' :
         '<button class="btn ' + (isPicked ? "" : "ghost ") + 'small pick" type="button" aria-pressed="' + isPicked + '">' + (isPicked ? "★ Siguiente" : "Elegir como siguiente") + '</button>';
       html += '<article class="card' + (isPicked ? " picked" : "") + '" data-n="' + p.n + '" data-band="' + b + '" data-nowire="' + p.nowire + '" data-mac="' + p.mac + '">' +
         '<div class="top"><div><span class="num">Proyecto ' + p.n + '</span><h3>' + esc(p.name) + '</h3></div>' +

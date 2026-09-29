@@ -112,7 +112,7 @@ never become closed content.
 | Role | Does | Why |
 |---|---|---|
 | **Local junior** (Qwen3.6-35B on the Mac) | Bulk drafting, translation, kid versions, first-pass checks, weekly news clustering | Free and private. Measured writing speed on this Mac is ~42 tokens/s (local-ai benchmarks, 2026-09-23). All ~1,200 evergreen texts (200 countries × 3 layers × 2 levels) ≈ one overnight run. A weekly Hoy for 20 countries takes minutes. |
-| **Cloud senior** (Claude today, swappable) | Style guide, balance rules, review of sensitive topics, random audits, hard rewrites | Better judgement on contested history; runs on the existing subscription |
+| **Cloud senior** (Claude today, swappable) | Style guide, balance rules, review of sensitive topics, random audits, hard rewrites | Better judgement on contested history; consumer AI apps (free or paid tiers), $0 extra |
 | **In the page** | Nothing at first. Maybe later an opt-in "Pregúntale al globo" that only rephrases our reviewed text. | The Mac serves localhost only (no remote access), so it cannot answer visitors. Chrome's built-in Gemini Nano runs only on desktop Chrome and needs ~22 GB free disk and 16 GB RAM; no Android or iOS (developer.chrome.com Prompt API, updated 2026-08-26). Most Mexican users are on phones, so this is out for now. |
 
 So all AI work happens **before publishing**. Visitors get a static site, and each visit costs $0.
@@ -143,7 +143,7 @@ with sources. Static site, $0, no account.
 **Checkpoint 1 is done when:**
 - [ ] It opens straight onto a spinning globe in under 2 seconds on Victor's Android phone.
 - [ ] Tapping any country shows its Spanish name; the 20 chosen countries show 3 layers.
-- [ ] Modo niños switches every text; a kid in the family can use it alone.
+- [ ] Modo niños switches every text; a child can use it alone.
 - [ ] Every text shows its source link and "revisado el <fecha>".
 - [ ] Victor reads 10 random cards and trusts them.
 - [ ] Hosting costs $0 and needs no login for visitors.
@@ -191,7 +191,7 @@ Rough, in AI-assisted working sessions (a session ≈ one focused senior sitting
 | Checkpoint 1 content pipeline + 20 countries (120 texts) | 1-2 sessions | ~30-60 min of drafting | 1-2 h reading |
 | Checkpoint 2 Hoy pilot (weekly job + balance checks) | 2-3 sessions | ~15 min per week | 20-30 min per week for 4 weeks |
 | Checkpoint 3 all countries (~1,200 texts) | 2 sessions of review | one overnight run (est. 2-8 h) | 3-5 h spot checks |
-| **Running cost** | $0 (static hosting, free data, AI on existing Mac/subscription) | | |
+| **Running cost** | $0 extra (static hosting, free data, the local model and consumer AI apps) | | |
 
 ---
 

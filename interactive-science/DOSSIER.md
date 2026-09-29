@@ -108,7 +108,7 @@ and the open models exist but have no simple web viewer for kids.
 | Other cloud AIs | Independent fact-check sweep of the finished texts (a second opinion) |
 
 Speed check: the junior writes about 40 tokens/s (`docs/delegation.md`). 118 elements × 3 levels
-is about 350 short texts: roughly one evening batch, then review.
+is about 350 short texts: roughly one 3-4 hour batch, then review.
 
 ---
 
@@ -174,11 +174,11 @@ Rough, in the units that matter to Victor:
 |---|---|---|---|
 | Data pipeline (PubChem + Wikidata → JSON, with checks) | 0.5-1 | small chores | none |
 | App: table, search, card, Bohr + fill animation, phone layout, offline/installable | 1.5-2 | tests for pure logic | 20 min review |
-| Content for ~20 elements, 2-3 levels, quiz, experiments | 1 (briefs + review) | 1 evening batch | 30 min reading |
+| Content for ~20 elements, 2-3 levels, quiz, experiments | 1 (briefs + review) | one 3-4 h batch | 30 min reading |
 | Reto game, attract mode, kiosk setup notes | 0.5 | none | none |
 | Test with kids on phone + big screen, fixes | 0.5-1 | none | 1-2 h |
-| **Checkpoint 1 total** | **about 4-6 sessions** | **1-2 evenings** | **about 3 h** |
-| All 118 full cards (checkpoint 2) | +2-3 (mostly review) | +2-3 evenings | +1 h |
+| **Checkpoint 1 total** | **about 4-6 sessions** | **about 3-8 h** | **about 3 h** |
+| All 118 full cards (checkpoint 2) | +2-3 (mostly review) | +6-12 h | +1 h |
 | Anatomy fork (checkpoint 3+) | 3-5× the periodic table | modelling chores | more testing |
 
 ---
@@ -236,7 +236,7 @@ Rough, in the units that matter to Victor:
 - Bohr model teaching: https://www.bu.edu/chemed/resources/beyond-bohr/ ; McKagan et al. 2008: https://link.aps.org/doi/10.1103/PhysRevSTPER.4.010103
 - Kiosk attract mode and idle reset practice: https://workinman.com/trade-show-museum-kiosk-design-development/
 
-## Round 1: sketch changelog (2026-09-25, evening)
+## Round 1: sketch changelog (2026-09-25)
 
 Changes made to `sketch.html` after the round 1 critique, in the critic's order:
 

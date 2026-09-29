@@ -253,8 +253,8 @@ house with a screen or camera.
 - **The AI HAT+ 2 ($130, Jan 2026)** was slower than the Pi's own CPU for language models in that
   review; it is good for camera/vision work, not for chat.
 - **Better pattern:** Pi or Pico as eyes, ears and hands; the Mac mini as the brain. That requires letting
-  household devices reach the Mac's model server (today bound to 127.0.0.1 only, by Victor's choice).
-  That is a security decision for later, not a default.
+  devices on the local network reach the Mac's model server (today bound to 127.0.0.1 only, by
+  Victor's choice). That is a security decision for later, not a default.
 
 ### Good Pi projects (for later)
 1. **Kitchen dashboard** (Pi 5 2-4 GB + a small screen or e-ink): today's ListoLista, the weather station's
@@ -262,7 +262,7 @@ house with a screen or camera.
 2. **Nature camera** (Pi 5 + camera module; AI HAT+ 2 optional): birds or the plant, time-lapse, with
    object detection on the device.
 3. **Sensor hub**: several Pico 2 W gadgets (plant, weather) send readings over Wi-Fi to one Pi or to the Mac.
-4. **Offline philosophy toy**: a 1-B model on a Pi Zero-class device answering one-line questions,
+4. **Offline oracle toy**: a 1-B model on a Pi Zero-class device answering one-line questions,
    deliberately small, as an exhibit of what tiny models can and cannot do.
 
 ---
@@ -361,7 +361,7 @@ Running cost: $0 (existing AI tools; local model; no new accounts or subscriptio
    (Mercado Libre, Amazon México, a local electronics shop)?
 5. **Raspberry Pi:** what would you want a Pi to do that the Mac mini can't (be elsewhere, a camera, a
    screen)? OK to postpone buying until a project needs it?
-6. **How hands-on:** you do the wiring with Claude's tables, or someone at home helps? Do you want the
+6. **How hands-on:** you do the wiring with Claude's tables, or someone helps? Do you want the
    2-3 sentence "why" explanations, or pure direction?
 7. **Rhythm:** how long is a typical session (15, 30, 60 minutes)?
 8. **Safety comfort:** OK with the rules (no wall power, separate power for motors, water projects kept
@@ -426,7 +426,7 @@ Running cost: $0 (existing AI tools; local model; no new accounts or subscriptio
     phases, with who does each step (tú / Claude), minutes, the board-identification clue table, the
     CH340 stop rule, progress, and a 20-minute timer. Ticks are saved in the browser only.
   - **Project gallery:** the 10 projects of the ladder with difficulty (1-5, grouped fácil/media/difícil),
-    parts from the kit vs extra, the math/philosophy hook, sessions, filters (sin cables, Mac mini como
+    parts from the kit vs extra, the math/ideas hook, sessions, filters (sin cables, Mac mini como
     cerebro), and "elegir como siguiente", which feeds the checklist's last step.
   - **Safety:** the five rules Claude repeats before any wiring.
   - Difficulty levels are Claude's judgement from the ladder table (wiring, parts, sessions), not
@@ -449,10 +449,10 @@ Running cost: $0 (existing AI tools; local model; no new accounts or subscriptio
   - Accessibility: only the progress number and "Sigue" line are live regions (timer is `role="timer"`,
     not announced); focus returns to the pick button after choosing; morse glyphs have `role="img"` and
     read as "punto raya…".
-  - Gallery: project 1 shows an "Esta noche" badge instead of a pick button; after a pick, a line under the
+  - Gallery: project 1 shows a "Hoy" badge instead of a pick button; after a pick, a line under the
     card says "Guardado: aparece en el paso 12" with a link; parts sit in a "Qué necesitas" fold on narrow
     screens; the "Mac mini" tag is gone from cards (kept as the filter "Usa el Mac mini").
-  - Wording: Etapa 1, Esta noche, Para pensar, Claude ejecuta, the shopping-list hook in plain words, the
+  - Wording: Etapa 1, Hoy, Para pensar, Claude ejecuta, the shopping-list hook in plain words, the
     board note (photos in step 3, identification in step 5), and an honest accent note (Í is sent as I;
     Ñ has its own code).
   - Checked: `node --check` on the script; headless Chrome at 375 and 400 px (no horizontal scroll, board

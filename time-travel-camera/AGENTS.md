@@ -16,6 +16,11 @@ Owner: Victor (github.com/vdm285). Stage: learning, portfolio and open source; n
   default may apply after 7 days of silence for technical choices only. Always ask first: force pushes,
   deleting his data, anything posted or sent in his name, logins and passwords.
 - **Pushback:** on logic or design flaws and untested claims (not caution or licence caveats).
+- **Depth:** build quick, ideas deep ("quick" or "deep" from Victor overrides). When our own test
+  contradicts a trusted source, show both sides briefly and test both.
+- **Code and words:** lean code with a short "why" note (not golfed); short, plain text for users;
+  reusable modules. Naming: say if an industry-standard name exists, else propose a few
+  analogy-based names.
 - **Test it ourselves:** when a claim is thin or contested, run a small test: pass mark first, plus a
   control that can fail.
 - **Brief card:** before any unattended agent run, Victor approves a one-screen card (goal, will / won't

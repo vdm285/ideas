@@ -74,8 +74,8 @@ Methods we'll borrow:
 2. **Pre-registered.** Before looking at results we write down the hypothesis, the metric and the
    pass mark (a lesson from the "buzz" correction).
 3. **Spanish-first, Liga MX-first.** Almost all prior work is English and Premier League. Liga MX is
-   Victor's home market, plausibly less efficient, and Spanish news is where a local model can add
-   something.
+   the home market for a Spanish-first app, plausibly less efficient, and Spanish news is where a local
+   model can add something.
 4. **Zero cost, fully local.** Free data, the Mac's own 35B model for labelling headlines, no servers,
    no paid APIs.
 5. **No money, ever, in the product.** No bookmaker links, no affiliate deals, no "picks" channel.
@@ -328,11 +328,12 @@ what we learned." Then go/no-go on anything further.
 ## Interview questions for Victor
 
 1. **What is the real goal?** (a) a data-science/NLP learning lab and portfolio piece with an honest
-   yes/no answer, or (b) something you'd one day bet real money with? If (b), I'll push back: the
-   evidence says no. We'd need hard rules first (a fixed entertainment budget, never chasing losses).
-2. **Which league?** Liga MX only (Spanish news, your home market, maybe less efficient, but ~340
-   matches/year and no free early odds), European leagues (more data, early + closing odds free, but
-   English news), or Liga MX first and Europe later?
+   yes/no answer, or (b) a picks tool that users would one day bet real money with? If (b), I'll push
+   back: the evidence says no, and users would need hard safeguards first (a fixed entertainment
+   budget, never chasing losses).
+2. **Which league?** Liga MX only (Spanish news, the home market for a Spanish-first app, maybe
+   less efficient, but ~340 matches/year and no free early odds), European leagues (more data, early +
+   closing odds free, but English news), or Liga MX first and Europe later?
 3. **Is news-only sentiment OK for checkpoint 1?** Social media would mean a paid X API (~US$50 per
    10,000 posts) or thin Bluesky data. I suggest news (GDELT + headlines) first.
 4. **History or patience?** The real verdict needs history (2015-2026) through the free BigQuery

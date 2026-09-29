@@ -74,7 +74,7 @@ overlays don't. The sketch uses a window.
   today", confidence level, sources.
 - **Who makes the pictures:** Victor, with consumer AI image apps (the Gemini app,
   ChatGPT), starting from his own photos taken at the spot, using prompts that Claude writes from the
-  sources. A third-party guide reports about 100 images/day on AI Pro and ~20/day free
+  sources. A third-party guide reports about 100 images/day on a paid plan and ~20/day free
   ([Zenken, 2026](https://ai.zenken.co.jp/en/post/gemini-image-guide/), not confirmed on Google's own
   help page, which only mentions limit changes on 2026-05-17). 1 spot × 4 directions × 4 eras = 16
   pictures, so the limit is not the problem; picking good ones is.
@@ -119,7 +119,7 @@ overlays don't. The sketch uses a window.
 
 | Option | Cost to Victor | Cost to user | Taps to see the past | Control over accuracy | Build effort |
 |---|---|---|---|---|---|
-| A Curated windows | $0 (existing subscriptions) | $0 | 0-1 | High (reviewed) | Low |
+| A Curated windows | $0 extra (consumer AI apps, free or paid tiers) | $0 | 0-1 | High (reviewed) | Low |
 | B Bring your own AI | $0 | own quota | 3-4 | Low | Very low |
 | C Our server, capped | $0 up to the cap | $0 | 1 + wait | Medium | Medium |
 | D Real 3D | $0 | $0 | 0-1 | High, but drifts | High |
@@ -215,12 +215,12 @@ Each question has a default we'd use if there's no answer.
    (lake and mammoths), Cretácico. Mexican eras, or world eras like "medieval"? *Default: Mexican eras.*
 4. **Which places after the Zócalo?** Centro Histórico only, or also Coyoacán, Chapultepec,
    Teotihuacan, your own neighbourhood? *Default: 5-10 spots in the Centro Histórico.*
-5. **Who makes the pictures?** You with your subscriptions (curated, $0), or live generation for
+5. **Who makes the pictures?** You with consumer AI apps (curated, $0 extra), or live generation for
    everyone (Option C, capped free tier)? *Default: curated first, live generation later.*
 6. **People in the past views?** Architecture and landscape only, or also people (Mexica, colonial)?
    *Default: no people in checkpoint 1.*
 7. **May the Mac mini make images?** Today its mission excludes image generation and storage is tight.
-   *Default: no; images come from cloud subscriptions.*
+   *Default: no; images come from cloud AI apps.*
 8. **Who is it for first?** Your close circle, tourists, teachers and school groups? Spanish only?
    *Default: close circle, Spanish only.*
 9. **Accuracy partner?** Contact someone (a UNAM or INAH historian, Thomas Kole) before going public?
